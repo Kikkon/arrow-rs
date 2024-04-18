@@ -344,14 +344,10 @@ fn test_validate_offsets_last_too_large() {
 
 
 /// Test that the list of type `data_type` generates correct offset out of bounds errors
-fn check_list_view_offsets_sizes<T: ArrowNativeType>(data_type: DataType, offset_vec : Vec<T>, size_vec : Vec<T>) {
+fn check_list_view_offsets_sizes<T: ArrowNativeType>(data_type: DataType, offsets : Vec<T>, sizes : Vec<T>) {
     let values: Int32Array = [Some(1), Some(2), Some(3), Some(4)].into_iter().collect();
-    let offsets_buffer = Buffer::from_slice_ref(offset_vec);
-    let sizes: Vec<T>  = [0, 2, 5, 4]
-        .iter()
-        .map(|&v| T::from_usize(v).unwrap())
-        .collect();
-    let sizes_buffer = Buffer::from_slice_ref(size_vec);
+    let offsets_buffer = Buffer::from_slice_ref(offsets);
+    let sizes_buffer = Buffer::from_slice_ref(sizes);
     ArrayData::try_new(
         data_type,
         4,
