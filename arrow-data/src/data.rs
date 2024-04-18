@@ -936,14 +936,23 @@ impl ArrayData {
         values_length: usize,
     ) -> Result<(), ArrowError> {
         let offsets: &[T] = self.typed_buffer(0, self.len)?;
+        dbg!(&offsets);
         let sizes: &[T] =  self.typed_buffer(1, self.len)?;
-       for i in 0.values_length {
-           let size = sizes[i];
-              if size < 0 {
-                  let offset = offsets[i];
-                    if offset < 0 || offset > values_length {
+        dbg!(&sizes);
+       for i in 0..values_length {
+           let size = sizes[i].to_usize().ok_or_else(|| {
+               ArrowError::InvalidArgumentError(format!(
+                   "Error converting size[{}] ({}) to usize for {}",
+                   i, sizes[i], self.data_type
+               ))})?;
+                  let offset = offsets[i].to_usize().ok_or_else(|| {
+                      ArrowError::InvalidArgumentError(format!(
+                          "Error converting offset[{}] ({}) to usize for {}",
+                          i, offsets[i], self.data_type
+                      ))})?;
+                    if offset > values_length {
                         return Err(ArrowError::InvalidArgumentError(format!(
-                            "Offset {} at index {} is negative or offset {} is out of bounds for {}",
+                            "Size {} at index {} is offset {} is out of bounds for {}",
                             size, i, offset, self.data_type
                         )));
                     }
@@ -953,13 +962,8 @@ impl ArrayData {
                             size, i, self.data_type
                         )));
                     }
-              } else {
-                  return Err(ArrowError::InvalidArgumentError(format!(
-                      "Size {} at index {} is negative for {}",
-                      size, i, self.data_type
-                  )));
               }
-        }
+
         Ok(())
     }
 
