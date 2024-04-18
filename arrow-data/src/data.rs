@@ -936,9 +936,7 @@ impl ArrayData {
         values_length: usize,
     ) -> Result<(), ArrowError> {
         let offsets: &[T] = self.typed_buffer(0, self.len)?;
-        dbg!(&offsets);
         let sizes: &[T] =  self.typed_buffer(1, self.len)?;
-        dbg!(&sizes);
        for i in 0..values_length {
            let size = sizes[i].to_usize().ok_or_else(|| {
                ArrowError::InvalidArgumentError(format!(
