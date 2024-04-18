@@ -929,23 +929,37 @@ impl ArrayData {
         Ok(())
     }
 
-    fn validate_sizes<T: ArrowNativeType + num::Num + std::fmt::Display>(
+    /// Does a cheap sanity check that the `self.len` values in `buffer` are valid
+    /// offsets and sizes (of type T) into some other buffer of `values_length` bytes long
+    fn validate_offsets_and_sizes<T: ArrowNativeType + num::Num + std::fmt::Display>(
         &self,
         values_length: usize,
     ) -> Result<(), ArrowError> {
+        let offsets: &[T] = self.typed_buffer(0, self.len)?;
         let sizes: &[T] =  self.typed_buffer(1, self.len)?;
-        if sizes.is_empty() {
-            return Ok(());
+       for i in 0.values_length {
+           let size = sizes[i];
+              if size < 0 {
+                  let offset = offsets[i];
+                    if offset < 0 || offset > values_length {
+                        return Err(ArrowError::InvalidArgumentError(format!(
+                            "Offset {} at index {} is negative or offset {} is out of bounds for {}",
+                            size, i, offset, self.data_type
+                        )));
+                    }
+                    if size > values_length - offset {
+                        return Err(ArrowError::InvalidArgumentError(format!(
+                            "Size {} at index {} is larger than the remaining values for {}",
+                            size, i, self.data_type
+                        )));
+                    }
+              } else {
+                  return Err(ArrowError::InvalidArgumentError(format!(
+                      "Size {} at index {} is negative for {}",
+                      size, i, self.data_type
+                  )));
+              }
         }
-
-        let total_size: usize = sizes.iter().map(|x| x.to_usize().unwrap()).sum();
-        if total_size > values_length {
-            return Err(ArrowError::InvalidArgumentError(format!(
-                "Total size of {} is larger than values length {}",
-                total_size, values_length,
-            )));
-        }
-
         Ok(())
     }
 
@@ -964,12 +978,12 @@ impl ArrayData {
             }
             DataType::ListView(field) => {
                 let values_data = self.get_single_valid_child_data(field.data_type())?;
-                self.validate_sizes::<i32>(values_data.len)?;
+                self.validate_offsets_and_sizes::<i32>(values_data.len)?;
                 Ok(())
             }
             DataType::LargeListView(field) => {
                 let values_data = self.get_single_valid_child_data(field.data_type())?;
-                self.validate_sizes::<i64>(values_data.len)?;
+                self.validate_offsets_and_sizes::<i64>(values_data.len)?;
                 Ok(())
             }
             DataType::FixedSizeList(field, list_size) => {
