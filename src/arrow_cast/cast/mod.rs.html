@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-cast/src/cast/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-081576b923113409.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_cast" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (e3181b091 2024-04-18)" data-channel="nightly" data-search-js="search-5b46ae87cc198d72.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../arrow_cast/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-cast/src/cast/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b21aa549bf6d91ff.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_cast" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (d2d24e395 2024-05-03)" data-channel="nightly" data-search-js="search-bf21c90c8c1d92b1.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../arrow_cast/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -8677,6 +8677,131 @@
 <a href="#8677" id="8677">8677</a>
 <a href="#8678" id="8678">8678</a>
 <a href="#8679" id="8679">8679</a>
+<a href="#8680" id="8680">8680</a>
+<a href="#8681" id="8681">8681</a>
+<a href="#8682" id="8682">8682</a>
+<a href="#8683" id="8683">8683</a>
+<a href="#8684" id="8684">8684</a>
+<a href="#8685" id="8685">8685</a>
+<a href="#8686" id="8686">8686</a>
+<a href="#8687" id="8687">8687</a>
+<a href="#8688" id="8688">8688</a>
+<a href="#8689" id="8689">8689</a>
+<a href="#8690" id="8690">8690</a>
+<a href="#8691" id="8691">8691</a>
+<a href="#8692" id="8692">8692</a>
+<a href="#8693" id="8693">8693</a>
+<a href="#8694" id="8694">8694</a>
+<a href="#8695" id="8695">8695</a>
+<a href="#8696" id="8696">8696</a>
+<a href="#8697" id="8697">8697</a>
+<a href="#8698" id="8698">8698</a>
+<a href="#8699" id="8699">8699</a>
+<a href="#8700" id="8700">8700</a>
+<a href="#8701" id="8701">8701</a>
+<a href="#8702" id="8702">8702</a>
+<a href="#8703" id="8703">8703</a>
+<a href="#8704" id="8704">8704</a>
+<a href="#8705" id="8705">8705</a>
+<a href="#8706" id="8706">8706</a>
+<a href="#8707" id="8707">8707</a>
+<a href="#8708" id="8708">8708</a>
+<a href="#8709" id="8709">8709</a>
+<a href="#8710" id="8710">8710</a>
+<a href="#8711" id="8711">8711</a>
+<a href="#8712" id="8712">8712</a>
+<a href="#8713" id="8713">8713</a>
+<a href="#8714" id="8714">8714</a>
+<a href="#8715" id="8715">8715</a>
+<a href="#8716" id="8716">8716</a>
+<a href="#8717" id="8717">8717</a>
+<a href="#8718" id="8718">8718</a>
+<a href="#8719" id="8719">8719</a>
+<a href="#8720" id="8720">8720</a>
+<a href="#8721" id="8721">8721</a>
+<a href="#8722" id="8722">8722</a>
+<a href="#8723" id="8723">8723</a>
+<a href="#8724" id="8724">8724</a>
+<a href="#8725" id="8725">8725</a>
+<a href="#8726" id="8726">8726</a>
+<a href="#8727" id="8727">8727</a>
+<a href="#8728" id="8728">8728</a>
+<a href="#8729" id="8729">8729</a>
+<a href="#8730" id="8730">8730</a>
+<a href="#8731" id="8731">8731</a>
+<a href="#8732" id="8732">8732</a>
+<a href="#8733" id="8733">8733</a>
+<a href="#8734" id="8734">8734</a>
+<a href="#8735" id="8735">8735</a>
+<a href="#8736" id="8736">8736</a>
+<a href="#8737" id="8737">8737</a>
+<a href="#8738" id="8738">8738</a>
+<a href="#8739" id="8739">8739</a>
+<a href="#8740" id="8740">8740</a>
+<a href="#8741" id="8741">8741</a>
+<a href="#8742" id="8742">8742</a>
+<a href="#8743" id="8743">8743</a>
+<a href="#8744" id="8744">8744</a>
+<a href="#8745" id="8745">8745</a>
+<a href="#8746" id="8746">8746</a>
+<a href="#8747" id="8747">8747</a>
+<a href="#8748" id="8748">8748</a>
+<a href="#8749" id="8749">8749</a>
+<a href="#8750" id="8750">8750</a>
+<a href="#8751" id="8751">8751</a>
+<a href="#8752" id="8752">8752</a>
+<a href="#8753" id="8753">8753</a>
+<a href="#8754" id="8754">8754</a>
+<a href="#8755" id="8755">8755</a>
+<a href="#8756" id="8756">8756</a>
+<a href="#8757" id="8757">8757</a>
+<a href="#8758" id="8758">8758</a>
+<a href="#8759" id="8759">8759</a>
+<a href="#8760" id="8760">8760</a>
+<a href="#8761" id="8761">8761</a>
+<a href="#8762" id="8762">8762</a>
+<a href="#8763" id="8763">8763</a>
+<a href="#8764" id="8764">8764</a>
+<a href="#8765" id="8765">8765</a>
+<a href="#8766" id="8766">8766</a>
+<a href="#8767" id="8767">8767</a>
+<a href="#8768" id="8768">8768</a>
+<a href="#8769" id="8769">8769</a>
+<a href="#8770" id="8770">8770</a>
+<a href="#8771" id="8771">8771</a>
+<a href="#8772" id="8772">8772</a>
+<a href="#8773" id="8773">8773</a>
+<a href="#8774" id="8774">8774</a>
+<a href="#8775" id="8775">8775</a>
+<a href="#8776" id="8776">8776</a>
+<a href="#8777" id="8777">8777</a>
+<a href="#8778" id="8778">8778</a>
+<a href="#8779" id="8779">8779</a>
+<a href="#8780" id="8780">8780</a>
+<a href="#8781" id="8781">8781</a>
+<a href="#8782" id="8782">8782</a>
+<a href="#8783" id="8783">8783</a>
+<a href="#8784" id="8784">8784</a>
+<a href="#8785" id="8785">8785</a>
+<a href="#8786" id="8786">8786</a>
+<a href="#8787" id="8787">8787</a>
+<a href="#8788" id="8788">8788</a>
+<a href="#8789" id="8789">8789</a>
+<a href="#8790" id="8790">8790</a>
+<a href="#8791" id="8791">8791</a>
+<a href="#8792" id="8792">8792</a>
+<a href="#8793" id="8793">8793</a>
+<a href="#8794" id="8794">8794</a>
+<a href="#8795" id="8795">8795</a>
+<a href="#8796" id="8796">8796</a>
+<a href="#8797" id="8797">8797</a>
+<a href="#8798" id="8798">8798</a>
+<a href="#8799" id="8799">8799</a>
+<a href="#8800" id="8800">8800</a>
+<a href="#8801" id="8801">8801</a>
+<a href="#8802" id="8802">8802</a>
+<a href="#8803" id="8803">8803</a>
+<a href="#8804" id="8804">8804</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -8725,6 +8850,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::cast::list::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::cast::string::<span class="kw-2">*</span>;
 
+<span class="kw">use </span>arrow_buffer::ScalarBuffer;
+<span class="kw">use </span>arrow_data::ByteView;
 <span class="kw">use </span>chrono::{NaiveTime, Offset, TimeZone, Utc};
 <span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::sync::Arc;
@@ -8798,6 +8925,8 @@
             | Utf8
             | LargeBinary
             | LargeUtf8
+            | BinaryView
+            | Utf8View
             | List(<span class="kw">_</span>)
             | LargeList(<span class="kw">_</span>)
             | FixedSizeList(<span class="kw">_</span>, <span class="kw">_</span>)
@@ -8871,8 +9000,8 @@
             DataType::is_integer(to_type) || DataType::is_floating(to_type) || to_type == <span class="kw-2">&amp;</span>Utf8 || to_type == <span class="kw-2">&amp;</span>LargeUtf8
         }
 
-        (Binary, LargeBinary | Utf8 | LargeUtf8 | FixedSizeBinary(<span class="kw">_</span>)) =&gt; <span class="bool-val">true</span>,
-        (LargeBinary, Binary | Utf8 | LargeUtf8 | FixedSizeBinary(<span class="kw">_</span>)) =&gt; <span class="bool-val">true</span>,
+        (Binary, LargeBinary | Utf8 | LargeUtf8 | FixedSizeBinary(<span class="kw">_</span>) | BinaryView) =&gt; <span class="bool-val">true</span>,
+        (LargeBinary, Binary | Utf8 | LargeUtf8 | FixedSizeBinary(<span class="kw">_</span>) | BinaryView) =&gt; <span class="bool-val">true</span>,
         (FixedSizeBinary(<span class="kw">_</span>), Binary | LargeBinary) =&gt; <span class="bool-val">true</span>,
         (
             Utf8 | LargeUtf8,
@@ -8892,6 +9021,7 @@
             | Timestamp(Nanosecond, <span class="kw">_</span>)
             | Interval(<span class="kw">_</span>),
         ) =&gt; <span class="bool-val">true</span>,
+        (Utf8 | LargeUtf8, Utf8View) =&gt; <span class="bool-val">true</span>,
         (Utf8 | LargeUtf8, <span class="kw">_</span>) =&gt; to_type.is_numeric() &amp;&amp; to_type != <span class="kw-2">&amp;</span>Float16,
         (<span class="kw">_</span>, Utf8 | LargeUtf8) =&gt; from_type.is_primitive(),
 
@@ -9290,6 +9420,8 @@
             | Utf8
             | LargeBinary
             | LargeUtf8
+            | BinaryView
+            | Utf8View
             | List(<span class="kw">_</span>)
             | LargeList(<span class="kw">_</span>)
             | FixedSizeList(<span class="kw">_</span>, <span class="kw">_</span>)
@@ -9799,6 +9931,7 @@
                 <span class="kw">let </span>binary = BinaryArray::from(array.as_string::&lt;i32&gt;().clone());
                 cast_byte_container::&lt;BinaryType, LargeBinaryType&gt;(<span class="kw-2">&amp;</span>binary)
             }
+            Utf8View =&gt; cast_byte_to_view::&lt;Utf8Type, StringViewType&gt;(array),
             LargeUtf8 =&gt; cast_byte_container::&lt;Utf8Type, LargeUtf8Type&gt;(array),
             Time32(TimeUnit::Second) =&gt; parse_string::&lt;Time32SecondType, i32&gt;(array, cast_options),
             Time32(TimeUnit::Millisecond) =&gt; {
@@ -9858,6 +9991,7 @@
             LargeBinary =&gt; <span class="prelude-val">Ok</span>(Arc::new(LargeBinaryArray::from(
                 array.as_string::&lt;i64&gt;().clone(),
             ))),
+            Utf8View =&gt; cast_byte_to_view::&lt;LargeUtf8Type, StringViewType&gt;(array),
             Time32(TimeUnit::Second) =&gt; parse_string::&lt;Time32SecondType, i64&gt;(array, cast_options),
             Time32(TimeUnit::Millisecond) =&gt; {
                 parse_string::&lt;Time32MillisecondType, i64&gt;(array, cast_options)
@@ -9905,6 +10039,7 @@
             FixedSizeBinary(size) =&gt; {
                 cast_binary_to_fixed_size_binary::&lt;i32&gt;(array, <span class="kw-2">*</span>size, cast_options)
             }
+            BinaryView =&gt; cast_byte_to_view::&lt;BinaryType, BinaryViewType&gt;(array),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ArrowError::CastError(<span class="macro">format!</span>(
                 <span class="string">"Casting from {from_type:?} to {to_type:?} not supported"</span>,
             ))),
@@ -9919,6 +10054,7 @@
             FixedSizeBinary(size) =&gt; {
                 cast_binary_to_fixed_size_binary::&lt;i64&gt;(array, <span class="kw-2">*</span>size, cast_options)
             }
+            BinaryView =&gt; cast_byte_to_view::&lt;LargeBinaryType, BinaryViewType&gt;(array),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ArrowError::CastError(<span class="macro">format!</span>(
                 <span class="string">"Casting from {from_type:?} to {to_type:?} not supported"</span>,
             ))),
@@ -10915,6 +11051,56 @@
     <span class="kw">let </span>array_data = <span class="kw">unsafe </span>{ builder.build_unchecked() };
 
     <span class="prelude-val">Ok</span>(Arc::new(GenericByteArray::&lt;TO&gt;::from(array_data)))
+}
+
+<span class="doccomment">/// Helper function to cast from one `ByteArrayType` array to `ByteViewType` array.
+</span><span class="kw">fn </span>cast_byte_to_view&lt;FROM, V&gt;(array: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Array) -&gt; <span class="prelude-ty">Result</span>&lt;ArrayRef, ArrowError&gt;
+<span class="kw">where
+    </span>FROM: ByteArrayType,
+    FROM::Offset: OffsetSizeTrait + ToPrimitive,
+    V: ByteViewType,
+{
+    <span class="kw">let </span>data = array.to_data();
+    <span class="macro">assert_eq!</span>(data.data_type(), <span class="kw-2">&amp;</span>FROM::DATA_TYPE);
+
+    <span class="kw">let </span>len = array.len();
+    <span class="kw">let </span>str_values_buf = data.buffers()[<span class="number">1</span>].clone();
+    <span class="kw">let </span>offsets = data.buffers()[<span class="number">0</span>].typed_data::&lt;FROM::Offset&gt;();
+
+    <span class="kw">let </span><span class="kw-2">mut </span>views_builder = BufferBuilder::&lt;u128&gt;::new(len);
+    <span class="kw">for </span>w <span class="kw">in </span>offsets.windows(<span class="number">2</span>) {
+        <span class="kw">let </span>offset = w[<span class="number">0</span>].to_u32().unwrap();
+        <span class="kw">let </span>end = w[<span class="number">1</span>].to_u32().unwrap();
+        <span class="kw">let </span>value_buf = <span class="kw-2">&amp;</span>str_values_buf[offset <span class="kw">as </span>usize..end <span class="kw">as </span>usize];
+        <span class="kw">let </span>length = end - offset;
+
+        <span class="kw">if </span>length &lt;= <span class="number">12 </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>view_buffer = [<span class="number">0</span>; <span class="number">16</span>];
+            view_buffer[<span class="number">0</span>..<span class="number">4</span>].copy_from_slice(<span class="kw-2">&amp;</span>length.to_le_bytes());
+            view_buffer[<span class="number">4</span>..<span class="number">4 </span>+ value_buf.len()].copy_from_slice(value_buf);
+            views_builder.append(u128::from_le_bytes(view_buffer));
+        } <span class="kw">else </span>{
+            <span class="kw">let </span>view = ByteView {
+                length,
+                prefix: u32::from_le_bytes(value_buf[<span class="number">0</span>..<span class="number">4</span>].try_into().unwrap()),
+                buffer_index: <span class="number">0</span>,
+                offset,
+            };
+            views_builder.append(view.into());
+        }
+    }
+
+    <span class="macro">assert_eq!</span>(views_builder.len(), len);
+
+    <span class="comment">// Safety: the input was a valid array so it valid UTF8 (if string). And
+    // all offsets were valid and we created the views correctly
+    </span><span class="prelude-val">Ok</span>(Arc::new(<span class="kw">unsafe </span>{
+        GenericByteViewArray::&lt;V&gt;::new_unchecked(
+            ScalarBuffer::new(views_builder.finish(), <span class="number">0</span>, len),
+            <span class="macro">vec!</span>[str_values_buf],
+            data.nulls().cloned(),
+        )
+    }))
 }
 
 <span class="attr">#[cfg(test)]
@@ -13721,6 +13907,70 @@
                 .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
             <span class="macro">assert_eq!</span>(expect, out);
         }
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_string_to_view() {
+        _test_string_to_view::&lt;i32&gt;();
+        _test_string_to_view::&lt;i64&gt;();
+    }
+
+    <span class="kw">fn </span>_test_string_to_view&lt;O&gt;()
+    <span class="kw">where
+        </span>O: OffsetSizeTrait,
+    {
+        <span class="kw">let </span>data = <span class="macro">vec!</span>[
+            <span class="prelude-val">Some</span>(<span class="string">"hello"</span>),
+            <span class="prelude-val">Some</span>(<span class="string">"world"</span>),
+            <span class="prelude-val">None</span>,
+            <span class="prelude-val">Some</span>(<span class="string">"large payload over 12 bytes"</span>),
+            <span class="prelude-val">Some</span>(<span class="string">"lulu"</span>),
+        ];
+
+        <span class="kw">let </span>string_array = GenericStringArray::&lt;O&gt;::from(data.clone());
+
+        <span class="macro">assert!</span>(can_cast_types(
+            string_array.data_type(),
+            <span class="kw-2">&amp;</span>DataType::Utf8View
+        ));
+
+        <span class="kw">let </span>string_view_array = cast(<span class="kw-2">&amp;</span>string_array, <span class="kw-2">&amp;</span>DataType::Utf8View).unwrap();
+        <span class="macro">assert_eq!</span>(string_view_array.data_type(), <span class="kw-2">&amp;</span>DataType::Utf8View);
+
+        <span class="kw">let </span>expect_string_view_array = StringViewArray::from(data);
+        <span class="macro">assert_eq!</span>(string_view_array.as_ref(), <span class="kw-2">&amp;</span>expect_string_view_array);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_bianry_to_view() {
+        _test_binary_to_view::&lt;i32&gt;();
+        _test_binary_to_view::&lt;i64&gt;();
+    }
+
+    <span class="kw">fn </span>_test_binary_to_view&lt;O&gt;()
+    <span class="kw">where
+        </span>O: OffsetSizeTrait,
+    {
+        <span class="kw">let </span>data: Vec&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;&gt; = <span class="macro">vec!</span>[
+            <span class="prelude-val">Some</span>(<span class="string">b"hello"</span>),
+            <span class="prelude-val">Some</span>(<span class="string">b"world"</span>),
+            <span class="prelude-val">None</span>,
+            <span class="prelude-val">Some</span>(<span class="string">b"large payload over 12 bytes"</span>),
+            <span class="prelude-val">Some</span>(<span class="string">b"lulu"</span>),
+        ];
+
+        <span class="kw">let </span>binary_array = GenericBinaryArray::&lt;O&gt;::from(data.clone());
+
+        <span class="macro">assert!</span>(can_cast_types(
+            binary_array.data_type(),
+            <span class="kw-2">&amp;</span>DataType::BinaryView
+        ));
+
+        <span class="kw">let </span>binary_view_array = cast(<span class="kw-2">&amp;</span>binary_array, <span class="kw-2">&amp;</span>DataType::BinaryView).unwrap();
+        <span class="macro">assert_eq!</span>(binary_view_array.data_type(), <span class="kw-2">&amp;</span>DataType::BinaryView);
+
+        <span class="kw">let </span>expect_binary_view_array = BinaryViewArray::from(data);
+        <span class="macro">assert_eq!</span>(binary_view_array.as_ref(), <span class="kw-2">&amp;</span>expect_binary_view_array);
     }
 
     <span class="attr">#[test]
