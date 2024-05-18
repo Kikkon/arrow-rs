@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-flight/src/encode.rs`."><title>encode.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-b21aa549bf6d91ff.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="arrow_flight" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (d2d24e395 2024-05-03)" data-channel="nightly" data-search-js="search-bf21c90c8c1d92b1.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../arrow_flight/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-flight/src/encode.rs`."><title>encode.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="arrow_flight" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1368,19 +1368,6 @@
 <a href="#1368" id="1368">1368</a>
 <a href="#1369" id="1369">1369</a>
 <a href="#1370" id="1370">1370</a>
-<a href="#1371" id="1371">1371</a>
-<a href="#1372" id="1372">1372</a>
-<a href="#1373" id="1373">1373</a>
-<a href="#1374" id="1374">1374</a>
-<a href="#1375" id="1375">1375</a>
-<a href="#1376" id="1376">1376</a>
-<a href="#1377" id="1377">1377</a>
-<a href="#1378" id="1378">1378</a>
-<a href="#1379" id="1379">1379</a>
-<a href="#1380" id="1380">1380</a>
-<a href="#1381" id="1381">1381</a>
-<a href="#1382" id="1382">1382</a>
-<a href="#1383" id="1383">1383</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -1980,20 +1967,17 @@
         (DataType::Union(<span class="kw">_</span>, UnionMode::Sparse), DataType::Union(fields, UnionMode::Sparse)) =&gt; {
             <span class="kw">let </span>union_arr = array.as_any().downcast_ref::&lt;UnionArray&gt;().unwrap();
 
-            <span class="kw">let </span>(type_ids, fields): (Vec&lt;i8&gt;, Vec&lt;<span class="kw-2">&amp;</span>FieldRef&gt;) = fields.iter().unzip();
-
             Arc::new(UnionArray::try_new(
-                <span class="kw-2">&amp;</span>type_ids,
-                union_arr.type_ids().inner().clone(),
+                fields.clone(),
+                union_arr.type_ids().clone(),
                 <span class="prelude-val">None</span>,
                 fields
                     .iter()
-                    .enumerate()
-                    .map(|(col, field)| {
-                        <span class="prelude-val">Ok</span>((
-                            field.as_ref().clone(),
-                            arrow_cast::cast(union_arr.child(col <span class="kw">as </span>i8), field.data_type())<span class="question-mark">?</span>,
-                        ))
+                    .map(|(type_id, field)| {
+                        <span class="prelude-val">Ok</span>(arrow_cast::cast(
+                            union_arr.child(type_id),
+                            field.data_type(),
+                        )<span class="question-mark">?</span>)
                     })
                     .collect::&lt;<span class="prelude-ty">Result</span>&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;&gt;()<span class="question-mark">?</span>,
             )<span class="question-mark">?</span>)
@@ -2008,10 +1992,10 @@
     <span class="kw">use </span>arrow_array::builder::StringDictionaryBuilder;
     <span class="kw">use </span>arrow_array::<span class="kw-2">*</span>;
     <span class="kw">use </span>arrow_array::{cast::downcast_array, types::<span class="kw-2">*</span>};
-    <span class="kw">use </span>arrow_buffer::Buffer;
+    <span class="kw">use </span>arrow_buffer::ScalarBuffer;
     <span class="kw">use </span>arrow_cast::pretty::pretty_format_batches;
     <span class="kw">use </span>arrow_ipc::MetadataVersion;
-    <span class="kw">use </span>arrow_schema::UnionMode;
+    <span class="kw">use </span>arrow_schema::{UnionFields, UnionMode};
     <span class="kw">use </span>std::collections::HashMap;
 
     <span class="kw">use </span><span class="kw">crate</span>::decode::{DecodedPayload, FlightDataDecoder};
@@ -2232,16 +2216,23 @@
             <span class="bool-val">true</span>,
         )];
 
-        <span class="kw">let </span>type_ids = <span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];
-        <span class="kw">let </span>union_fields = <span class="macro">vec!</span>[
-            Field::new_list(
-                <span class="string">"dict_list"</span>,
-                Field::new_dictionary(<span class="string">"item"</span>, DataType::UInt16, DataType::Utf8, <span class="bool-val">true</span>),
-                <span class="bool-val">true</span>,
+        <span class="kw">let </span>union_fields = [
+            (
+                <span class="number">0</span>,
+                Arc::new(Field::new_list(
+                    <span class="string">"dict_list"</span>,
+                    Field::new_dictionary(<span class="string">"item"</span>, DataType::UInt16, DataType::Utf8, <span class="bool-val">true</span>),
+                    <span class="bool-val">true</span>,
+                )),
             ),
-            Field::new_struct(<span class="string">"struct"</span>, struct_fields.clone(), <span class="bool-val">true</span>),
-            Field::new(<span class="string">"string"</span>, DataType::Utf8, <span class="bool-val">true</span>),
-        ];
+            (
+                <span class="number">1</span>,
+                Arc::new(Field::new_struct(<span class="string">"struct"</span>, struct_fields.clone(), <span class="bool-val">true</span>)),
+            ),
+            (<span class="number">2</span>, Arc::new(Field::new(<span class="string">"string"</span>, DataType::Utf8, <span class="bool-val">true</span>))),
+        ]
+        .into_iter()
+        .collect::&lt;UnionFields&gt;();
 
         <span class="kw">let </span>struct_fields = <span class="macro">vec!</span>[Field::new_list(
             <span class="string">"dict_list"</span>,
@@ -2255,21 +2246,15 @@
 
         <span class="kw">let </span>arr1 = builder.finish();
 
-        <span class="kw">let </span>type_id_buffer = Buffer::from_slice_ref([<span class="number">0_i8</span>]);
+        <span class="kw">let </span>type_id_buffer = [<span class="number">0</span>].into_iter().collect::&lt;ScalarBuffer&lt;i8&gt;&gt;();
         <span class="kw">let </span>arr1 = UnionArray::try_new(
-            <span class="kw-2">&amp;</span>type_ids,
+            union_fields.clone(),
             type_id_buffer,
             <span class="prelude-val">None</span>,
             <span class="macro">vec!</span>[
-                (union_fields[<span class="number">0</span>].clone(), Arc::new(arr1)),
-                (
-                    union_fields[<span class="number">1</span>].clone(),
-                    new_null_array(union_fields[<span class="number">1</span>].data_type(), <span class="number">1</span>),
-                ),
-                (
-                    union_fields[<span class="number">2</span>].clone(),
-                    new_null_array(union_fields[<span class="number">2</span>].data_type(), <span class="number">1</span>),
-                ),
+                Arc::new(arr1) <span class="kw">as </span>Arc&lt;<span class="kw">dyn </span>Array&gt;,
+                new_null_array(union_fields.iter().nth(<span class="number">1</span>).unwrap().<span class="number">1</span>.data_type(), <span class="number">1</span>),
+                new_null_array(union_fields.iter().nth(<span class="number">2</span>).unwrap().<span class="number">1</span>.data_type(), <span class="number">1</span>),
             ],
         )
         .unwrap();
@@ -2279,47 +2264,36 @@
         <span class="kw">let </span>arr2 = Arc::new(builder.finish());
         <span class="kw">let </span>arr2 = StructArray::new(struct_fields.clone().into(), <span class="macro">vec!</span>[arr2], <span class="prelude-val">None</span>);
 
-        <span class="kw">let </span>type_id_buffer = Buffer::from_slice_ref([<span class="number">1_i8</span>]);
+        <span class="kw">let </span>type_id_buffer = [<span class="number">1</span>].into_iter().collect::&lt;ScalarBuffer&lt;i8&gt;&gt;();
         <span class="kw">let </span>arr2 = UnionArray::try_new(
-            <span class="kw-2">&amp;</span>type_ids,
+            union_fields.clone(),
             type_id_buffer,
             <span class="prelude-val">None</span>,
             <span class="macro">vec!</span>[
-                (
-                    union_fields[<span class="number">0</span>].clone(),
-                    new_null_array(union_fields[<span class="number">0</span>].data_type(), <span class="number">1</span>),
-                ),
-                (union_fields[<span class="number">1</span>].clone(), Arc::new(arr2)),
-                (
-                    union_fields[<span class="number">2</span>].clone(),
-                    new_null_array(union_fields[<span class="number">2</span>].data_type(), <span class="number">1</span>),
-                ),
+                new_null_array(union_fields.iter().next().unwrap().<span class="number">1</span>.data_type(), <span class="number">1</span>),
+                Arc::new(arr2),
+                new_null_array(union_fields.iter().nth(<span class="number">2</span>).unwrap().<span class="number">1</span>.data_type(), <span class="number">1</span>),
             ],
         )
         .unwrap();
 
-        <span class="kw">let </span>type_id_buffer = Buffer::from_slice_ref([<span class="number">2_i8</span>]);
+        <span class="kw">let </span>type_id_buffer = [<span class="number">2</span>].into_iter().collect::&lt;ScalarBuffer&lt;i8&gt;&gt;();
         <span class="kw">let </span>arr3 = UnionArray::try_new(
-            <span class="kw-2">&amp;</span>type_ids,
+            union_fields.clone(),
             type_id_buffer,
             <span class="prelude-val">None</span>,
             <span class="macro">vec!</span>[
-                (
-                    union_fields[<span class="number">0</span>].clone(),
-                    new_null_array(union_fields[<span class="number">0</span>].data_type(), <span class="number">1</span>),
-                ),
-                (
-                    union_fields[<span class="number">1</span>].clone(),
-                    new_null_array(union_fields[<span class="number">1</span>].data_type(), <span class="number">1</span>),
-                ),
-                (
-                    union_fields[<span class="number">2</span>].clone(),
-                    Arc::new(StringArray::from(<span class="macro">vec!</span>[<span class="string">"e"</span>])),
-                ),
+                new_null_array(union_fields.iter().next().unwrap().<span class="number">1</span>.data_type(), <span class="number">1</span>),
+                new_null_array(union_fields.iter().nth(<span class="number">1</span>).unwrap().<span class="number">1</span>.data_type(), <span class="number">1</span>),
+                Arc::new(StringArray::from(<span class="macro">vec!</span>[<span class="string">"e"</span>])),
             ],
         )
         .unwrap();
 
+        <span class="kw">let </span>(type_ids, union_fields): (Vec&lt;<span class="kw">_</span>&gt;, Vec&lt;<span class="kw">_</span>&gt;) = union_fields
+            .iter()
+            .map(|(type_id, field_ref)| (type_id, (<span class="kw-2">*</span>Arc::clone(field_ref)).clone()))
+            .unzip();
         <span class="kw">let </span>schema = Arc::new(Schema::new(<span class="macro">vec!</span>[Field::new_union(
             <span class="string">"union"</span>,
             type_ids.clone(),

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/builder/union_builder.rs`."><title>union_builder.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b21aa549bf6d91ff.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (d2d24e395 2024-05-03)" data-channel="nightly" data-search-js="search-bf21c90c8c1d92b1.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../arrow_array/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/builder/union_builder.rs`."><title>union_builder.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -336,7 +336,8 @@
 <span class="kw">use </span>arrow_data::ArrayDataBuilder;
 <span class="kw">use </span>arrow_schema::{ArrowError, DataType, Field};
 <span class="kw">use </span>std::any::Any;
-<span class="kw">use </span>std::collections::HashMap;
+<span class="kw">use </span>std::collections::BTreeMap;
+<span class="kw">use </span>std::sync::Arc;
 
 <span class="doccomment">/// `FieldData` is a helper struct to track the state of the fields in the `UnionBuilder`.
 </span><span class="attr">#[derive(Debug)]
@@ -455,7 +456,7 @@
     <span class="doccomment">/// The current number of slots in the array
     </span>len: usize,
     <span class="doccomment">/// Maps field names to `FieldData` instances which track the builders for that field
-    </span>fields: HashMap&lt;String, FieldData&gt;,
+    </span>fields: BTreeMap&lt;String, FieldData&gt;,
     <span class="doccomment">/// Builder to keep track of type ids
     </span>type_id_builder: Int8BufferBuilder,
     <span class="doccomment">/// Builder to keep track of offsets (`None` for sparse unions)
@@ -478,7 +479,7 @@
     </span><span class="kw">pub fn </span>with_capacity_dense(capacity: usize) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             len: <span class="number">0</span>,
-            fields: HashMap::default(),
+            fields: Default::default(),
             type_id_builder: Int8BufferBuilder::new(capacity),
             value_offset_builder: <span class="prelude-val">Some</span>(Int32BufferBuilder::new(capacity)),
             initial_capacity: capacity,
@@ -489,7 +490,7 @@
     </span><span class="kw">pub fn </span>with_capacity_sparse(capacity: usize) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             len: <span class="number">0</span>,
-            fields: HashMap::default(),
+            fields: Default::default(),
             type_id_builder: Int8BufferBuilder::new(capacity),
             value_offset_builder: <span class="prelude-val">None</span>,
             initial_capacity: capacity,
@@ -587,41 +588,40 @@
     }
 
     <span class="doccomment">/// Builds this builder creating a new `UnionArray`.
-    </span><span class="kw">pub fn </span>build(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;UnionArray, ArrowError&gt; {
-        <span class="kw">let </span>type_id_buffer = <span class="self">self</span>.type_id_builder.finish();
-        <span class="kw">let </span>value_offsets_buffer = <span class="self">self</span>.value_offset_builder.map(|<span class="kw-2">mut </span>b| b.finish());
-        <span class="kw">let </span><span class="kw-2">mut </span>children = Vec::new();
-        <span class="kw">for </span>(
-            name,
-            FieldData {
-                type_id,
-                data_type,
-                <span class="kw-2">mut </span>values_buffer,
-                slots,
-                null_buffer_builder: <span class="kw-2">mut </span>bitmap_builder,
-            },
-        ) <span class="kw">in </span><span class="self">self</span>.fields.into_iter()
-        {
-            <span class="kw">let </span>buffer = values_buffer.finish();
-            <span class="kw">let </span>arr_data_builder = ArrayDataBuilder::new(data_type.clone())
-                .add_buffer(buffer)
-                .len(slots)
-                .nulls(bitmap_builder.finish());
-
-            <span class="kw">let </span>arr_data_ref = <span class="kw">unsafe </span>{ arr_data_builder.build_unchecked() };
-            <span class="kw">let </span>array_ref = make_array(arr_data_ref);
-            children.push((type_id, (Field::new(name, data_type, <span class="bool-val">false</span>), array_ref)))
-        }
-
-        children.sort_by(|a, b| {
-            a.<span class="number">0</span>.partial_cmp(<span class="kw-2">&amp;</span>b.<span class="number">0</span>)
-                .expect(<span class="string">"This will never be None as type ids are always i8 values."</span>)
-        });
-        <span class="kw">let </span>children: Vec&lt;<span class="kw">_</span>&gt; = children.into_iter().map(|(<span class="kw">_</span>, b)| b).collect();
-
-        <span class="kw">let </span>type_ids: Vec&lt;i8&gt; = (<span class="number">0_i8</span>..children.len() <span class="kw">as </span>i8).collect();
-
-        UnionArray::try_new(<span class="kw-2">&amp;</span>type_ids, type_id_buffer, value_offsets_buffer, children)
+    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;UnionArray, ArrowError&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>children = Vec::with_capacity(<span class="self">self</span>.fields.len());
+        <span class="kw">let </span>union_fields = <span class="self">self
+            </span>.fields
+            .into_iter()
+            .map(
+                |(
+                    name,
+                    FieldData {
+                        type_id,
+                        data_type,
+                        <span class="kw-2">mut </span>values_buffer,
+                        slots,
+                        <span class="kw-2">mut </span>null_buffer_builder,
+                    },
+                )| {
+                    <span class="kw">let </span>array_ref = make_array(<span class="kw">unsafe </span>{
+                        ArrayDataBuilder::new(data_type.clone())
+                            .add_buffer(values_buffer.finish())
+                            .len(slots)
+                            .nulls(null_buffer_builder.finish())
+                            .build_unchecked()
+                    });
+                    children.push(array_ref);
+                    (type_id, Arc::new(Field::new(name, data_type, <span class="bool-val">false</span>)))
+                },
+            )
+            .collect();
+        UnionArray::try_new(
+            union_fields,
+            <span class="self">self</span>.type_id_builder.into(),
+            <span class="self">self</span>.value_offset_builder.map(Into::into),
+            children,
+        )
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-csv/src/reader/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b21aa549bf6d91ff.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_csv" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (d2d24e395 2024-05-03)" data-channel="nightly" data-search-js="search-bf21c90c8c1d92b1.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../arrow_csv/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-csv/src/reader/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_csv" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2378,6 +2378,216 @@
 <a href="#2378" id="2378">2378</a>
 <a href="#2379" id="2379">2379</a>
 <a href="#2380" id="2380">2380</a>
+<a href="#2381" id="2381">2381</a>
+<a href="#2382" id="2382">2382</a>
+<a href="#2383" id="2383">2383</a>
+<a href="#2384" id="2384">2384</a>
+<a href="#2385" id="2385">2385</a>
+<a href="#2386" id="2386">2386</a>
+<a href="#2387" id="2387">2387</a>
+<a href="#2388" id="2388">2388</a>
+<a href="#2389" id="2389">2389</a>
+<a href="#2390" id="2390">2390</a>
+<a href="#2391" id="2391">2391</a>
+<a href="#2392" id="2392">2392</a>
+<a href="#2393" id="2393">2393</a>
+<a href="#2394" id="2394">2394</a>
+<a href="#2395" id="2395">2395</a>
+<a href="#2396" id="2396">2396</a>
+<a href="#2397" id="2397">2397</a>
+<a href="#2398" id="2398">2398</a>
+<a href="#2399" id="2399">2399</a>
+<a href="#2400" id="2400">2400</a>
+<a href="#2401" id="2401">2401</a>
+<a href="#2402" id="2402">2402</a>
+<a href="#2403" id="2403">2403</a>
+<a href="#2404" id="2404">2404</a>
+<a href="#2405" id="2405">2405</a>
+<a href="#2406" id="2406">2406</a>
+<a href="#2407" id="2407">2407</a>
+<a href="#2408" id="2408">2408</a>
+<a href="#2409" id="2409">2409</a>
+<a href="#2410" id="2410">2410</a>
+<a href="#2411" id="2411">2411</a>
+<a href="#2412" id="2412">2412</a>
+<a href="#2413" id="2413">2413</a>
+<a href="#2414" id="2414">2414</a>
+<a href="#2415" id="2415">2415</a>
+<a href="#2416" id="2416">2416</a>
+<a href="#2417" id="2417">2417</a>
+<a href="#2418" id="2418">2418</a>
+<a href="#2419" id="2419">2419</a>
+<a href="#2420" id="2420">2420</a>
+<a href="#2421" id="2421">2421</a>
+<a href="#2422" id="2422">2422</a>
+<a href="#2423" id="2423">2423</a>
+<a href="#2424" id="2424">2424</a>
+<a href="#2425" id="2425">2425</a>
+<a href="#2426" id="2426">2426</a>
+<a href="#2427" id="2427">2427</a>
+<a href="#2428" id="2428">2428</a>
+<a href="#2429" id="2429">2429</a>
+<a href="#2430" id="2430">2430</a>
+<a href="#2431" id="2431">2431</a>
+<a href="#2432" id="2432">2432</a>
+<a href="#2433" id="2433">2433</a>
+<a href="#2434" id="2434">2434</a>
+<a href="#2435" id="2435">2435</a>
+<a href="#2436" id="2436">2436</a>
+<a href="#2437" id="2437">2437</a>
+<a href="#2438" id="2438">2438</a>
+<a href="#2439" id="2439">2439</a>
+<a href="#2440" id="2440">2440</a>
+<a href="#2441" id="2441">2441</a>
+<a href="#2442" id="2442">2442</a>
+<a href="#2443" id="2443">2443</a>
+<a href="#2444" id="2444">2444</a>
+<a href="#2445" id="2445">2445</a>
+<a href="#2446" id="2446">2446</a>
+<a href="#2447" id="2447">2447</a>
+<a href="#2448" id="2448">2448</a>
+<a href="#2449" id="2449">2449</a>
+<a href="#2450" id="2450">2450</a>
+<a href="#2451" id="2451">2451</a>
+<a href="#2452" id="2452">2452</a>
+<a href="#2453" id="2453">2453</a>
+<a href="#2454" id="2454">2454</a>
+<a href="#2455" id="2455">2455</a>
+<a href="#2456" id="2456">2456</a>
+<a href="#2457" id="2457">2457</a>
+<a href="#2458" id="2458">2458</a>
+<a href="#2459" id="2459">2459</a>
+<a href="#2460" id="2460">2460</a>
+<a href="#2461" id="2461">2461</a>
+<a href="#2462" id="2462">2462</a>
+<a href="#2463" id="2463">2463</a>
+<a href="#2464" id="2464">2464</a>
+<a href="#2465" id="2465">2465</a>
+<a href="#2466" id="2466">2466</a>
+<a href="#2467" id="2467">2467</a>
+<a href="#2468" id="2468">2468</a>
+<a href="#2469" id="2469">2469</a>
+<a href="#2470" id="2470">2470</a>
+<a href="#2471" id="2471">2471</a>
+<a href="#2472" id="2472">2472</a>
+<a href="#2473" id="2473">2473</a>
+<a href="#2474" id="2474">2474</a>
+<a href="#2475" id="2475">2475</a>
+<a href="#2476" id="2476">2476</a>
+<a href="#2477" id="2477">2477</a>
+<a href="#2478" id="2478">2478</a>
+<a href="#2479" id="2479">2479</a>
+<a href="#2480" id="2480">2480</a>
+<a href="#2481" id="2481">2481</a>
+<a href="#2482" id="2482">2482</a>
+<a href="#2483" id="2483">2483</a>
+<a href="#2484" id="2484">2484</a>
+<a href="#2485" id="2485">2485</a>
+<a href="#2486" id="2486">2486</a>
+<a href="#2487" id="2487">2487</a>
+<a href="#2488" id="2488">2488</a>
+<a href="#2489" id="2489">2489</a>
+<a href="#2490" id="2490">2490</a>
+<a href="#2491" id="2491">2491</a>
+<a href="#2492" id="2492">2492</a>
+<a href="#2493" id="2493">2493</a>
+<a href="#2494" id="2494">2494</a>
+<a href="#2495" id="2495">2495</a>
+<a href="#2496" id="2496">2496</a>
+<a href="#2497" id="2497">2497</a>
+<a href="#2498" id="2498">2498</a>
+<a href="#2499" id="2499">2499</a>
+<a href="#2500" id="2500">2500</a>
+<a href="#2501" id="2501">2501</a>
+<a href="#2502" id="2502">2502</a>
+<a href="#2503" id="2503">2503</a>
+<a href="#2504" id="2504">2504</a>
+<a href="#2505" id="2505">2505</a>
+<a href="#2506" id="2506">2506</a>
+<a href="#2507" id="2507">2507</a>
+<a href="#2508" id="2508">2508</a>
+<a href="#2509" id="2509">2509</a>
+<a href="#2510" id="2510">2510</a>
+<a href="#2511" id="2511">2511</a>
+<a href="#2512" id="2512">2512</a>
+<a href="#2513" id="2513">2513</a>
+<a href="#2514" id="2514">2514</a>
+<a href="#2515" id="2515">2515</a>
+<a href="#2516" id="2516">2516</a>
+<a href="#2517" id="2517">2517</a>
+<a href="#2518" id="2518">2518</a>
+<a href="#2519" id="2519">2519</a>
+<a href="#2520" id="2520">2520</a>
+<a href="#2521" id="2521">2521</a>
+<a href="#2522" id="2522">2522</a>
+<a href="#2523" id="2523">2523</a>
+<a href="#2524" id="2524">2524</a>
+<a href="#2525" id="2525">2525</a>
+<a href="#2526" id="2526">2526</a>
+<a href="#2527" id="2527">2527</a>
+<a href="#2528" id="2528">2528</a>
+<a href="#2529" id="2529">2529</a>
+<a href="#2530" id="2530">2530</a>
+<a href="#2531" id="2531">2531</a>
+<a href="#2532" id="2532">2532</a>
+<a href="#2533" id="2533">2533</a>
+<a href="#2534" id="2534">2534</a>
+<a href="#2535" id="2535">2535</a>
+<a href="#2536" id="2536">2536</a>
+<a href="#2537" id="2537">2537</a>
+<a href="#2538" id="2538">2538</a>
+<a href="#2539" id="2539">2539</a>
+<a href="#2540" id="2540">2540</a>
+<a href="#2541" id="2541">2541</a>
+<a href="#2542" id="2542">2542</a>
+<a href="#2543" id="2543">2543</a>
+<a href="#2544" id="2544">2544</a>
+<a href="#2545" id="2545">2545</a>
+<a href="#2546" id="2546">2546</a>
+<a href="#2547" id="2547">2547</a>
+<a href="#2548" id="2548">2548</a>
+<a href="#2549" id="2549">2549</a>
+<a href="#2550" id="2550">2550</a>
+<a href="#2551" id="2551">2551</a>
+<a href="#2552" id="2552">2552</a>
+<a href="#2553" id="2553">2553</a>
+<a href="#2554" id="2554">2554</a>
+<a href="#2555" id="2555">2555</a>
+<a href="#2556" id="2556">2556</a>
+<a href="#2557" id="2557">2557</a>
+<a href="#2558" id="2558">2558</a>
+<a href="#2559" id="2559">2559</a>
+<a href="#2560" id="2560">2560</a>
+<a href="#2561" id="2561">2561</a>
+<a href="#2562" id="2562">2562</a>
+<a href="#2563" id="2563">2563</a>
+<a href="#2564" id="2564">2564</a>
+<a href="#2565" id="2565">2565</a>
+<a href="#2566" id="2566">2566</a>
+<a href="#2567" id="2567">2567</a>
+<a href="#2568" id="2568">2568</a>
+<a href="#2569" id="2569">2569</a>
+<a href="#2570" id="2570">2570</a>
+<a href="#2571" id="2571">2571</a>
+<a href="#2572" id="2572">2572</a>
+<a href="#2573" id="2573">2573</a>
+<a href="#2574" id="2574">2574</a>
+<a href="#2575" id="2575">2575</a>
+<a href="#2576" id="2576">2576</a>
+<a href="#2577" id="2577">2577</a>
+<a href="#2578" id="2578">2578</a>
+<a href="#2579" id="2579">2579</a>
+<a href="#2580" id="2580">2580</a>
+<a href="#2581" id="2581">2581</a>
+<a href="#2582" id="2582">2582</a>
+<a href="#2583" id="2583">2583</a>
+<a href="#2584" id="2584">2584</a>
+<a href="#2585" id="2585">2585</a>
+<a href="#2586" id="2586">2586</a>
+<a href="#2587" id="2587">2587</a>
+<a href="#2588" id="2588">2588</a>
+<a href="#2589" id="2589">2589</a>
+<a href="#2590" id="2590">2590</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -2505,7 +2715,7 @@
 
 </span><span class="kw">mod </span>records;
 
-<span class="kw">use </span>arrow_array::builder::PrimitiveBuilder;
+<span class="kw">use </span>arrow_array::builder::{NullBuilder, PrimitiveBuilder};
 <span class="kw">use </span>arrow_array::types::<span class="kw-2">*</span>;
 <span class="kw">use </span>arrow_array::<span class="kw-2">*</span>;
 <span class="kw">use </span>arrow_cast::parse::{parse_decimal, string_to_datetime, Parser};
@@ -2610,7 +2820,9 @@
     escape: <span class="prelude-ty">Option</span>&lt;u8&gt;,
     quote: <span class="prelude-ty">Option</span>&lt;u8&gt;,
     terminator: <span class="prelude-ty">Option</span>&lt;u8&gt;,
+    comment: <span class="prelude-ty">Option</span>&lt;u8&gt;,
     null_regex: NullRegex,
+    truncated_rows: bool,
 }
 
 <span class="kw">impl </span>Format {
@@ -2639,9 +2851,25 @@
         <span class="self">self
     </span>}
 
+    <span class="kw">pub fn </span>with_comment(<span class="kw-2">mut </span><span class="self">self</span>, comment: u8) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.comment = <span class="prelude-val">Some</span>(comment);
+        <span class="self">self
+    </span>}
+
     <span class="doccomment">/// Provide a regex to match null values, defaults to `^$`
     </span><span class="kw">pub fn </span>with_null_regex(<span class="kw-2">mut </span><span class="self">self</span>, null_regex: Regex) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.null_regex = NullRegex(<span class="prelude-val">Some</span>(null_regex));
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Whether to allow truncated rows when parsing.
+    ///
+    /// By default this is set to `false` and will error if the CSV rows have different lengths.
+    /// When set to true then it will allow records with less than the expected number of columns
+    /// and fill the missing columns with nulls. If the record's schema is not nullable, then it
+    /// will still return an error.
+    </span><span class="kw">pub fn </span>with_truncated_rows(<span class="kw-2">mut </span><span class="self">self</span>, allow: bool) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.truncated_rows = allow;
         <span class="self">self
     </span>}
 
@@ -2709,6 +2937,7 @@
     </span><span class="kw">fn </span>build_reader&lt;R: Read&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, reader: R) -&gt; csv::Reader&lt;R&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>builder = csv::ReaderBuilder::new();
         builder.has_headers(<span class="self">self</span>.header);
+        builder.flexible(<span class="self">self</span>.truncated_rows);
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(c) = <span class="self">self</span>.delimiter {
             builder.delimiter(c);
@@ -2720,6 +2949,9 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(t) = <span class="self">self</span>.terminator {
             builder.terminator(csv::Terminator::Any(t));
         }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(comment) = <span class="self">self</span>.comment {
+            builder.comment(<span class="prelude-val">Some</span>(comment));
+        }
         builder.from_reader(reader)
     }
 
@@ -2727,6 +2959,7 @@
     </span><span class="kw">fn </span>build_parser(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; csv_core::Reader {
         <span class="kw">let </span><span class="kw-2">mut </span>builder = csv_core::ReaderBuilder::new();
         builder.escape(<span class="self">self</span>.escape);
+        builder.comment(<span class="self">self</span>.comment);
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(c) = <span class="self">self</span>.delimiter {
             builder.delimiter(c);
@@ -3139,7 +3372,11 @@
                         null_regex,
                     )
                 }
-                DataType::Null =&gt; <span class="prelude-val">Ok</span>(Arc::new(NullArray::builder(rows.len()).finish()) <span class="kw">as </span>ArrayRef),
+                DataType::Null =&gt; <span class="prelude-val">Ok</span>(Arc::new({
+                    <span class="kw">let </span><span class="kw-2">mut </span>builder = NullBuilder::new();
+                    builder.append_nulls(rows.len());
+                    builder.finish()
+                }) <span class="kw">as </span>ArrayRef),
                 DataType::Utf8 =&gt; <span class="prelude-val">Ok</span>(Arc::new(
                     rows.iter()
                         .map(|row| {
@@ -3472,6 +3709,11 @@
         <span class="self">self
     </span>}
 
+    <span class="kw">pub fn </span>with_comment(<span class="kw-2">mut </span><span class="self">self</span>, comment: u8) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.format.comment = <span class="prelude-val">Some</span>(comment);
+        <span class="self">self
+    </span>}
+
     <span class="doccomment">/// Provide a regex to match null values, defaults to `^$`
     </span><span class="kw">pub fn </span>with_null_regex(<span class="kw-2">mut </span><span class="self">self</span>, null_regex: Regex) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.format.null_regex = NullRegex(<span class="prelude-val">Some</span>(null_regex));
@@ -3497,6 +3739,17 @@
         <span class="self">self
     </span>}
 
+    <span class="doccomment">/// Whether to allow truncated rows when parsing.
+    ///
+    /// By default this is set to `false` and will error if the CSV rows have different lengths.
+    /// When set to true then it will allow records with less than the expected number of columns
+    /// and fill the missing columns with nulls. If the record's schema is not nullable, then it
+    /// will still return an error.
+    </span><span class="kw">pub fn </span>with_truncated_rows(<span class="kw-2">mut </span><span class="self">self</span>, allow: bool) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.format.truncated_rows = allow;
+        <span class="self">self
+    </span>}
+
     <span class="doccomment">/// Create a new `Reader` from a non-buffered reader
     ///
     /// If `R: BufRead` consider using [`Self::build_buffered`] to avoid unnecessary additional
@@ -3516,7 +3769,11 @@
     <span class="doccomment">/// Builds a decoder that can be used to decode CSV from an arbitrary byte stream
     </span><span class="kw">pub fn </span>build_decoder(<span class="self">self</span>) -&gt; Decoder {
         <span class="kw">let </span>delimiter = <span class="self">self</span>.format.build_parser();
-        <span class="kw">let </span>record_decoder = RecordDecoder::new(delimiter, <span class="self">self</span>.schema.fields().len());
+        <span class="kw">let </span>record_decoder = RecordDecoder::new(
+            delimiter,
+            <span class="self">self</span>.schema.fields().len(),
+            <span class="self">self</span>.format.truncated_rows,
+        );
 
         <span class="kw">let </span>header = <span class="self">self</span>.format.header <span class="kw">as </span>usize;
 
@@ -4541,6 +4798,133 @@
     }
 
     <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_truncated_rows() {
+        <span class="kw">let </span>data = <span class="string">"a,b,c\n1,2,3\n4,5\n\n6,7,8"</span>;
+        <span class="kw">let </span>schema = Arc::new(Schema::new(<span class="macro">vec!</span>[
+            Field::new(<span class="string">"a"</span>, DataType::Int32, <span class="bool-val">true</span>),
+            Field::new(<span class="string">"b"</span>, DataType::Int32, <span class="bool-val">true</span>),
+            Field::new(<span class="string">"c"</span>, DataType::Int32, <span class="bool-val">true</span>),
+        ]));
+
+        <span class="kw">let </span>reader = ReaderBuilder::new(schema.clone())
+            .with_header(<span class="bool-val">true</span>)
+            .with_truncated_rows(<span class="bool-val">true</span>)
+            .build(Cursor::new(data))
+            .unwrap();
+
+        <span class="kw">let </span>batches = reader.collect::&lt;<span class="prelude-ty">Result</span>&lt;Vec&lt;<span class="kw">_</span>&gt;, <span class="kw">_</span>&gt;&gt;();
+        <span class="macro">assert!</span>(batches.is_ok());
+        <span class="kw">let </span>batch = batches.unwrap().into_iter().next().unwrap();
+        <span class="comment">// Empty rows are skipped by the underlying csv parser
+        </span><span class="macro">assert_eq!</span>(batch.num_rows(), <span class="number">3</span>);
+
+        <span class="kw">let </span>reader = ReaderBuilder::new(schema.clone())
+            .with_header(<span class="bool-val">true</span>)
+            .with_truncated_rows(<span class="bool-val">false</span>)
+            .build(Cursor::new(data))
+            .unwrap();
+
+        <span class="kw">let </span>batches = reader.collect::&lt;<span class="prelude-ty">Result</span>&lt;Vec&lt;<span class="kw">_</span>&gt;, <span class="kw">_</span>&gt;&gt;();
+        <span class="macro">assert!</span>(<span class="kw">match </span>batches {
+            <span class="prelude-val">Err</span>(ArrowError::CsvError(e)) =&gt; e.to_string().contains(<span class="string">"incorrect number of fields"</span>),
+            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
+        });
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_truncated_rows_csv() {
+        <span class="kw">let </span>file = File::open(<span class="string">"test/data/truncated_rows.csv"</span>).unwrap();
+        <span class="kw">let </span>schema = Arc::new(Schema::new(<span class="macro">vec!</span>[
+            Field::new(<span class="string">"Name"</span>, DataType::Utf8, <span class="bool-val">true</span>),
+            Field::new(<span class="string">"Age"</span>, DataType::UInt32, <span class="bool-val">true</span>),
+            Field::new(<span class="string">"Occupation"</span>, DataType::Utf8, <span class="bool-val">true</span>),
+            Field::new(<span class="string">"DOB"</span>, DataType::Date32, <span class="bool-val">true</span>),
+        ]));
+        <span class="kw">let </span>reader = ReaderBuilder::new(schema.clone())
+            .with_header(<span class="bool-val">true</span>)
+            .with_batch_size(<span class="number">24</span>)
+            .with_truncated_rows(<span class="bool-val">true</span>);
+        <span class="kw">let </span>csv = reader.build(file).unwrap();
+        <span class="kw">let </span>batches = csv.collect::&lt;<span class="prelude-ty">Result</span>&lt;Vec&lt;<span class="kw">_</span>&gt;, <span class="kw">_</span>&gt;&gt;().unwrap();
+
+        <span class="macro">assert_eq!</span>(batches.len(), <span class="number">1</span>);
+        <span class="kw">let </span>batch = <span class="kw-2">&amp;</span>batches[<span class="number">0</span>];
+        <span class="macro">assert_eq!</span>(batch.num_rows(), <span class="number">6</span>);
+        <span class="macro">assert_eq!</span>(batch.num_columns(), <span class="number">4</span>);
+        <span class="kw">let </span>name = batch
+            .column(<span class="number">0</span>)
+            .as_any()
+            .downcast_ref::&lt;StringArray&gt;()
+            .unwrap();
+        <span class="kw">let </span>age = batch
+            .column(<span class="number">1</span>)
+            .as_any()
+            .downcast_ref::&lt;UInt32Array&gt;()
+            .unwrap();
+        <span class="kw">let </span>occupation = batch
+            .column(<span class="number">2</span>)
+            .as_any()
+            .downcast_ref::&lt;StringArray&gt;()
+            .unwrap();
+        <span class="kw">let </span>dob = batch
+            .column(<span class="number">3</span>)
+            .as_any()
+            .downcast_ref::&lt;Date32Array&gt;()
+            .unwrap();
+
+        <span class="macro">assert_eq!</span>(name.value(<span class="number">0</span>), <span class="string">"A1"</span>);
+        <span class="macro">assert_eq!</span>(name.value(<span class="number">1</span>), <span class="string">"B2"</span>);
+        <span class="macro">assert!</span>(name.is_null(<span class="number">2</span>));
+        <span class="macro">assert_eq!</span>(name.value(<span class="number">3</span>), <span class="string">"C3"</span>);
+        <span class="macro">assert_eq!</span>(name.value(<span class="number">4</span>), <span class="string">"D4"</span>);
+        <span class="macro">assert_eq!</span>(name.value(<span class="number">5</span>), <span class="string">"E5"</span>);
+
+        <span class="macro">assert_eq!</span>(age.value(<span class="number">0</span>), <span class="number">34</span>);
+        <span class="macro">assert_eq!</span>(age.value(<span class="number">1</span>), <span class="number">29</span>);
+        <span class="macro">assert!</span>(age.is_null(<span class="number">2</span>));
+        <span class="macro">assert_eq!</span>(age.value(<span class="number">3</span>), <span class="number">45</span>);
+        <span class="macro">assert!</span>(age.is_null(<span class="number">4</span>));
+        <span class="macro">assert_eq!</span>(age.value(<span class="number">5</span>), <span class="number">31</span>);
+
+        <span class="macro">assert_eq!</span>(occupation.value(<span class="number">0</span>), <span class="string">"Engineer"</span>);
+        <span class="macro">assert_eq!</span>(occupation.value(<span class="number">1</span>), <span class="string">"Doctor"</span>);
+        <span class="macro">assert!</span>(occupation.is_null(<span class="number">2</span>));
+        <span class="macro">assert_eq!</span>(occupation.value(<span class="number">3</span>), <span class="string">"Artist"</span>);
+        <span class="macro">assert!</span>(occupation.is_null(<span class="number">4</span>));
+        <span class="macro">assert!</span>(occupation.is_null(<span class="number">5</span>));
+
+        <span class="macro">assert_eq!</span>(dob.value(<span class="number">0</span>), <span class="number">5675</span>);
+        <span class="macro">assert!</span>(dob.is_null(<span class="number">1</span>));
+        <span class="macro">assert!</span>(dob.is_null(<span class="number">2</span>));
+        <span class="macro">assert_eq!</span>(dob.value(<span class="number">3</span>), -<span class="number">1858</span>);
+        <span class="macro">assert!</span>(dob.is_null(<span class="number">4</span>));
+        <span class="macro">assert!</span>(dob.is_null(<span class="number">5</span>));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_truncated_rows_not_nullable_error() {
+        <span class="kw">let </span>data = <span class="string">"a,b,c\n1,2,3\n4,5"</span>;
+        <span class="kw">let </span>schema = Arc::new(Schema::new(<span class="macro">vec!</span>[
+            Field::new(<span class="string">"a"</span>, DataType::Int32, <span class="bool-val">false</span>),
+            Field::new(<span class="string">"b"</span>, DataType::Int32, <span class="bool-val">false</span>),
+            Field::new(<span class="string">"c"</span>, DataType::Int32, <span class="bool-val">false</span>),
+        ]));
+
+        <span class="kw">let </span>reader = ReaderBuilder::new(schema.clone())
+            .with_header(<span class="bool-val">true</span>)
+            .with_truncated_rows(<span class="bool-val">true</span>)
+            .build(Cursor::new(data))
+            .unwrap();
+
+        <span class="kw">let </span>batches = reader.collect::&lt;<span class="prelude-ty">Result</span>&lt;Vec&lt;<span class="kw">_</span>&gt;, <span class="kw">_</span>&gt;&gt;();
+        <span class="macro">assert!</span>(<span class="kw">match </span>batches {
+            <span class="prelude-val">Err</span>(ArrowError::InvalidArgumentError(e)) =&gt;
+                e.to_string().contains(<span class="string">"contains null values"</span>),
+            <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
+        });
+    }
+
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>test_buffered() {
         <span class="kw">let </span>tests = [
             (<span class="string">"test/data/uk_cities.csv"</span>, <span class="bool-val">false</span>, <span class="number">37</span>),
@@ -4756,6 +5140,42 @@
             }
             <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>t.get(), expected, <span class="string">"{values:?}"</span>)
         }
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_comment() {
+        <span class="kw">let </span>schema = Schema::new(<span class="macro">vec!</span>[
+            Field::new(<span class="string">"a"</span>, DataType::Int8, <span class="bool-val">false</span>),
+            Field::new(<span class="string">"b"</span>, DataType::Int8, <span class="bool-val">false</span>),
+        ]);
+
+        <span class="kw">let </span>csv = <span class="string">"# comment1 \n1,2\n#comment2\n11,22"</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>read = Cursor::new(csv.as_bytes());
+        <span class="kw">let </span>reader = ReaderBuilder::new(Arc::new(schema))
+            .with_comment(<span class="string">b'#'</span>)
+            .build(<span class="kw-2">&amp;mut </span>read)
+            .unwrap();
+
+        <span class="kw">let </span>batches = reader.collect::&lt;<span class="prelude-ty">Result</span>&lt;Vec&lt;<span class="kw">_</span>&gt;, <span class="kw">_</span>&gt;&gt;().unwrap();
+        <span class="macro">assert_eq!</span>(batches.len(), <span class="number">1</span>);
+        <span class="kw">let </span>b = batches.first().unwrap();
+        <span class="macro">assert_eq!</span>(b.num_columns(), <span class="number">2</span>);
+        <span class="macro">assert_eq!</span>(
+            b.column(<span class="number">0</span>)
+                .as_any()
+                .downcast_ref::&lt;Int8Array&gt;()
+                .unwrap()
+                .values(),
+            <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">11</span>]
+        );
+        <span class="macro">assert_eq!</span>(
+            b.column(<span class="number">1</span>)
+                .as_any()
+                .downcast_ref::&lt;Int8Array&gt;()
+                .unwrap()
+                .values(),
+            <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">22</span>]
+        );
     }
 }
 </code></pre></div></section></main></body></html>
