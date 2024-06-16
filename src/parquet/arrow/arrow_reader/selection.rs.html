@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parquet/src/arrow/arrow_reader/selection.rs`."><title>selection.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="parquet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parquet/src/arrow/arrow_reader/selection.rs`."><title>selection.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="parquet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1201,6 +1201,19 @@
 <a href="#1201" id="1201">1201</a>
 <a href="#1202" id="1202">1202</a>
 <a href="#1203" id="1203">1203</a>
+<a href="#1204" id="1204">1204</a>
+<a href="#1205" id="1205">1205</a>
+<a href="#1206" id="1206">1206</a>
+<a href="#1207" id="1207">1207</a>
+<a href="#1208" id="1208">1208</a>
+<a href="#1209" id="1209">1209</a>
+<a href="#1210" id="1210">1210</a>
+<a href="#1211" id="1211">1211</a>
+<a href="#1212" id="1212">1212</a>
+<a href="#1213" id="1213">1213</a>
+<a href="#1214" id="1214">1214</a>
+<a href="#1215" id="1215">1215</a>
+<a href="#1216" id="1216">1216</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -1284,6 +1297,13 @@
 ///
 /// let actual: Vec&lt;RowSelector&gt; = selection.into();
 /// assert_eq!(actual, expected);
+///
+/// // you can also create a selection from consecutive ranges
+/// let ranges = vec![5..10, 10..15];
+/// let selection =
+///   RowSelection::from_consecutive_ranges(ranges.into_iter(), 20);
+/// let actual: Vec&lt;RowSelector&gt; = selection.into();
+/// assert_eq!(actual, expected);
 /// ```
 ///
 /// A [`RowSelection`] maintains the following invariants:
@@ -1318,7 +1338,7 @@
     }
 
     <span class="doccomment">/// Creates a [`RowSelection`] from an iterator of consecutive ranges to keep
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_consecutive_ranges&lt;I: Iterator&lt;Item = Range&lt;usize&gt;&gt;&gt;(
+    </span><span class="kw">pub fn </span>from_consecutive_ranges&lt;I: Iterator&lt;Item = Range&lt;usize&gt;&gt;&gt;(
         ranges: I,
         total_rows: usize,
     ) -&gt; <span class="self">Self </span>{
@@ -2339,7 +2359,7 @@
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_empty_ranges() {
+    </span><span class="kw">fn </span>test_from_ranges() {
         <span class="kw">let </span>ranges = [<span class="number">1</span>..<span class="number">3</span>, <span class="number">4</span>..<span class="number">6</span>, <span class="number">6</span>..<span class="number">6</span>, <span class="number">8</span>..<span class="number">8</span>, <span class="number">9</span>..<span class="number">10</span>];
         <span class="kw">let </span>selection = RowSelection::from_consecutive_ranges(ranges.into_iter(), <span class="number">10</span>);
         <span class="macro">assert_eq!</span>(
@@ -2352,7 +2372,13 @@
                 RowSelector::skip(<span class="number">3</span>),
                 RowSelector::select(<span class="number">1</span>)
             ]
-        )
+        );
+
+        <span class="kw">let </span>out_of_order_ranges = [<span class="number">1</span>..<span class="number">3</span>, <span class="number">8</span>..<span class="number">10</span>, <span class="number">4</span>..<span class="number">7</span>];
+        <span class="kw">let </span>result = std::panic::catch_unwind(|| {
+            RowSelection::from_consecutive_ranges(out_of_order_ranges.into_iter(), <span class="number">10</span>)
+        });
+        <span class="macro">assert!</span>(result.is_err());
     }
 
     <span class="attr">#[test]

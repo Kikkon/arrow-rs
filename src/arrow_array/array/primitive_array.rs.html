@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/array/primitive_array.rs`."><title>primitive_array.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/array/primitive_array.rs`."><title>primitive_array.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2581,6 +2581,83 @@
 <a href="#2581" id="2581">2581</a>
 <a href="#2582" id="2582">2582</a>
 <a href="#2583" id="2583">2583</a>
+<a href="#2584" id="2584">2584</a>
+<a href="#2585" id="2585">2585</a>
+<a href="#2586" id="2586">2586</a>
+<a href="#2587" id="2587">2587</a>
+<a href="#2588" id="2588">2588</a>
+<a href="#2589" id="2589">2589</a>
+<a href="#2590" id="2590">2590</a>
+<a href="#2591" id="2591">2591</a>
+<a href="#2592" id="2592">2592</a>
+<a href="#2593" id="2593">2593</a>
+<a href="#2594" id="2594">2594</a>
+<a href="#2595" id="2595">2595</a>
+<a href="#2596" id="2596">2596</a>
+<a href="#2597" id="2597">2597</a>
+<a href="#2598" id="2598">2598</a>
+<a href="#2599" id="2599">2599</a>
+<a href="#2600" id="2600">2600</a>
+<a href="#2601" id="2601">2601</a>
+<a href="#2602" id="2602">2602</a>
+<a href="#2603" id="2603">2603</a>
+<a href="#2604" id="2604">2604</a>
+<a href="#2605" id="2605">2605</a>
+<a href="#2606" id="2606">2606</a>
+<a href="#2607" id="2607">2607</a>
+<a href="#2608" id="2608">2608</a>
+<a href="#2609" id="2609">2609</a>
+<a href="#2610" id="2610">2610</a>
+<a href="#2611" id="2611">2611</a>
+<a href="#2612" id="2612">2612</a>
+<a href="#2613" id="2613">2613</a>
+<a href="#2614" id="2614">2614</a>
+<a href="#2615" id="2615">2615</a>
+<a href="#2616" id="2616">2616</a>
+<a href="#2617" id="2617">2617</a>
+<a href="#2618" id="2618">2618</a>
+<a href="#2619" id="2619">2619</a>
+<a href="#2620" id="2620">2620</a>
+<a href="#2621" id="2621">2621</a>
+<a href="#2622" id="2622">2622</a>
+<a href="#2623" id="2623">2623</a>
+<a href="#2624" id="2624">2624</a>
+<a href="#2625" id="2625">2625</a>
+<a href="#2626" id="2626">2626</a>
+<a href="#2627" id="2627">2627</a>
+<a href="#2628" id="2628">2628</a>
+<a href="#2629" id="2629">2629</a>
+<a href="#2630" id="2630">2630</a>
+<a href="#2631" id="2631">2631</a>
+<a href="#2632" id="2632">2632</a>
+<a href="#2633" id="2633">2633</a>
+<a href="#2634" id="2634">2634</a>
+<a href="#2635" id="2635">2635</a>
+<a href="#2636" id="2636">2636</a>
+<a href="#2637" id="2637">2637</a>
+<a href="#2638" id="2638">2638</a>
+<a href="#2639" id="2639">2639</a>
+<a href="#2640" id="2640">2640</a>
+<a href="#2641" id="2641">2641</a>
+<a href="#2642" id="2642">2642</a>
+<a href="#2643" id="2643">2643</a>
+<a href="#2644" id="2644">2644</a>
+<a href="#2645" id="2645">2645</a>
+<a href="#2646" id="2646">2646</a>
+<a href="#2647" id="2647">2647</a>
+<a href="#2648" id="2648">2648</a>
+<a href="#2649" id="2649">2649</a>
+<a href="#2650" id="2650">2650</a>
+<a href="#2651" id="2651">2651</a>
+<a href="#2652" id="2652">2652</a>
+<a href="#2653" id="2653">2653</a>
+<a href="#2654" id="2654">2654</a>
+<a href="#2655" id="2655">2655</a>
+<a href="#2656" id="2656">2656</a>
+<a href="#2657" id="2657">2657</a>
+<a href="#2658" id="2658">2658</a>
+<a href="#2659" id="2659">2659</a>
+<a href="#2660" id="2660">2660</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -3002,7 +3079,7 @@
 
 <span class="kw">pub use </span><span class="kw">crate</span>::types::ArrowPrimitiveType;
 
-<span class="doccomment">/// An array of [primitive values](https://arrow.apache.org/docs/format/Columnar.html#fixed-size-primitive-layout)
+<span class="doccomment">/// An array of primitive values, of type [`ArrowPrimitiveType`]
 ///
 /// # Example: From a Vec
 ///
@@ -3062,6 +3139,19 @@
 /// // Note: values for null indexes are arbitrary
 /// assert_eq!(array.values(), &amp;[1, 0, 2]);
 /// assert!(array.is_null(1));
+/// ```
+///
+/// # Example: Get a `PrimitiveArray` from an [`ArrayRef`]
+/// ```
+/// # use std::sync::Arc;
+/// # use arrow_array::{Array, cast::AsArray, ArrayRef, Float32Array, PrimitiveArray};
+/// # use arrow_array::types::{Float32Type};
+/// # use arrow_schema::DataType;
+/// # let array: ArrayRef =  Arc::new(Float32Array::from(vec![1.2, 2.3]));
+/// // will panic if the array is not a Float32Array
+/// assert_eq!(&amp;DataType::Float32, array.data_type());
+/// let f32_array: Float32Array  = array.as_primitive().clone();
+/// assert_eq!(f32_array, Float32Array::from(vec![1.2, 2.3]));
 /// ```
 </span><span class="kw">pub struct </span>PrimitiveArray&lt;T: ArrowPrimitiveType&gt; {
     data_type: DataType,
@@ -3315,22 +3405,34 @@
         </span>PrimitiveArray::from(<span class="kw">unsafe </span>{ d.build_unchecked() })
     }
 
-    <span class="doccomment">/// Applies an unary and infallible function to a primitive array.
-    /// This is the fastest way to perform an operation on a primitive array when
-    /// the benefits of a vectorized operation outweigh the cost of branching nulls and non-nulls.
+    <span class="doccomment">/// Applies a unary infallible function to a primitive array, producing a
+    /// new array of potentially different type.
     ///
-    /// # Implementation
+    /// This is the fastest way to perform an operation on a primitive array
+    /// when the benefits of a vectorized operation outweigh the cost of
+    /// branching nulls and non-nulls.
     ///
-    /// This will apply the function for all values, including those on null slots.
-    /// This implies that the operation must be infallible for any value of the corresponding type
-    /// or this function may panic.
+    /// See also
+    /// * [`Self::unary_mut`] for in place modification.
+    /// * [`Self::try_unary`] for fallible operations.
+    /// * [`arrow::compute::binary`] for binary operations
+    ///
+    /// [`arrow::compute::binary`]: https://docs.rs/arrow/latest/arrow/compute/fn.binary.html
+    /// # Null Handling
+    ///
+    /// Applies the function for all values, including those on null slots. This
+    /// will often allow the compiler to generate faster vectorized code, but
+    /// requires that the operation must be infallible (not error/panic) for any
+    /// value of the corresponding type or this function may panic.
+    ///
     /// # Example
     /// ```rust
-    /// # use arrow_array::{Int32Array, types::Int32Type};
+    /// # use arrow_array::{Int32Array, Float32Array, types::Int32Type};
     /// # fn main() {
     /// let array = Int32Array::from(vec![Some(5), Some(7), None]);
-    /// let c = array.unary(|x| x * 2 + 1);
-    /// assert_eq!(c, Int32Array::from(vec![Some(11), Some(15), None]));
+    /// // Create a new array with the value of applying sqrt
+    /// let c = array.unary(|x| f32::sqrt(x as f32));
+    /// assert_eq!(c, Float32Array::from(vec![Some(2.236068), Some(2.6457512), None]));
     /// # }
     /// ```
     </span><span class="kw">pub fn </span>unary&lt;F, O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, op: F) -&gt; PrimitiveArray&lt;O&gt;
@@ -3349,24 +3451,50 @@
         PrimitiveArray::new(buffer.into(), nulls)
     }
 
-    <span class="doccomment">/// Applies an unary and infallible function to a mutable primitive array.
-    /// Mutable primitive array means that the buffer is not shared with other arrays.
-    /// As a result, this mutates the buffer directly without allocating new buffer.
+    <span class="doccomment">/// Applies a unary and infallible function to the array in place if possible.
     ///
-    /// # Implementation
+    /// # Buffer Reuse
     ///
-    /// This will apply the function for all values, including those on null slots.
-    /// This implies that the operation must be infallible for any value of the corresponding type
-    /// or this function may panic.
+    /// If the underlying buffers are not shared with other arrays,  mutates the
+    /// underlying buffer in place, without allocating.
+    ///
+    /// If the underlying buffer is shared, returns Err(self)
+    ///
+    /// # Null Handling
+    ///
+    /// See [`Self::unary`] for more information on null handling.
+    ///
     /// # Example
+    ///
     /// ```rust
     /// # use arrow_array::{Int32Array, types::Int32Type};
-    /// # fn main() {
     /// let array = Int32Array::from(vec![Some(5), Some(7), None]);
+    /// // Apply x*2+1 to the data in place, no allocations
     /// let c = array.unary_mut(|x| x * 2 + 1).unwrap();
     /// assert_eq!(c, Int32Array::from(vec![Some(11), Some(15), None]));
-    /// # }
     /// ```
+    ///
+    /// # Example: modify [`ArrayRef`] in place, if not shared
+    ///
+    /// It is also possible to modify an [`ArrayRef`] if there are no other
+    /// references to the underlying buffer.
+    ///
+    /// ```rust
+    /// # use std::sync::Arc;
+    /// # use arrow_array::{Array, cast::AsArray, ArrayRef, Int32Array, PrimitiveArray, types::Int32Type};
+    /// # let array: ArrayRef = Arc::new(Int32Array::from(vec![Some(5), Some(7), None]));
+    /// // Convert to Int32Array (panic's if array.data_type is not Int32)
+    /// let a = array.as_primitive::&lt;Int32Type&gt;().clone();
+    /// // Try to apply x*2+1 to the data in place, fails because array is still shared
+    /// a.unary_mut(|x| x * 2 + 1).unwrap_err();
+    /// // Try again, this time dropping the last remaining reference
+    /// let a = array.as_primitive::&lt;Int32Type&gt;().clone();
+    /// drop(array);
+    /// // Now we can apply the operation in place
+    /// let c = a.unary_mut(|x| x * 2 + 1).unwrap();
+    /// assert_eq!(c, Int32Array::from(vec![Some(11), Some(15), None]));
+    /// ```
+
     </span><span class="kw">pub fn </span>unary_mut&lt;F&gt;(<span class="self">self</span>, op: F) -&gt; <span class="prelude-ty">Result</span>&lt;PrimitiveArray&lt;T&gt;, PrimitiveArray&lt;T&gt;&gt;
     <span class="kw">where
         </span>F: Fn(T::Native) -&gt; T::Native,
@@ -3379,11 +3507,12 @@
         <span class="prelude-val">Ok</span>(builder.finish())
     }
 
-    <span class="doccomment">/// Applies a unary and fallible function to all valid values in a primitive array
+    <span class="doccomment">/// Applies a unary fallible function to all valid values in a primitive
+    /// array, producing a new array of potentially different type.
     ///
-    /// This is unlike [`Self::unary`] which will apply an infallible function to all rows
-    /// regardless of validity, in many cases this will be significantly faster and should
-    /// be preferred if `op` is infallible.
+    /// Applies `op` to only rows that are valid, which is often significantly
+    /// slower than [`Self::unary`], which should be preferred if `op` is
+    /// fallible.
     ///
     /// Note: LLVM is currently unable to effectively vectorize fallible operations
     </span><span class="kw">pub fn </span>try_unary&lt;F, O, E&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, op: F) -&gt; <span class="prelude-ty">Result</span>&lt;PrimitiveArray&lt;O&gt;, E&gt;
@@ -3412,13 +3541,16 @@
         <span class="prelude-val">Ok</span>(PrimitiveArray::new(values, nulls))
     }
 
-    <span class="doccomment">/// Applies an unary and fallible function to all valid values in a mutable primitive array.
-    /// Mutable primitive array means that the buffer is not shared with other arrays.
-    /// As a result, this mutates the buffer directly without allocating new buffer.
+    <span class="doccomment">/// Applies a unary fallible function to all valid values in a mutable
+    /// primitive array.
     ///
-    /// This is unlike [`Self::unary_mut`] which will apply an infallible function to all rows
-    /// regardless of validity, in many cases this will be significantly faster and should
-    /// be preferred if `op` is infallible.
+    /// # Null Handling
+    ///
+    /// See [`Self::try_unary`] for more information on null handling.
+    ///
+    /// # Buffer Reuse
+    ///
+    /// See [`Self::unary_mut`] for more information on buffer reuse.
     ///
     /// This returns an `Err` when the input array is shared buffer with other
     /// array. In the case, returned `Err` wraps input array. If the function
@@ -3453,9 +3585,9 @@
 
     <span class="doccomment">/// Applies a unary and nullable function to all valid values in a primitive array
     ///
-    /// This is unlike [`Self::unary`] which will apply an infallible function to all rows
-    /// regardless of validity, in many cases this will be significantly faster and should
-    /// be preferred if `op` is infallible.
+    /// Applies `op` to only rows that are valid, which is often significantly
+    /// slower than [`Self::unary`], which should be preferred if `op` is
+    /// fallible.
     ///
     /// Note: LLVM is currently unable to effectively vectorize fallible operations
     </span><span class="kw">pub fn </span>unary_opt&lt;F, O&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, op: F) -&gt; PrimitiveArray&lt;O&gt;
@@ -3498,8 +3630,16 @@
         PrimitiveArray::new(values, <span class="prelude-val">Some</span>(nulls))
     }
 
-    <span class="doccomment">/// Returns `PrimitiveBuilder` of this primitive array for mutating its values if the underlying
-    /// data buffer is not shared by others.
+    <span class="doccomment">/// Returns a `PrimitiveBuilder` for this array, suitable for mutating values
+    /// in place.
+    ///
+    /// # Buffer Reuse
+    ///
+    /// If the underlying data buffer has no other outstanding references, the
+    /// buffer is used without copying.
+    ///
+    /// If the underlying data buffer does have outstanding references, returns
+    /// `Err(self)`
     </span><span class="kw">pub fn </span>into_builder(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;PrimitiveBuilder&lt;T&gt;, <span class="self">Self</span>&gt; {
         <span class="kw">let </span>len = <span class="self">self</span>.len();
         <span class="kw">let </span>data = <span class="self">self</span>.into_data();
@@ -4085,6 +4225,7 @@
     <span class="kw">use </span><span class="kw">crate</span>::builder::{Decimal128Builder, Decimal256Builder};
     <span class="kw">use </span><span class="kw">crate</span>::cast::downcast_array;
     <span class="kw">use </span><span class="kw">crate</span>::BooleanArray;
+    <span class="kw">use </span>arrow_buffer::{IntervalDayTime, IntervalMonthDayNano};
     <span class="kw">use </span>arrow_schema::TimeUnit;
 
     <span class="attr">#[test]
@@ -4207,33 +4348,46 @@
         <span class="macro">assert_eq!</span>(-<span class="number">5</span>, arr.value(<span class="number">2</span>));
         <span class="macro">assert_eq!</span>(-<span class="number">5</span>, arr.values()[<span class="number">2</span>]);
 
-        <span class="comment">// a day_time interval contains days and milliseconds, but we do not yet have accessors for the values
-        </span><span class="kw">let </span>arr = IntervalDayTimeArray::from(<span class="macro">vec!</span>[<span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(-<span class="number">5</span>)]);
-        <span class="macro">assert_eq!</span>(<span class="number">3</span>, arr.len());
-        <span class="macro">assert_eq!</span>(<span class="number">0</span>, arr.offset());
-        <span class="macro">assert_eq!</span>(<span class="number">1</span>, arr.null_count());
-        <span class="macro">assert_eq!</span>(<span class="number">1</span>, arr.value(<span class="number">0</span>));
-        <span class="macro">assert_eq!</span>(<span class="number">1</span>, arr.values()[<span class="number">0</span>]);
-        <span class="macro">assert!</span>(arr.is_null(<span class="number">1</span>));
-        <span class="macro">assert_eq!</span>(-<span class="number">5</span>, arr.value(<span class="number">2</span>));
-        <span class="macro">assert_eq!</span>(-<span class="number">5</span>, arr.values()[<span class="number">2</span>]);
+        <span class="kw">let </span>v0 = IntervalDayTime {
+            days: <span class="number">34</span>,
+            milliseconds: <span class="number">1</span>,
+        };
+        <span class="kw">let </span>v2 = IntervalDayTime {
+            days: -<span class="number">2</span>,
+            milliseconds: -<span class="number">5</span>,
+        };
 
-        <span class="comment">// a month_day_nano interval contains months, days and nanoseconds,
-        // but we do not yet have accessors for the values.
-        // TODO: implement month, day, and nanos access method for month_day_nano.
-        </span><span class="kw">let </span>arr = IntervalMonthDayNanoArray::from(<span class="macro">vec!</span>[
-            <span class="prelude-val">Some</span>(<span class="number">100000000000000000000</span>),
-            <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(-<span class="number">500000000000000000000</span>),
-        ]);
+        <span class="kw">let </span>arr = IntervalDayTimeArray::from(<span class="macro">vec!</span>[<span class="prelude-val">Some</span>(v0), <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(v2)]);
+
         <span class="macro">assert_eq!</span>(<span class="number">3</span>, arr.len());
         <span class="macro">assert_eq!</span>(<span class="number">0</span>, arr.offset());
         <span class="macro">assert_eq!</span>(<span class="number">1</span>, arr.null_count());
-        <span class="macro">assert_eq!</span>(<span class="number">100000000000000000000</span>, arr.value(<span class="number">0</span>));
-        <span class="macro">assert_eq!</span>(<span class="number">100000000000000000000</span>, arr.values()[<span class="number">0</span>]);
+        <span class="macro">assert_eq!</span>(v0, arr.value(<span class="number">0</span>));
+        <span class="macro">assert_eq!</span>(v0, arr.values()[<span class="number">0</span>]);
         <span class="macro">assert!</span>(arr.is_null(<span class="number">1</span>));
-        <span class="macro">assert_eq!</span>(-<span class="number">500000000000000000000</span>, arr.value(<span class="number">2</span>));
-        <span class="macro">assert_eq!</span>(-<span class="number">500000000000000000000</span>, arr.values()[<span class="number">2</span>]);
+        <span class="macro">assert_eq!</span>(v2, arr.value(<span class="number">2</span>));
+        <span class="macro">assert_eq!</span>(v2, arr.values()[<span class="number">2</span>]);
+
+        <span class="kw">let </span>v0 = IntervalMonthDayNano {
+            months: <span class="number">2</span>,
+            days: <span class="number">34</span>,
+            nanoseconds: -<span class="number">1</span>,
+        };
+        <span class="kw">let </span>v2 = IntervalMonthDayNano {
+            months: -<span class="number">3</span>,
+            days: -<span class="number">2</span>,
+            nanoseconds: <span class="number">4</span>,
+        };
+
+        <span class="kw">let </span>arr = IntervalMonthDayNanoArray::from(<span class="macro">vec!</span>[<span class="prelude-val">Some</span>(v0), <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(v2)]);
+        <span class="macro">assert_eq!</span>(<span class="number">3</span>, arr.len());
+        <span class="macro">assert_eq!</span>(<span class="number">0</span>, arr.offset());
+        <span class="macro">assert_eq!</span>(<span class="number">1</span>, arr.null_count());
+        <span class="macro">assert_eq!</span>(v0, arr.value(<span class="number">0</span>));
+        <span class="macro">assert_eq!</span>(v0, arr.values()[<span class="number">0</span>]);
+        <span class="macro">assert!</span>(arr.is_null(<span class="number">1</span>));
+        <span class="macro">assert_eq!</span>(v2, arr.value(<span class="number">2</span>));
+        <span class="macro">assert_eq!</span>(v2, arr.values()[<span class="number">2</span>]);
     }
 
     <span class="attr">#[test]
@@ -5043,7 +5197,7 @@
         expected = <span class="string">"PrimitiveArray expected data type Interval(MonthDayNano) got Interval(DayTime)"
     </span>)]
     </span><span class="kw">fn </span>test_invalid_interval_type() {
-        <span class="kw">let </span>array = IntervalDayTimeArray::from(<span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
+        <span class="kw">let </span>array = IntervalDayTimeArray::from(<span class="macro">vec!</span>[IntervalDayTime::ZERO]);
         <span class="kw">let _ </span>= IntervalMonthDayNanoArray::from(array.into_data());
     }
 

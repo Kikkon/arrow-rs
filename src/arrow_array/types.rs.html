@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/types.rs`."><title>types.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/types.rs`."><title>types.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1679,31 +1679,6 @@
 <a href="#1679" id="1679">1679</a>
 <a href="#1680" id="1680">1680</a>
 <a href="#1681" id="1681">1681</a>
-<a href="#1682" id="1682">1682</a>
-<a href="#1683" id="1683">1683</a>
-<a href="#1684" id="1684">1684</a>
-<a href="#1685" id="1685">1685</a>
-<a href="#1686" id="1686">1686</a>
-<a href="#1687" id="1687">1687</a>
-<a href="#1688" id="1688">1688</a>
-<a href="#1689" id="1689">1689</a>
-<a href="#1690" id="1690">1690</a>
-<a href="#1691" id="1691">1691</a>
-<a href="#1692" id="1692">1692</a>
-<a href="#1693" id="1693">1693</a>
-<a href="#1694" id="1694">1694</a>
-<a href="#1695" id="1695">1695</a>
-<a href="#1696" id="1696">1696</a>
-<a href="#1697" id="1697">1697</a>
-<a href="#1698" id="1698">1698</a>
-<a href="#1699" id="1699">1699</a>
-<a href="#1700" id="1700">1700</a>
-<a href="#1701" id="1701">1701</a>
-<a href="#1702" id="1702">1702</a>
-<a href="#1703" id="1703">1703</a>
-<a href="#1704" id="1704">1704</a>
-<a href="#1705" id="1705">1705</a>
-<a href="#1706" id="1706">1706</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -1729,7 +1704,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::temporal_conversions::as_datetime_with_timezone;
 <span class="kw">use </span><span class="kw">crate</span>::timezone::Tz;
 <span class="kw">use crate</span>::{ArrowNativeTypeOp, OffsetSizeTrait};
-<span class="kw">use </span>arrow_buffer::{i256, Buffer, OffsetBuffer};
+<span class="kw">use </span>arrow_buffer::{i256, Buffer, IntervalDayTime, IntervalMonthDayNano, OffsetBuffer};
 <span class="kw">use </span>arrow_data::decimal::{validate_decimal256_precision, validate_decimal_precision};
 <span class="kw">use </span>arrow_data::{validate_binary_view, validate_string_view};
 <span class="kw">use </span>arrow_schema::{
@@ -1753,9 +1728,11 @@
     </span><span class="kw">pub const </span>DATA_TYPE: DataType = DataType::Boolean;
 }
 
-<span class="doccomment">/// Trait bridging the dynamic-typed nature of Arrow (via [`DataType`]) with the
-/// static-typed nature of rust types ([`ArrowNativeType`]) for all types that implement [`ArrowNativeType`].
+<span class="doccomment">/// Trait for [primitive values], bridging the dynamic-typed nature of Arrow
+/// (via [`DataType`]) with the static-typed nature of rust types
+/// ([`ArrowNativeType`]) for all types that implement [`ArrowNativeType`].
 ///
+/// [primitive values]: https://arrow.apache.org/docs/format/Columnar.html#fixed-size-primitive-layout
 /// [`ArrowNativeType`]: arrow_buffer::ArrowNativeType
 </span><span class="kw">pub trait </span>ArrowPrimitiveType: primitive::PrimitiveTypeSealed + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Corresponding Rust native type for the primitive type.
@@ -1926,7 +1903,7 @@
 </span>);
 <span class="macro">make_type!</span>(
     IntervalDayTimeType,
-    i64,
+    IntervalDayTime,
     DataType::Interval(IntervalUnit::DayTime),
     <span class="string">r#"A “calendar” interval type in days and milliseconds.
 
@@ -1953,7 +1930,7 @@ which can lead to surprising results. Please see the description of ordering on
 </span>);
 <span class="macro">make_type!</span>(
     IntervalMonthDayNanoType,
-    i128,
+    IntervalMonthDayNano,
     DataType::Interval(IntervalUnit::MonthDayNano),
     <span class="string">r#"A “calendar” interval type in months, days, and nanoseconds.
 
@@ -1970,11 +1947,11 @@ Each field is independent (e.g. there is no constraint that the quantity of
 nanoseconds represents less than a day's worth of time).
 
 ```text
-┌──────────────────────────────┬─────────────┬──────────────┐
-│            Nanos             │    Days     │    Months    │
-│          (64 bits)           │ (32 bits)   │  (32 bits)   │
-└──────────────────────────────┴─────────────┴──────────────┘
-  0                            63            95           127 bit offset
+┌───────────────┬─────────────┬─────────────────────────────┐
+│     Months    │     Days    │            Nanos            │
+│   (32 bits)   │  (32 bits)  │          (64 bits)          │
+└───────────────┴─────────────┴─────────────────────────────┘
+  0            32             64                           128 bit offset
 ```
 Please see the [Arrow Spec](https://github.com/apache/arrow/blob/081b4022fe6f659d8765efc82b3f4787c5039e3c/format/Schema.fbs#L409-L415) for more details
 
@@ -2623,25 +2600,8 @@ is larger than the binary representation of 100 days.
     /// * `days` - The number of days (+/-) represented in this interval
     /// * `millis` - The number of milliseconds (+/-) represented in this interval
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>make_value(
-        days: i32,
-        millis: i32,
-    ) -&gt; &lt;IntervalDayTimeType <span class="kw">as </span>ArrowPrimitiveType&gt;::Native {
-        <span class="comment">/*
-        https://github.com/apache/arrow/blob/02c8598d264c839a5b5cf3109bfd406f3b8a6ba5/cpp/src/arrow/type.h#L1433
-        struct DayMilliseconds {
-            int32_t days = 0;
-            int32_t milliseconds = 0;
-            ...
-        }
-        64      56      48      40      32      24      16      8       0
-        +-------+-------+-------+-------+-------+-------+-------+-------+
-        |             days              |         milliseconds          |
-        +-------+-------+-------+-------+-------+-------+-------+-------+
-        */
-        </span><span class="kw">let </span>m = millis <span class="kw">as </span>u64 &amp; u32::MAX <span class="kw">as </span>u64;
-        <span class="kw">let </span>d = (days <span class="kw">as </span>u64 &amp; u32::MAX <span class="kw">as </span>u64) &lt;&lt; <span class="number">32</span>;
-        (m | d) <span class="kw">as </span>&lt;IntervalDayTimeType <span class="kw">as </span>ArrowPrimitiveType&gt;::Native
+    </span><span class="kw">pub fn </span>make_value(days: i32, milliseconds: i32) -&gt; IntervalDayTime {
+        IntervalDayTime { days, milliseconds }
     }
 
     <span class="doccomment">/// Turns a IntervalDayTimeType into a tuple of (days, milliseconds)
@@ -2650,10 +2610,8 @@ is larger than the binary representation of 100 days.
     ///
     /// * `i` - The IntervalDayTimeType to convert
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>to_parts(i: &lt;IntervalDayTimeType <span class="kw">as </span>ArrowPrimitiveType&gt;::Native) -&gt; (i32, i32) {
-        <span class="kw">let </span>days = (i &gt;&gt; <span class="number">32</span>) <span class="kw">as </span>i32;
-        <span class="kw">let </span>ms = i <span class="kw">as </span>i32;
-        (days, ms)
+    </span><span class="kw">pub fn </span>to_parts(i: IntervalDayTime) -&gt; (i32, i32) {
+        (i.days, i.milliseconds)
     }
 }
 
@@ -2666,27 +2624,12 @@ is larger than the binary representation of 100 days.
     /// * `days` - The number of days (+/-) represented in this interval
     /// * `nanos` - The number of nanoseconds (+/-) represented in this interval
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>make_value(
-        months: i32,
-        days: i32,
-        nanos: i64,
-    ) -&gt; &lt;IntervalMonthDayNanoType <span class="kw">as </span>ArrowPrimitiveType&gt;::Native {
-        <span class="comment">/*
-        https://github.com/apache/arrow/blob/02c8598d264c839a5b5cf3109bfd406f3b8a6ba5/cpp/src/arrow/type.h#L1475
-        struct MonthDayNanos {
-            int32_t months;
-            int32_t days;
-            int64_t nanoseconds;
+    </span><span class="kw">pub fn </span>make_value(months: i32, days: i32, nanoseconds: i64) -&gt; IntervalMonthDayNano {
+        IntervalMonthDayNano {
+            months,
+            days,
+            nanoseconds,
         }
-        128     112     96      80      64      48      32      16      0
-        +-------+-------+-------+-------+-------+-------+-------+-------+
-        |     months    |      days     |             nanos             |
-        +-------+-------+-------+-------+-------+-------+-------+-------+
-        */
-        </span><span class="kw">let </span>m = (months <span class="kw">as </span>u128 &amp; u32::MAX <span class="kw">as </span>u128) &lt;&lt; <span class="number">96</span>;
-        <span class="kw">let </span>d = (days <span class="kw">as </span>u128 &amp; u32::MAX <span class="kw">as </span>u128) &lt;&lt; <span class="number">64</span>;
-        <span class="kw">let </span>n = nanos <span class="kw">as </span>u128 &amp; u64::MAX <span class="kw">as </span>u128;
-        (m | d | n) <span class="kw">as </span>&lt;IntervalMonthDayNanoType <span class="kw">as </span>ArrowPrimitiveType&gt;::Native
     }
 
     <span class="doccomment">/// Turns a IntervalMonthDayNanoType into a tuple of (months, days, nanos)
@@ -2695,13 +2638,8 @@ is larger than the binary representation of 100 days.
     ///
     /// * `i` - The IntervalMonthDayNanoType to convert
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>to_parts(
-        i: &lt;IntervalMonthDayNanoType <span class="kw">as </span>ArrowPrimitiveType&gt;::Native,
-    ) -&gt; (i32, i32, i64) {
-        <span class="kw">let </span>months = (i &gt;&gt; <span class="number">96</span>) <span class="kw">as </span>i32;
-        <span class="kw">let </span>days = (i &gt;&gt; <span class="number">64</span>) <span class="kw">as </span>i32;
-        <span class="kw">let </span>nanos = i <span class="kw">as </span>i64;
-        (months, days, nanos)
+    </span><span class="kw">pub fn </span>to_parts(i: IntervalMonthDayNano) -&gt; (i32, i32, i64) {
+        (i.months, i.days, i.nanoseconds)
     }
 }
 
@@ -3131,6 +3069,8 @@ is larger than the binary representation of 100 days.
     <span class="kw">impl</span>&lt;O: OffsetSizeTrait&gt; ByteArrayTypeSealed <span class="kw">for </span>GenericBinaryType&lt;O&gt; {}
 
     <span class="kw">pub trait </span>ByteArrayNativeType: std::fmt::Debug + Send + Sync {
+        <span class="kw">fn </span>from_bytes_checked(b: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;;
+
         <span class="doccomment">/// # Safety
         ///
         /// `b` must be a valid byte sequence for `Self`
@@ -3139,12 +3079,22 @@ is larger than the binary representation of 100 days.
 
     <span class="kw">impl </span>ByteArrayNativeType <span class="kw">for </span>[u8] {
         <span class="attr">#[inline]
+        </span><span class="kw">fn </span>from_bytes_checked(b: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt; {
+            <span class="prelude-val">Some</span>(b)
+        }
+
+        <span class="attr">#[inline]
         </span><span class="kw">unsafe fn </span>from_bytes_unchecked(b: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
             b
         }
     }
 
     <span class="kw">impl </span>ByteArrayNativeType <span class="kw">for </span>str {
+        <span class="attr">#[inline]
+        </span><span class="kw">fn </span>from_bytes_checked(b: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt; {
+            std::str::from_utf8(b).ok()
+        }
+
         <span class="attr">#[inline]
         </span><span class="kw">unsafe fn </span>from_bytes_unchecked(b: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
             std::str::from_utf8_unchecked(b)

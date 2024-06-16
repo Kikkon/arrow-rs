@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parquet/src/arrow/arrow_writer/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="parquet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parquet/src/arrow/arrow_writer/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="parquet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -3083,6 +3083,63 @@
 <a href="#3083" id="3083">3083</a>
 <a href="#3084" id="3084">3084</a>
 <a href="#3085" id="3085">3085</a>
+<a href="#3086" id="3086">3086</a>
+<a href="#3087" id="3087">3087</a>
+<a href="#3088" id="3088">3088</a>
+<a href="#3089" id="3089">3089</a>
+<a href="#3090" id="3090">3090</a>
+<a href="#3091" id="3091">3091</a>
+<a href="#3092" id="3092">3092</a>
+<a href="#3093" id="3093">3093</a>
+<a href="#3094" id="3094">3094</a>
+<a href="#3095" id="3095">3095</a>
+<a href="#3096" id="3096">3096</a>
+<a href="#3097" id="3097">3097</a>
+<a href="#3098" id="3098">3098</a>
+<a href="#3099" id="3099">3099</a>
+<a href="#3100" id="3100">3100</a>
+<a href="#3101" id="3101">3101</a>
+<a href="#3102" id="3102">3102</a>
+<a href="#3103" id="3103">3103</a>
+<a href="#3104" id="3104">3104</a>
+<a href="#3105" id="3105">3105</a>
+<a href="#3106" id="3106">3106</a>
+<a href="#3107" id="3107">3107</a>
+<a href="#3108" id="3108">3108</a>
+<a href="#3109" id="3109">3109</a>
+<a href="#3110" id="3110">3110</a>
+<a href="#3111" id="3111">3111</a>
+<a href="#3112" id="3112">3112</a>
+<a href="#3113" id="3113">3113</a>
+<a href="#3114" id="3114">3114</a>
+<a href="#3115" id="3115">3115</a>
+<a href="#3116" id="3116">3116</a>
+<a href="#3117" id="3117">3117</a>
+<a href="#3118" id="3118">3118</a>
+<a href="#3119" id="3119">3119</a>
+<a href="#3120" id="3120">3120</a>
+<a href="#3121" id="3121">3121</a>
+<a href="#3122" id="3122">3122</a>
+<a href="#3123" id="3123">3123</a>
+<a href="#3124" id="3124">3124</a>
+<a href="#3125" id="3125">3125</a>
+<a href="#3126" id="3126">3126</a>
+<a href="#3127" id="3127">3127</a>
+<a href="#3128" id="3128">3128</a>
+<a href="#3129" id="3129">3129</a>
+<a href="#3130" id="3130">3130</a>
+<a href="#3131" id="3131">3131</a>
+<a href="#3132" id="3132">3132</a>
+<a href="#3133" id="3133">3133</a>
+<a href="#3134" id="3134">3134</a>
+<a href="#3135" id="3135">3135</a>
+<a href="#3136" id="3136">3136</a>
+<a href="#3137" id="3137">3137</a>
+<a href="#3138" id="3138">3138</a>
+<a href="#3139" id="3139">3139</a>
+<a href="#3140" id="3140">3140</a>
+<a href="#3141" id="3141">3141</a>
+<a href="#3142" id="3142">3142</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -3116,7 +3173,8 @@
 <span class="kw">use </span>arrow_schema::{ArrowError, DataType <span class="kw">as </span>ArrowDataType, Field, IntervalUnit, SchemaRef};
 
 <span class="kw">use </span><span class="kw">super</span>::schema::{
-    add_encoded_arrow_schema_to_metadata, arrow_to_parquet_schema, decimal_length_from_precision,
+    add_encoded_arrow_schema_to_metadata, arrow_to_parquet_schema,
+    arrow_to_parquet_schema_with_root, decimal_length_from_precision,
 };
 
 <span class="kw">use </span><span class="kw">crate</span>::arrow::arrow_writer::byte_array::ByteArrayEncoder;
@@ -3191,6 +3249,20 @@
 /// }
 /// ```
 ///
+/// ## Type Support
+///
+/// The writer supports writing all Arrow [`DataType`]s that have a direct mapping to
+/// Parquet types including  [`StructArray`] and [`ListArray`].
+///
+/// The following are not supported:
+///
+/// * [`IntervalMonthDayNanoArray`]: Parquet does not [support nanosecond intervals].
+///
+/// [`DataType`]: https://docs.rs/arrow/latest/arrow/datatypes/enum.DataType.html
+/// [`StructArray`]: https://docs.rs/arrow/latest/arrow/array/struct.StructArray.html
+/// [`ListArray`]: https://docs.rs/arrow/latest/arrow/array/type.ListArray.html
+/// [`IntervalMonthDayNanoArray`]: https://docs.rs/arrow/latest/arrow/array/type.IntervalMonthDayNanoArray.html
+/// [support nanosecond intervals]: https://github.com/apache/parquet-format/blob/master/LogicalTypes.md#interval
 </span><span class="kw">pub struct </span>ArrowWriter&lt;W: Write&gt; {
     <span class="doccomment">/// Underlying Parquet writer
     </span>writer: SerializedFileWriter&lt;W&gt;,
@@ -3245,7 +3317,10 @@
         arrow_schema: SchemaRef,
         options: ArrowWriterOptions,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>schema = arrow_to_parquet_schema(<span class="kw-2">&amp;</span>arrow_schema)<span class="question-mark">?</span>;
+        <span class="kw">let </span>schema = <span class="kw">match </span>options.schema_root {
+            <span class="prelude-val">Some</span>(s) =&gt; arrow_to_parquet_schema_with_root(<span class="kw-2">&amp;</span>arrow_schema, <span class="kw-2">&amp;</span>s)<span class="question-mark">?</span>,
+            <span class="prelude-val">None </span>=&gt; arrow_to_parquet_schema(<span class="kw-2">&amp;</span>arrow_schema)<span class="question-mark">?</span>,
+        };
         <span class="kw">let </span><span class="kw-2">mut </span>props = options.properties;
         <span class="kw">if </span>!options.skip_arrow_metadata {
             <span class="comment">// add serialized arrow schema
@@ -3408,6 +3483,7 @@
 </span><span class="kw">pub struct </span>ArrowWriterOptions {
     properties: WriterProperties,
     skip_arrow_metadata: bool,
+    schema_root: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 
 <span class="kw">impl </span>ArrowWriterOptions {
@@ -3421,13 +3497,23 @@
         <span class="self">Self </span>{ properties, ..<span class="self">self </span>}
     }
 
-    <span class="doccomment">/// Parquet files generated by the [`ArrowWriter`] contain embedded arrow schema
+    <span class="doccomment">/// Skip encoding the embedded arrow metadata (defaults to `false`)
+    ///
+    /// Parquet files generated by the [`ArrowWriter`] contain embedded arrow schema
     /// by default.
     ///
-    /// Set `skip_arrow_metadata` to true, to skip encoding this.
+    /// Set `skip_arrow_metadata` to true, to skip encoding the embedded metadata.
     </span><span class="kw">pub fn </span>with_skip_arrow_metadata(<span class="self">self</span>, skip_arrow_metadata: bool) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             skip_arrow_metadata,
+            ..<span class="self">self
+        </span>}
+    }
+
+    <span class="doccomment">/// Set the name of the root parquet schema element (defaults to `"arrow_schema"`)
+    </span><span class="kw">pub fn </span>with_schema_root(<span class="self">self</span>, name: String) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            schema_root: <span class="prelude-val">Some</span>(name),
             ..<span class="self">self
         </span>}
     }
@@ -4027,11 +4113,11 @@
 ) -&gt; Vec&lt;FixedLenByteArray&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>values = Vec::with_capacity(indices.len());
     <span class="kw">for </span>i <span class="kw">in </span>indices {
-        <span class="kw">let </span><span class="kw-2">mut </span>prefix = <span class="macro">vec!</span>[<span class="number">0</span>; <span class="number">4</span>];
-        <span class="kw">let </span><span class="kw-2">mut </span>value = array.value(<span class="kw-2">*</span>i).to_le_bytes().to_vec();
-        prefix.append(<span class="kw-2">&amp;mut </span>value);
-        <span class="macro">debug_assert_eq!</span>(prefix.len(), <span class="number">12</span>);
-        values.push(FixedLenByteArray::from(ByteArray::from(prefix)));
+        <span class="kw">let </span><span class="kw-2">mut </span>out = [<span class="number">0</span>; <span class="number">12</span>];
+        <span class="kw">let </span>value = array.value(<span class="kw-2">*</span>i);
+        out[<span class="number">4</span>..<span class="number">8</span>].copy_from_slice(<span class="kw-2">&amp;</span>value.days.to_le_bytes());
+        out[<span class="number">8</span>..<span class="number">12</span>].copy_from_slice(<span class="kw-2">&amp;</span>value.milliseconds.to_le_bytes());
+        values.push(FixedLenByteArray::from(ByteArray::from(out.to_vec())));
     }
     values
 }
@@ -4101,7 +4187,7 @@
     <span class="kw">use </span>arrow::error::Result <span class="kw">as </span>ArrowResult;
     <span class="kw">use </span>arrow::util::pretty::pretty_format_batches;
     <span class="kw">use </span>arrow::{array::<span class="kw-2">*</span>, buffer::Buffer};
-    <span class="kw">use </span>arrow_buffer::NullBuffer;
+    <span class="kw">use </span>arrow_buffer::{IntervalDayTime, IntervalMonthDayNano, NullBuffer};
     <span class="kw">use </span>arrow_schema::Fields;
 
     <span class="kw">use </span><span class="kw">crate</span>::basic::Encoding;
@@ -5142,7 +5228,12 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>interval_day_time_single_column() {
-        required_and_optional::&lt;IntervalDayTimeArray, <span class="kw">_</span>&gt;(<span class="number">0</span>..SMALL_SIZE <span class="kw">as </span>i64);
+        required_and_optional::&lt;IntervalDayTimeArray, <span class="kw">_</span>&gt;(<span class="macro">vec!</span>[
+            IntervalDayTime::new(<span class="number">0</span>, <span class="number">1</span>),
+            IntervalDayTime::new(<span class="number">0</span>, <span class="number">3</span>),
+            IntervalDayTime::new(<span class="number">3</span>, -<span class="number">2</span>),
+            IntervalDayTime::new(-<span class="number">200</span>, <span class="number">4</span>),
+        ]);
     }
 
     <span class="attr">#[test]
@@ -5150,7 +5241,12 @@
         expected = <span class="string">"Attempting to write an Arrow interval type MonthDayNano to parquet that is not yet implemented"
     </span>)]
     </span><span class="kw">fn </span>interval_month_day_nano_single_column() {
-        required_and_optional::&lt;IntervalMonthDayNanoArray, <span class="kw">_</span>&gt;(<span class="number">0</span>..SMALL_SIZE <span class="kw">as </span>i128);
+        required_and_optional::&lt;IntervalMonthDayNanoArray, <span class="kw">_</span>&gt;(<span class="macro">vec!</span>[
+            IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>),
+            IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">3</span>, <span class="number">2</span>),
+            IntervalMonthDayNano::new(<span class="number">3</span>, -<span class="number">2</span>, -<span class="number">5</span>),
+            IntervalMonthDayNano::new(-<span class="number">200</span>, <span class="number">4</span>, -<span class="number">1</span>),
+        ]);
     }
 
     <span class="attr">#[test]
@@ -5161,6 +5257,16 @@
 
         <span class="comment">// BinaryArrays can't be built from Vec&lt;Option&lt;&amp;str&gt;&gt;, so only call `values_required`
         </span>values_required::&lt;BinaryArray, <span class="kw">_</span>&gt;(many_vecs_iter);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>binary_view_single_column() {
+        <span class="kw">let </span>one_vec: Vec&lt;u8&gt; = (<span class="number">0</span>..SMALL_SIZE <span class="kw">as </span>u8).collect();
+        <span class="kw">let </span>many_vecs: Vec&lt;<span class="kw">_</span>&gt; = std::iter::repeat(one_vec).take(SMALL_SIZE).collect();
+        <span class="kw">let </span>many_vecs_iter = many_vecs.iter().map(|v| v.as_slice());
+
+        <span class="comment">// BinaryArrays can't be built from Vec&lt;Option&lt;&amp;str&gt;&gt;, so only call `values_required`
+        </span>values_required::&lt;BinaryViewArray, <span class="kw">_</span>&gt;(many_vecs_iter);
     }
 
     <span class="attr">#[test]
@@ -5253,6 +5359,14 @@
         <span class="kw">let </span>raw_strs = raw_values.iter().map(|s| s.as_str());
 
         required_and_optional::&lt;LargeStringArray, <span class="kw">_</span>&gt;(raw_strs);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>string_view_single_column() {
+        <span class="kw">let </span>raw_values: Vec&lt;<span class="kw">_</span>&gt; = (<span class="number">0</span>..SMALL_SIZE).map(|i| i.to_string()).collect();
+        <span class="kw">let </span>raw_strs = raw_values.iter().map(|s| s.as_str());
+
+        required_and_optional::&lt;StringViewArray, <span class="kw">_</span>&gt;(raw_strs);
     }
 
     <span class="attr">#[test]

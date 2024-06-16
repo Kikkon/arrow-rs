@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-cast/src/cast/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_cast" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-cast/src/cast/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_cast" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -9024,6 +9024,92 @@
 <a href="#9024" id="9024">9024</a>
 <a href="#9025" id="9025">9025</a>
 <a href="#9026" id="9026">9026</a>
+<a href="#9027" id="9027">9027</a>
+<a href="#9028" id="9028">9028</a>
+<a href="#9029" id="9029">9029</a>
+<a href="#9030" id="9030">9030</a>
+<a href="#9031" id="9031">9031</a>
+<a href="#9032" id="9032">9032</a>
+<a href="#9033" id="9033">9033</a>
+<a href="#9034" id="9034">9034</a>
+<a href="#9035" id="9035">9035</a>
+<a href="#9036" id="9036">9036</a>
+<a href="#9037" id="9037">9037</a>
+<a href="#9038" id="9038">9038</a>
+<a href="#9039" id="9039">9039</a>
+<a href="#9040" id="9040">9040</a>
+<a href="#9041" id="9041">9041</a>
+<a href="#9042" id="9042">9042</a>
+<a href="#9043" id="9043">9043</a>
+<a href="#9044" id="9044">9044</a>
+<a href="#9045" id="9045">9045</a>
+<a href="#9046" id="9046">9046</a>
+<a href="#9047" id="9047">9047</a>
+<a href="#9048" id="9048">9048</a>
+<a href="#9049" id="9049">9049</a>
+<a href="#9050" id="9050">9050</a>
+<a href="#9051" id="9051">9051</a>
+<a href="#9052" id="9052">9052</a>
+<a href="#9053" id="9053">9053</a>
+<a href="#9054" id="9054">9054</a>
+<a href="#9055" id="9055">9055</a>
+<a href="#9056" id="9056">9056</a>
+<a href="#9057" id="9057">9057</a>
+<a href="#9058" id="9058">9058</a>
+<a href="#9059" id="9059">9059</a>
+<a href="#9060" id="9060">9060</a>
+<a href="#9061" id="9061">9061</a>
+<a href="#9062" id="9062">9062</a>
+<a href="#9063" id="9063">9063</a>
+<a href="#9064" id="9064">9064</a>
+<a href="#9065" id="9065">9065</a>
+<a href="#9066" id="9066">9066</a>
+<a href="#9067" id="9067">9067</a>
+<a href="#9068" id="9068">9068</a>
+<a href="#9069" id="9069">9069</a>
+<a href="#9070" id="9070">9070</a>
+<a href="#9071" id="9071">9071</a>
+<a href="#9072" id="9072">9072</a>
+<a href="#9073" id="9073">9073</a>
+<a href="#9074" id="9074">9074</a>
+<a href="#9075" id="9075">9075</a>
+<a href="#9076" id="9076">9076</a>
+<a href="#9077" id="9077">9077</a>
+<a href="#9078" id="9078">9078</a>
+<a href="#9079" id="9079">9079</a>
+<a href="#9080" id="9080">9080</a>
+<a href="#9081" id="9081">9081</a>
+<a href="#9082" id="9082">9082</a>
+<a href="#9083" id="9083">9083</a>
+<a href="#9084" id="9084">9084</a>
+<a href="#9085" id="9085">9085</a>
+<a href="#9086" id="9086">9086</a>
+<a href="#9087" id="9087">9087</a>
+<a href="#9088" id="9088">9088</a>
+<a href="#9089" id="9089">9089</a>
+<a href="#9090" id="9090">9090</a>
+<a href="#9091" id="9091">9091</a>
+<a href="#9092" id="9092">9092</a>
+<a href="#9093" id="9093">9093</a>
+<a href="#9094" id="9094">9094</a>
+<a href="#9095" id="9095">9095</a>
+<a href="#9096" id="9096">9096</a>
+<a href="#9097" id="9097">9097</a>
+<a href="#9098" id="9098">9098</a>
+<a href="#9099" id="9099">9099</a>
+<a href="#9100" id="9100">9100</a>
+<a href="#9101" id="9101">9101</a>
+<a href="#9102" id="9102">9102</a>
+<a href="#9103" id="9103">9103</a>
+<a href="#9104" id="9104">9104</a>
+<a href="#9105" id="9105">9105</a>
+<a href="#9106" id="9106">9106</a>
+<a href="#9107" id="9107">9107</a>
+<a href="#9108" id="9108">9108</a>
+<a href="#9109" id="9109">9109</a>
+<a href="#9110" id="9110">9110</a>
+<a href="#9111" id="9111">9111</a>
+<a href="#9112" id="9112">9112</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -9041,22 +9127,22 @@
 // specific language governing permissions and limitations
 // under the License.
 
-</span><span class="doccomment">//! Defines cast kernels for `ArrayRef`, to convert `Array`s between
-//! supported datatypes.
+</span><span class="doccomment">//! Cast kernels to convert [`ArrayRef`]  between supported datatypes.
+//!
+//! See [`cast_with_options`] for more information on specific conversions.
 //!
 //! Example:
 //!
 //! ```
-//! use arrow_array::*;
-//! use arrow_cast::cast;
-//! use arrow_schema::DataType;
-//! use std::sync::Arc;
-//! use arrow_array::types::Float64Type;
-//! use arrow_array::cast::AsArray;
-//!
+//! # use arrow_array::*;
+//! # use arrow_cast::cast;
+//! # use arrow_schema::DataType;
+//! # use std::sync::Arc;
+//! # use arrow_array::types::Float64Type;
+//! # use arrow_array::cast::AsArray;
+//! // int32 to float64
 //! let a = Int32Array::from(vec![5, 6, 7]);
-//! let array = Arc::new(a) as ArrayRef;
-//! let b = cast(&amp;array, &amp;DataType::Float64).unwrap();
+//! let b = cast(&amp;a, &amp;DataType::Float64).unwrap();
 //! let c = b.as_primitive::&lt;Float64Type&gt;();
 //! assert_eq!(5.0, c.value(0));
 //! assert_eq!(6.0, c.value(1));
@@ -9072,7 +9158,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::cast::list::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::cast::string::<span class="kw-2">*</span>;
 
-<span class="kw">use </span>arrow_buffer::ScalarBuffer;
+<span class="kw">use </span>arrow_buffer::IntervalMonthDayNano;
 <span class="kw">use </span>arrow_data::ByteView;
 <span class="kw">use </span>chrono::{NaiveTime, Offset, TimeZone, Utc};
 <span class="kw">use </span>std::cmp::Ordering;
@@ -9303,11 +9389,6 @@
             DayTime =&gt; <span class="bool-val">false</span>,
             MonthDayNano =&gt; <span class="bool-val">false</span>,
         },
-        (Int64, Interval(to_type)) =&gt; <span class="kw">match </span>to_type {
-            YearMonth =&gt; <span class="bool-val">false</span>,
-            DayTime =&gt; <span class="bool-val">true</span>,
-            MonthDayNano =&gt; <span class="bool-val">false</span>,
-        },
         (Duration(<span class="kw">_</span>), Interval(MonthDayNano)) =&gt; <span class="bool-val">true</span>,
         (Interval(MonthDayNano), Duration(<span class="kw">_</span>)) =&gt; <span class="bool-val">true</span>,
         (Interval(YearMonth), Interval(MonthDayNano)) =&gt; <span class="bool-val">true</span>,
@@ -9420,9 +9501,9 @@
     };
 
     <span class="kw">if </span>cast_options.safe {
-        <span class="kw">let </span>iter = array
-            .iter()
-            .map(|v| v.and_then(|v| (v &gt;&gt; <span class="number">64 </span>== <span class="number">0</span>).then_some((v <span class="kw">as </span>i64) / scale)));
+        <span class="kw">let </span>iter = array.iter().map(|v| {
+            v.and_then(|v| (v.days == <span class="number">0 </span>&amp;&amp; v.months == <span class="number">0</span>).then_some(v.nanoseconds / scale))
+        });
         <span class="prelude-val">Ok</span>(Arc::new(<span class="kw">unsafe </span>{
             PrimitiveArray::&lt;D&gt;::from_trusted_len_iter(iter)
         }))
@@ -9430,8 +9511,8 @@
         <span class="kw">let </span>vec = array
             .iter()
             .map(|v| {
-                v.map(|v| <span class="kw">match </span>v &gt;&gt; <span class="number">64 </span>{
-                    <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>((v <span class="kw">as </span>i64) / scale),
+                v.map(|v| <span class="kw">match </span>v.days == <span class="number">0 </span>&amp;&amp; v.months == <span class="number">0 </span>{
+                    <span class="bool-val">true </span>=&gt; <span class="prelude-val">Ok</span>((v.nanoseconds) / scale),
                     <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ArrowError::ComputeError(
                         <span class="string">"Cannot convert interval containing non-zero months or days to duration"
                             </span>.to_string(),
@@ -9470,9 +9551,12 @@
     };
 
     <span class="kw">if </span>cast_options.safe {
-        <span class="kw">let </span>iter = array
-            .iter()
-            .map(|v| v.and_then(|v| v.checked_mul(scale).map(|v| v <span class="kw">as </span>i128)));
+        <span class="kw">let </span>iter = array.iter().map(|v| {
+            v.and_then(|v| {
+                v.checked_mul(scale)
+                    .map(|v| IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">0</span>, v))
+            })
+        });
         <span class="prelude-val">Ok</span>(Arc::new(<span class="kw">unsafe </span>{
             PrimitiveArray::&lt;IntervalMonthDayNanoType&gt;::from_trusted_len_iter(iter)
         }))
@@ -9482,7 +9566,7 @@
             .map(|v| {
                 v.map(|v| {
                     <span class="kw">if let </span><span class="prelude-val">Ok</span>(v) = v.mul_checked(scale) {
-                        <span class="prelude-val">Ok</span>(v <span class="kw">as </span>i128)
+                        <span class="prelude-val">Ok</span>(IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">0</span>, v))
                     } <span class="kw">else </span>{
                         <span class="prelude-val">Err</span>(ArrowError::ComputeError(<span class="macro">format!</span>(
                             <span class="string">"Cannot cast to {:?}. Overflowing on {:?}"</span>,
@@ -9582,11 +9666,13 @@
     <span class="prelude-val">Ok</span>(Arc::new(array))
 }
 
-<span class="doccomment">/// Cast `array` to the provided data type and return a new Array with type `to_type`, if possible.
+<span class="doccomment">/// Try to cast `array` to `to_type` if possible.
 ///
-/// Accepts [`CastOptions`] to specify cast behavior.
+/// Returns a new Array with type `to_type` if possible.
 ///
-/// ## Behavior
+/// Accepts [`CastOptions`] to specify cast behavior. See also [`cast()`].
+///
+/// # Behavior
 /// * Boolean to Utf8: `true` =&gt; '1', `false` =&gt; `0`
 /// * Utf8 to boolean: `true`, `yes`, `on`, `1` =&gt; `true`, `false`, `no`, `off`, `0` =&gt; `false`,
 ///   short variants are accepted, other strings return null or error
@@ -9605,10 +9691,95 @@
 ///   (i.e. casting `6.4999` to Decimal(10, 1) becomes `6.5`). Prior to  version `26.0.0`,
 ///   casting would truncate instead (i.e. outputs `6.4` instead)
 ///
-/// Unsupported Casts
+/// Unsupported Casts (check with `can_cast_types` before calling):
 /// * To or from `StructArray`
 /// * List to primitive
 /// * Interval and duration
+///
+/// # Timestamps and Timezones
+///
+/// Timestamps are stored with an optional timezone in Arrow.
+///
+/// ## Casting timestamps to a timestamp without timezone / UTC
+/// ```
+/// # use arrow_array::Int64Array;
+/// # use arrow_array::types::TimestampSecondType;
+/// # use arrow_cast::{cast, display};
+/// # use arrow_array::cast::AsArray;
+/// # use arrow_schema::{DataType, TimeUnit};
+/// // can use "UTC" if chrono-tz feature is enabled, here use offset based timezone
+/// let data_type = DataType::Timestamp(TimeUnit::Second, None);
+/// let a = Int64Array::from(vec![1_000_000_000, 2_000_000_000, 3_000_000_000]);
+/// let b = cast(&amp;a, &amp;data_type).unwrap();
+/// let b = b.as_primitive::&lt;TimestampSecondType&gt;(); // downcast to result type
+/// assert_eq!(2_000_000_000, b.value(1)); // values are the same as the type has no timezone
+/// // use display to show them (note has no trailing Z)
+/// assert_eq!("2033-05-18T03:33:20", display::array_value_to_string(&amp;b, 1).unwrap());
+/// ```
+///
+/// ## Casting timestamps to a timestamp with timezone
+///
+/// Similarly to the previous example, if you cast numeric values to a timestamp
+/// with timezone, the cast kernel will not change the underlying values
+/// but display and other functions will interpret them as being in the provided timezone.
+///
+/// ```
+/// # use arrow_array::Int64Array;
+/// # use arrow_array::types::TimestampSecondType;
+/// # use arrow_cast::{cast, display};
+/// # use arrow_array::cast::AsArray;
+/// # use arrow_schema::{DataType, TimeUnit};
+/// // can use "Americas/New_York" if chrono-tz feature is enabled, here use offset based timezone
+/// let data_type = DataType::Timestamp(TimeUnit::Second, Some("-05:00".into()));
+/// let a = Int64Array::from(vec![1_000_000_000, 2_000_000_000, 3_000_000_000]);
+/// let b = cast(&amp;a, &amp;data_type).unwrap();
+/// let b = b.as_primitive::&lt;TimestampSecondType&gt;(); // downcast to result type
+/// assert_eq!(2_000_000_000, b.value(1)); // values are still the same
+/// // displayed in the target timezone (note the offset -05:00)
+/// assert_eq!("2033-05-17T22:33:20-05:00", display::array_value_to_string(&amp;b, 1).unwrap());
+/// ```
+/// # Casting timestamps without timezone to timestamps with timezone
+///
+/// When casting from a timestamp without timezone to a timestamp with
+/// timezone, the cast kernel interprets the timestamp values as being in
+/// the destination timezone and then adjusts the underlying value to UTC as required
+///
+/// However, note that when casting from a timestamp with timezone BACK to a
+/// timestamp without timezone the cast kernel does not adjust the values.
+///
+/// Thus round trip casting a timestamp without timezone to a timestamp with
+/// timezone and back to a timestamp without timezone results in different
+/// values than the starting values.
+///
+/// ```
+/// # use arrow_array::Int64Array;
+/// # use arrow_array::types::{TimestampSecondType};
+/// # use arrow_cast::{cast, display};
+/// # use arrow_array::cast::AsArray;
+/// # use arrow_schema::{DataType, TimeUnit};
+/// let data_type  = DataType::Timestamp(TimeUnit::Second, None);
+/// let data_type_tz = DataType::Timestamp(TimeUnit::Second, Some("-05:00".into()));
+/// let a = Int64Array::from(vec![1_000_000_000, 2_000_000_000, 3_000_000_000]);
+/// let b = cast(&amp;a, &amp;data_type).unwrap(); // cast to timestamp without timezone
+/// let b = b.as_primitive::&lt;TimestampSecondType&gt;(); // downcast to result type
+/// assert_eq!(2_000_000_000, b.value(1)); // values are still the same
+/// // displayed without a timezone (note lack of offset or Z)
+/// assert_eq!("2033-05-18T03:33:20", display::array_value_to_string(&amp;b, 1).unwrap());
+///
+/// // Convert timestamps without a timezone to timestamps with a timezone
+/// let c = cast(&amp;b, &amp;data_type_tz).unwrap();
+/// let c = c.as_primitive::&lt;TimestampSecondType&gt;(); // downcast to result type
+/// assert_eq!(2_000_018_000, c.value(1)); // value has been adjusted by offset
+/// // displayed with the target timezone offset (-05:00)
+/// assert_eq!("2033-05-18T03:33:20-05:00", display::array_value_to_string(&amp;c, 1).unwrap());
+///
+/// // Convert from timestamp with timezone back to timestamp without timezone
+/// let d = cast(&amp;c, &amp;data_type).unwrap();
+/// let d = d.as_primitive::&lt;TimestampSecondType&gt;(); // downcast to result type
+/// assert_eq!(2_000_018_000, d.value(1)); // value has not been adjusted
+/// // NOTE: the timestamp is adjusted (08:33:20 instead of 03:33:20 as in previous example)
+/// assert_eq!("2033-05-18T08:33:20", display::array_value_to_string(&amp;d, 1).unwrap());
+/// ```
 </span><span class="kw">pub fn </span>cast_with_options(
     array: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Array,
     to_type: <span class="kw-2">&amp;</span>DataType,
@@ -10601,7 +10772,7 @@
             <span class="kw">let </span>array = cast_with_options(array, <span class="kw-2">&amp;</span>Int64, cast_options)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(make_timestamp_array(
                 array.as_primitive(),
-                unit.clone(),
+                <span class="kw-2">*</span>unit,
                 tz.clone(),
             ))
         }
@@ -10662,11 +10833,7 @@
                 }
                 <span class="kw">_ </span>=&gt; converted,
             };
-            <span class="prelude-val">Ok</span>(make_timestamp_array(
-                <span class="kw-2">&amp;</span>adjusted,
-                to_unit.clone(),
-                to_tz.clone(),
-            ))
+            <span class="prelude-val">Ok</span>(make_timestamp_array(<span class="kw-2">&amp;</span>adjusted, <span class="kw-2">*</span>to_unit, to_tz.clone()))
         }
         (Timestamp(TimeUnit::Microsecond, <span class="kw">_</span>), Date32) =&gt; {
             timestamp_to_date32(array.as_primitive::&lt;TimestampMicrosecondType&gt;())
@@ -10990,17 +11157,8 @@
         (Interval(IntervalUnit::DayTime), Interval(IntervalUnit::MonthDayNano)) =&gt; {
             cast_interval_day_time_to_interval_month_day_nano(array, cast_options)
         }
-        (Interval(IntervalUnit::YearMonth), Int64) =&gt; {
-            cast_numeric_arrays::&lt;IntervalYearMonthType, Int64Type&gt;(array, cast_options)
-        }
-        (Interval(IntervalUnit::DayTime), Int64) =&gt; {
-            cast_reinterpret_arrays::&lt;IntervalDayTimeType, Int64Type&gt;(array)
-        }
         (Int32, Interval(IntervalUnit::YearMonth)) =&gt; {
             cast_reinterpret_arrays::&lt;Int32Type, IntervalYearMonthType&gt;(array)
-        }
-        (Int64, Interval(IntervalUnit::DayTime)) =&gt; {
-            cast_reinterpret_arrays::&lt;Int64Type, IntervalDayTimeType&gt;(array)
         }
         (<span class="kw">_</span>, <span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(ArrowError::CastError(<span class="macro">format!</span>(
             <span class="string">"Casting from {from_type:?} to {to_type:?} not supported"</span>,
@@ -11295,47 +11453,29 @@
     FROM::Offset: OffsetSizeTrait + ToPrimitive,
     V: ByteViewType,
 {
-    <span class="kw">let </span>data = array.to_data();
-    <span class="macro">assert_eq!</span>(data.data_type(), <span class="kw-2">&amp;</span>FROM::DATA_TYPE);
-
+    <span class="kw">let </span>byte_array: <span class="kw-2">&amp;</span>GenericByteArray&lt;FROM&gt; = array.as_bytes();
     <span class="kw">let </span>len = array.len();
-    <span class="kw">let </span>str_values_buf = data.buffers()[<span class="number">1</span>].clone();
-    <span class="kw">let </span>offsets = data.buffers()[<span class="number">0</span>].typed_data::&lt;FROM::Offset&gt;();
+    <span class="kw">let </span>str_values_buf = byte_array.values().clone();
+    <span class="kw">let </span>offsets = byte_array.offsets();
 
-    <span class="kw">let </span><span class="kw-2">mut </span>views_builder = BufferBuilder::&lt;u128&gt;::new(len);
-    <span class="kw">for </span>w <span class="kw">in </span>offsets.windows(<span class="number">2</span>) {
+    <span class="kw">let </span><span class="kw-2">mut </span>views_builder = GenericByteViewBuilder::&lt;V&gt;::with_capacity(len);
+    <span class="kw">let </span>block = views_builder.append_block(str_values_buf);
+    <span class="kw">for </span>(i, w) <span class="kw">in </span>offsets.windows(<span class="number">2</span>).enumerate() {
         <span class="kw">let </span>offset = w[<span class="number">0</span>].to_u32().unwrap();
         <span class="kw">let </span>end = w[<span class="number">1</span>].to_u32().unwrap();
-        <span class="kw">let </span>value_buf = <span class="kw-2">&amp;</span>str_values_buf[offset <span class="kw">as </span>usize..end <span class="kw">as </span>usize];
         <span class="kw">let </span>length = end - offset;
 
-        <span class="kw">if </span>length &lt;= <span class="number">12 </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>view_buffer = [<span class="number">0</span>; <span class="number">16</span>];
-            view_buffer[<span class="number">0</span>..<span class="number">4</span>].copy_from_slice(<span class="kw-2">&amp;</span>length.to_le_bytes());
-            view_buffer[<span class="number">4</span>..<span class="number">4 </span>+ value_buf.len()].copy_from_slice(value_buf);
-            views_builder.append(u128::from_le_bytes(view_buffer));
+        <span class="kw">if </span>byte_array.is_null(i) {
+            views_builder.append_null();
         } <span class="kw">else </span>{
-            <span class="kw">let </span>view = ByteView {
-                length,
-                prefix: u32::from_le_bytes(value_buf[<span class="number">0</span>..<span class="number">4</span>].try_into().unwrap()),
-                buffer_index: <span class="number">0</span>,
-                offset,
-            };
-            views_builder.append(view.into());
+            <span class="comment">// Safety: the input was a valid array so it valid UTF8 (if string). And
+            // all offsets were valid and we created the views correctly
+            </span><span class="kw">unsafe </span>{ views_builder.append_view_unchecked(block, offset, length) }
         }
     }
 
     <span class="macro">assert_eq!</span>(views_builder.len(), len);
-
-    <span class="comment">// Safety: the input was a valid array so it valid UTF8 (if string). And
-    // all offsets were valid and we created the views correctly
-    </span><span class="prelude-val">Ok</span>(Arc::new(<span class="kw">unsafe </span>{
-        GenericByteViewArray::&lt;V&gt;::new_unchecked(
-            ScalarBuffer::new(views_builder.finish(), <span class="number">0</span>, len),
-            <span class="macro">vec!</span>[str_values_buf],
-            data.nulls().cloned(),
-        )
-    }))
+    <span class="prelude-val">Ok</span>(Arc::new(views_builder.finish()))
 }
 
 <span class="doccomment">/// Helper function to cast from one `ByteViewType` array to `ByteArrayType` array.
@@ -11366,7 +11506,7 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
-    <span class="kw">use </span>arrow_buffer::{Buffer, NullBuffer};
+    <span class="kw">use </span>arrow_buffer::{Buffer, IntervalDayTime, NullBuffer};
     <span class="kw">use </span>chrono::NaiveDate;
     <span class="kw">use </span>half::f16;
 
@@ -12970,7 +13110,7 @@
                 TimeUnit::Microsecond,
                 TimeUnit::Nanosecond,
             ] {
-                <span class="kw">let </span>to_type = DataType::Timestamp(time_unit.clone(), <span class="prelude-val">None</span>);
+                <span class="kw">let </span>to_type = DataType::Timestamp(<span class="kw-2">*</span>time_unit, <span class="prelude-val">None</span>);
                 <span class="kw">let </span>b = cast(array, <span class="kw-2">&amp;</span>to_type).unwrap();
 
                 <span class="kw">match </span>time_unit {
@@ -14091,25 +14231,6 @@
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_cast_interval_to_i64() {
-        <span class="kw">let </span>base = <span class="macro">vec!</span>[<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
-
-        <span class="kw">let </span>interval_arrays = <span class="macro">vec!</span>[
-            Arc::new(IntervalDayTimeArray::from(base.clone())) <span class="kw">as </span>ArrayRef,
-            Arc::new(IntervalYearMonthArray::from(
-                base.iter().map(|x| <span class="kw-2">*</span>x <span class="kw">as </span>i32).collect::&lt;Vec&lt;i32&gt;&gt;(),
-            )) <span class="kw">as </span>ArrayRef,
-        ];
-
-        <span class="kw">for </span>arr <span class="kw">in </span>interval_arrays {
-            <span class="macro">assert!</span>(can_cast_types(arr.data_type(), <span class="kw-2">&amp;</span>DataType::Int64));
-            <span class="kw">let </span>result = cast(<span class="kw-2">&amp;</span>arr, <span class="kw-2">&amp;</span>DataType::Int64).unwrap();
-            <span class="kw">let </span>result = result.as_primitive::&lt;Int64Type&gt;();
-            <span class="macro">assert_eq!</span>(base.as_slice(), result.values());
-        }
-    }
-
-    <span class="attr">#[test]
     </span><span class="kw">fn </span>test_cast_to_strings() {
         <span class="kw">let </span>a = Int32Array::from(<span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
         <span class="kw">let </span>out = cast(<span class="kw-2">&amp;</span>a, <span class="kw-2">&amp;</span>DataType::Utf8).unwrap();
@@ -14176,19 +14297,19 @@
         _test_string_to_view::&lt;i64&gt;();
     }
 
+    <span class="kw">const </span>VIEW_TEST_DATA: [<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;; <span class="number">5</span>] = [
+        <span class="prelude-val">Some</span>(<span class="string">"hello"</span>),
+        <span class="prelude-val">Some</span>(<span class="string">"repeated"</span>),
+        <span class="prelude-val">None</span>,
+        <span class="prelude-val">Some</span>(<span class="string">"large payload over 12 bytes"</span>),
+        <span class="prelude-val">Some</span>(<span class="string">"repeated"</span>),
+    ];
+
     <span class="kw">fn </span>_test_string_to_view&lt;O&gt;()
     <span class="kw">where
         </span>O: OffsetSizeTrait,
     {
-        <span class="kw">let </span>data = <span class="macro">vec!</span>[
-            <span class="prelude-val">Some</span>(<span class="string">"hello"</span>),
-            <span class="prelude-val">Some</span>(<span class="string">"world"</span>),
-            <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="string">"large payload over 12 bytes"</span>),
-            <span class="prelude-val">Some</span>(<span class="string">"lulu"</span>),
-        ];
-
-        <span class="kw">let </span>string_array = GenericStringArray::&lt;O&gt;::from(data.clone());
+        <span class="kw">let </span>string_array = GenericStringArray::&lt;O&gt;::from_iter(VIEW_TEST_DATA);
 
         <span class="macro">assert!</span>(can_cast_types(
             string_array.data_type(),
@@ -14198,7 +14319,7 @@
         <span class="kw">let </span>string_view_array = cast(<span class="kw-2">&amp;</span>string_array, <span class="kw-2">&amp;</span>DataType::Utf8View).unwrap();
         <span class="macro">assert_eq!</span>(string_view_array.data_type(), <span class="kw-2">&amp;</span>DataType::Utf8View);
 
-        <span class="kw">let </span>expect_string_view_array = StringViewArray::from(data);
+        <span class="kw">let </span>expect_string_view_array = StringViewArray::from_iter(VIEW_TEST_DATA);
         <span class="macro">assert_eq!</span>(string_view_array.as_ref(), <span class="kw-2">&amp;</span>expect_string_view_array);
     }
 
@@ -14212,15 +14333,7 @@
     <span class="kw">where
         </span>O: OffsetSizeTrait,
     {
-        <span class="kw">let </span>data: Vec&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;&gt; = <span class="macro">vec!</span>[
-            <span class="prelude-val">Some</span>(<span class="string">b"hello"</span>),
-            <span class="prelude-val">Some</span>(<span class="string">b"world"</span>),
-            <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="string">b"large payload over 12 bytes"</span>),
-            <span class="prelude-val">Some</span>(<span class="string">b"lulu"</span>),
-        ];
-
-        <span class="kw">let </span>binary_array = GenericBinaryArray::&lt;O&gt;::from(data.clone());
+        <span class="kw">let </span>binary_array = GenericBinaryArray::&lt;O&gt;::from_iter(VIEW_TEST_DATA);
 
         <span class="macro">assert!</span>(can_cast_types(
             binary_array.data_type(),
@@ -14230,8 +14343,66 @@
         <span class="kw">let </span>binary_view_array = cast(<span class="kw-2">&amp;</span>binary_array, <span class="kw-2">&amp;</span>DataType::BinaryView).unwrap();
         <span class="macro">assert_eq!</span>(binary_view_array.data_type(), <span class="kw-2">&amp;</span>DataType::BinaryView);
 
-        <span class="kw">let </span>expect_binary_view_array = BinaryViewArray::from(data);
+        <span class="kw">let </span>expect_binary_view_array = BinaryViewArray::from_iter(VIEW_TEST_DATA);
         <span class="macro">assert_eq!</span>(binary_view_array.as_ref(), <span class="kw-2">&amp;</span>expect_binary_view_array);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_dict_to_view() {
+        <span class="kw">let </span>values = StringArray::from_iter(VIEW_TEST_DATA);
+        <span class="kw">let </span>keys = Int8Array::from_iter([<span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">0</span>), <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="number">3</span>), <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">4</span>)]);
+        <span class="kw">let </span>string_dict_array =
+            DictionaryArray::&lt;Int8Type&gt;::try_new(keys, Arc::new(values)).unwrap();
+        <span class="kw">let </span>typed_dict = string_dict_array.downcast_dict::&lt;StringArray&gt;().unwrap();
+
+        <span class="kw">let </span>string_view_array = {
+            <span class="kw">let </span><span class="kw-2">mut </span>builder = StringViewBuilder::new().with_block_size(<span class="number">8</span>); <span class="comment">// multiple buffers.
+            </span><span class="kw">for </span>v <span class="kw">in </span>typed_dict.into_iter() {
+                builder.append_option(v);
+            }
+            builder.finish()
+        };
+        <span class="kw">let </span>expected_string_array_type = string_view_array.data_type();
+        <span class="kw">let </span>casted_string_array = cast(<span class="kw-2">&amp;</span>string_dict_array, expected_string_array_type).unwrap();
+        <span class="macro">assert_eq!</span>(casted_string_array.data_type(), expected_string_array_type);
+        <span class="macro">assert_eq!</span>(casted_string_array.as_ref(), <span class="kw-2">&amp;</span>string_view_array);
+
+        <span class="kw">let </span>binary_buffer = cast(<span class="kw-2">&amp;</span>typed_dict.values(), <span class="kw-2">&amp;</span>DataType::Binary).unwrap();
+        <span class="kw">let </span>binary_dict_array =
+            DictionaryArray::&lt;Int8Type&gt;::new(typed_dict.keys().clone(), binary_buffer);
+        <span class="kw">let </span>typed_binary_dict = binary_dict_array.downcast_dict::&lt;BinaryArray&gt;().unwrap();
+
+        <span class="kw">let </span>binary_view_array = {
+            <span class="kw">let </span><span class="kw-2">mut </span>builder = BinaryViewBuilder::new().with_block_size(<span class="number">8</span>); <span class="comment">// multiple buffers.
+            </span><span class="kw">for </span>v <span class="kw">in </span>typed_binary_dict.into_iter() {
+                builder.append_option(v);
+            }
+            builder.finish()
+        };
+        <span class="kw">let </span>expected_binary_array_type = binary_view_array.data_type();
+        <span class="kw">let </span>casted_binary_array = cast(<span class="kw-2">&amp;</span>binary_dict_array, expected_binary_array_type).unwrap();
+        <span class="macro">assert_eq!</span>(casted_binary_array.data_type(), expected_binary_array_type);
+        <span class="macro">assert_eq!</span>(casted_binary_array.as_ref(), <span class="kw-2">&amp;</span>binary_view_array);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_view_to_dict() {
+        <span class="kw">let </span>string_view_array = StringViewArray::from_iter(VIEW_TEST_DATA);
+        <span class="kw">let </span>string_dict_array: DictionaryArray&lt;Int8Type&gt; = VIEW_TEST_DATA.into_iter().collect();
+        <span class="kw">let </span>casted_type = string_dict_array.data_type();
+        <span class="kw">let </span>casted_dict_array = cast(<span class="kw-2">&amp;</span>string_view_array, casted_type).unwrap();
+        <span class="macro">assert_eq!</span>(casted_dict_array.data_type(), casted_type);
+        <span class="macro">assert_eq!</span>(casted_dict_array.as_ref(), <span class="kw-2">&amp;</span>string_dict_array);
+
+        <span class="kw">let </span>binary_view_array = BinaryViewArray::from_iter(VIEW_TEST_DATA);
+        <span class="kw">let </span>binary_dict_array = string_dict_array.downcast_dict::&lt;StringArray&gt;().unwrap();
+        <span class="kw">let </span>binary_buffer = cast(<span class="kw-2">&amp;</span>binary_dict_array.values(), <span class="kw-2">&amp;</span>DataType::Binary).unwrap();
+        <span class="kw">let </span>binary_dict_array =
+            DictionaryArray::&lt;Int8Type&gt;::new(binary_dict_array.keys().clone(), binary_buffer);
+        <span class="kw">let </span>casted_type = binary_dict_array.data_type();
+        <span class="kw">let </span>casted_binary_array = cast(<span class="kw-2">&amp;</span>binary_view_array, casted_type).unwrap();
+        <span class="macro">assert_eq!</span>(casted_binary_array.data_type(), casted_type);
+        <span class="macro">assert_eq!</span>(casted_binary_array.as_ref(), <span class="kw-2">&amp;</span>binary_dict_array);
     }
 
     <span class="attr">#[test]
@@ -14244,24 +14415,15 @@
     <span class="kw">where
         </span>O: OffsetSizeTrait,
     {
-        <span class="kw">let </span>data: Vec&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;&gt; = <span class="macro">vec!</span>[
-            <span class="prelude-val">Some</span>(<span class="string">"hello"</span>),
-            <span class="prelude-val">Some</span>(<span class="string">"world"</span>),
-            <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="string">"large payload over 12 bytes"</span>),
-            <span class="prelude-val">Some</span>(<span class="string">"lulu"</span>),
-        ];
-
         <span class="kw">let </span>view_array = {
-            <span class="comment">// ["hello", "world", null, "large payload over 12 bytes", "lulu"]
-            </span><span class="kw">let </span><span class="kw-2">mut </span>builder = StringViewBuilder::new().with_block_size(<span class="number">8</span>); <span class="comment">// multiple buffers.
-            </span><span class="kw">for </span>s <span class="kw">in </span>data.iter() {
+            <span class="kw">let </span><span class="kw-2">mut </span>builder = StringViewBuilder::new().with_block_size(<span class="number">8</span>); <span class="comment">// multiple buffers.
+            </span><span class="kw">for </span>s <span class="kw">in </span>VIEW_TEST_DATA.iter() {
                 builder.append_option(<span class="kw-2">*</span>s);
             }
             builder.finish()
         };
 
-        <span class="kw">let </span>expected_string_array = GenericStringArray::&lt;O&gt;::from(data);
+        <span class="kw">let </span>expected_string_array = GenericStringArray::&lt;O&gt;::from_iter(VIEW_TEST_DATA);
         <span class="kw">let </span>expected_type = expected_string_array.data_type();
 
         <span class="macro">assert!</span>(can_cast_types(view_array.data_type(), expected_type));
@@ -14282,24 +14444,15 @@
     <span class="kw">where
         </span>O: OffsetSizeTrait,
     {
-        <span class="kw">let </span>data: Vec&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;&gt; = <span class="macro">vec!</span>[
-            <span class="prelude-val">Some</span>(<span class="string">b"hello"</span>),
-            <span class="prelude-val">Some</span>(<span class="string">b"world"</span>),
-            <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="string">b"large payload over 12 bytes"</span>),
-            <span class="prelude-val">Some</span>(<span class="string">b"lulu"</span>),
-        ];
-
         <span class="kw">let </span>view_array = {
-            <span class="comment">// ["hello", "world", null, "large payload over 12 bytes", "lulu"]
-            </span><span class="kw">let </span><span class="kw-2">mut </span>builder = BinaryViewBuilder::new().with_block_size(<span class="number">8</span>); <span class="comment">// multiple buffers.
-            </span><span class="kw">for </span>s <span class="kw">in </span>data.iter() {
+            <span class="kw">let </span><span class="kw-2">mut </span>builder = BinaryViewBuilder::new().with_block_size(<span class="number">8</span>); <span class="comment">// multiple buffers.
+            </span><span class="kw">for </span>s <span class="kw">in </span>VIEW_TEST_DATA.iter() {
                 builder.append_option(<span class="kw-2">*</span>s);
             }
             builder.finish()
         };
 
-        <span class="kw">let </span>expected_binary_array = GenericBinaryArray::&lt;O&gt;::from(data);
+        <span class="kw">let </span>expected_binary_array = GenericBinaryArray::&lt;O&gt;::from_iter(VIEW_TEST_DATA);
         <span class="kw">let </span>expected_type = expected_binary_array.data_type();
 
         <span class="macro">assert!</span>(can_cast_types(view_array.data_type(), expected_type));
@@ -17517,7 +17670,10 @@
             casted_array.data_type(),
             <span class="kw-2">&amp;</span>DataType::Interval(IntervalUnit::MonthDayNano)
         );
-        <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">1234567000000000</span>);
+        <span class="macro">assert_eq!</span>(
+            casted_array.value(<span class="number">0</span>),
+            IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1234567000000000</span>)
+        );
 
         <span class="kw">let </span>array = <span class="macro">vec!</span>[i64::MAX];
         <span class="kw">let </span>casted_array = cast_from_duration_to_interval::&lt;DurationSecondType&gt;(
@@ -17547,7 +17703,10 @@
             casted_array.data_type(),
             <span class="kw-2">&amp;</span>DataType::Interval(IntervalUnit::MonthDayNano)
         );
-        <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">1234567000000</span>);
+        <span class="macro">assert_eq!</span>(
+            casted_array.value(<span class="number">0</span>),
+            IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1234567000000</span>)
+        );
 
         <span class="kw">let </span>array = <span class="macro">vec!</span>[i64::MAX];
         <span class="kw">let </span>casted_array = cast_from_duration_to_interval::&lt;DurationMillisecondType&gt;(
@@ -17577,7 +17736,10 @@
             casted_array.data_type(),
             <span class="kw-2">&amp;</span>DataType::Interval(IntervalUnit::MonthDayNano)
         );
-        <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">1234567000</span>);
+        <span class="macro">assert_eq!</span>(
+            casted_array.value(<span class="number">0</span>),
+            IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1234567000</span>)
+        );
 
         <span class="kw">let </span>array = <span class="macro">vec!</span>[i64::MAX];
         <span class="kw">let </span>casted_array = cast_from_duration_to_interval::&lt;DurationMicrosecondType&gt;(
@@ -17607,7 +17769,10 @@
             casted_array.data_type(),
             <span class="kw-2">&amp;</span>DataType::Interval(IntervalUnit::MonthDayNano)
         );
-        <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">1234567</span>);
+        <span class="macro">assert_eq!</span>(
+            casted_array.value(<span class="number">0</span>),
+            IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1234567</span>)
+        );
 
         <span class="kw">let </span>array = <span class="macro">vec!</span>[i64::MAX];
         <span class="kw">let </span>casted_array = cast_from_duration_to_interval::&lt;DurationNanosecondType&gt;(
@@ -17618,7 +17783,10 @@
             },
         )
         .unwrap();
-        <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">9223372036854775807</span>);
+        <span class="macro">assert_eq!</span>(
+            casted_array.value(<span class="number">0</span>),
+            IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">0</span>, i64::MAX)
+        );
     }
 
     <span class="doccomment">/// helper function to test casting from interval to duration
@@ -17643,14 +17811,15 @@
             safe: <span class="bool-val">false</span>,
             format_options: FormatOptions::default(),
         };
+        <span class="kw">let </span>v = IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1234567</span>);
 
         <span class="comment">// from interval month day nano to duration second
-        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[<span class="number">1234567</span>].into();
+        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[v].into();
         <span class="kw">let </span>casted_array: DurationSecondArray =
             cast_from_interval_to_duration(<span class="kw-2">&amp;</span>array, <span class="kw-2">&amp;</span>nullable).unwrap();
         <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">0</span>);
 
-        <span class="kw">let </span>array = <span class="macro">vec!</span>[i128::MAX].into();
+        <span class="kw">let </span>array = <span class="macro">vec!</span>[IntervalMonthDayNano::MAX].into();
         <span class="kw">let </span>casted_array: DurationSecondArray =
             cast_from_interval_to_duration(<span class="kw-2">&amp;</span>array, <span class="kw-2">&amp;</span>nullable).unwrap();
         <span class="macro">assert!</span>(!casted_array.is_valid(<span class="number">0</span>));
@@ -17659,12 +17828,12 @@
         <span class="macro">assert!</span>(res.is_err());
 
         <span class="comment">// from interval month day nano to duration millisecond
-        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[<span class="number">1234567</span>].into();
+        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[v].into();
         <span class="kw">let </span>casted_array: DurationMillisecondArray =
             cast_from_interval_to_duration(<span class="kw-2">&amp;</span>array, <span class="kw-2">&amp;</span>nullable).unwrap();
         <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">1</span>);
 
-        <span class="kw">let </span>array = <span class="macro">vec!</span>[i128::MAX].into();
+        <span class="kw">let </span>array = <span class="macro">vec!</span>[IntervalMonthDayNano::MAX].into();
         <span class="kw">let </span>casted_array: DurationMillisecondArray =
             cast_from_interval_to_duration(<span class="kw-2">&amp;</span>array, <span class="kw-2">&amp;</span>nullable).unwrap();
         <span class="macro">assert!</span>(!casted_array.is_valid(<span class="number">0</span>));
@@ -17673,12 +17842,12 @@
         <span class="macro">assert!</span>(res.is_err());
 
         <span class="comment">// from interval month day nano to duration microsecond
-        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[<span class="number">1234567</span>].into();
+        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[v].into();
         <span class="kw">let </span>casted_array: DurationMicrosecondArray =
             cast_from_interval_to_duration(<span class="kw-2">&amp;</span>array, <span class="kw-2">&amp;</span>nullable).unwrap();
         <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">1234</span>);
 
-        <span class="kw">let </span>array = <span class="macro">vec!</span>[i128::MAX].into();
+        <span class="kw">let </span>array = <span class="macro">vec!</span>[IntervalMonthDayNano::MAX].into();
         <span class="kw">let </span>casted_array =
             cast_from_interval_to_duration::&lt;DurationMicrosecondType&gt;(<span class="kw-2">&amp;</span>array, <span class="kw-2">&amp;</span>nullable).unwrap();
         <span class="macro">assert!</span>(!casted_array.is_valid(<span class="number">0</span>));
@@ -17688,12 +17857,12 @@
         <span class="macro">assert!</span>(casted_array.is_err());
 
         <span class="comment">// from interval month day nano to duration nanosecond
-        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[<span class="number">1234567</span>].into();
+        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[v].into();
         <span class="kw">let </span>casted_array: DurationNanosecondArray =
             cast_from_interval_to_duration(<span class="kw-2">&amp;</span>array, <span class="kw-2">&amp;</span>nullable).unwrap();
         <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">1234567</span>);
 
-        <span class="kw">let </span>array = <span class="macro">vec!</span>[i128::MAX].into();
+        <span class="kw">let </span>array = <span class="macro">vec!</span>[IntervalMonthDayNano::MAX].into();
         <span class="kw">let </span>casted_array: DurationNanosecondArray =
             cast_from_interval_to_duration(<span class="kw-2">&amp;</span>array, <span class="kw-2">&amp;</span>nullable).unwrap();
         <span class="macro">assert!</span>(!casted_array.is_valid(<span class="number">0</span>));
@@ -17756,12 +17925,15 @@
             casted_array.data_type(),
             <span class="kw-2">&amp;</span>DataType::Interval(IntervalUnit::MonthDayNano)
         );
-        <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">97812474910747780469848774134464512</span>);
+        <span class="macro">assert_eq!</span>(
+            casted_array.value(<span class="number">0</span>),
+            IntervalMonthDayNano::new(<span class="number">1234567</span>, <span class="number">0</span>, <span class="number">0</span>)
+        );
     }
 
     <span class="doccomment">/// helper function to test casting from interval day time to interval month day nano
     </span><span class="kw">fn </span>cast_from_interval_day_time_to_interval_month_day_nano(
-        array: Vec&lt;i64&gt;,
+        array: Vec&lt;IntervalDayTime&gt;,
         cast_options: <span class="kw-2">&amp;</span>CastOptions,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;PrimitiveArray&lt;IntervalMonthDayNanoType&gt;, ArrowError&gt; {
         <span class="kw">let </span>array = PrimitiveArray::&lt;IntervalDayTimeType&gt;::from(array);
@@ -17779,7 +17951,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_cast_from_interval_day_time_to_interval_month_day_nano() {
         <span class="comment">// from interval day time to interval month day nano
-        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[<span class="number">123</span>];
+        </span><span class="kw">let </span>array = <span class="macro">vec!</span>[IntervalDayTime::new(<span class="number">123</span>, <span class="number">0</span>)];
         <span class="kw">let </span>casted_array =
             cast_from_interval_day_time_to_interval_month_day_nano(array, <span class="kw-2">&amp;</span>CastOptions::default())
                 .unwrap();
@@ -17787,7 +17959,7 @@
             casted_array.data_type(),
             <span class="kw-2">&amp;</span>DataType::Interval(IntervalUnit::MonthDayNano)
         );
-        <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), <span class="number">123000000</span>);
+        <span class="macro">assert_eq!</span>(casted_array.value(<span class="number">0</span>), IntervalMonthDayNano::new(<span class="number">0</span>, <span class="number">123</span>, <span class="number">0</span>));
     }
 
     <span class="attr">#[test]

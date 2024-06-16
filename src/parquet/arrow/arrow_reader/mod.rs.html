@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parquet/src/arrow/arrow_reader/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="parquet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parquet/src/arrow/arrow_reader/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="parquet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -3275,6 +3275,100 @@
 <a href="#3275" id="3275">3275</a>
 <a href="#3276" id="3276">3276</a>
 <a href="#3277" id="3277">3277</a>
+<a href="#3278" id="3278">3278</a>
+<a href="#3279" id="3279">3279</a>
+<a href="#3280" id="3280">3280</a>
+<a href="#3281" id="3281">3281</a>
+<a href="#3282" id="3282">3282</a>
+<a href="#3283" id="3283">3283</a>
+<a href="#3284" id="3284">3284</a>
+<a href="#3285" id="3285">3285</a>
+<a href="#3286" id="3286">3286</a>
+<a href="#3287" id="3287">3287</a>
+<a href="#3288" id="3288">3288</a>
+<a href="#3289" id="3289">3289</a>
+<a href="#3290" id="3290">3290</a>
+<a href="#3291" id="3291">3291</a>
+<a href="#3292" id="3292">3292</a>
+<a href="#3293" id="3293">3293</a>
+<a href="#3294" id="3294">3294</a>
+<a href="#3295" id="3295">3295</a>
+<a href="#3296" id="3296">3296</a>
+<a href="#3297" id="3297">3297</a>
+<a href="#3298" id="3298">3298</a>
+<a href="#3299" id="3299">3299</a>
+<a href="#3300" id="3300">3300</a>
+<a href="#3301" id="3301">3301</a>
+<a href="#3302" id="3302">3302</a>
+<a href="#3303" id="3303">3303</a>
+<a href="#3304" id="3304">3304</a>
+<a href="#3305" id="3305">3305</a>
+<a href="#3306" id="3306">3306</a>
+<a href="#3307" id="3307">3307</a>
+<a href="#3308" id="3308">3308</a>
+<a href="#3309" id="3309">3309</a>
+<a href="#3310" id="3310">3310</a>
+<a href="#3311" id="3311">3311</a>
+<a href="#3312" id="3312">3312</a>
+<a href="#3313" id="3313">3313</a>
+<a href="#3314" id="3314">3314</a>
+<a href="#3315" id="3315">3315</a>
+<a href="#3316" id="3316">3316</a>
+<a href="#3317" id="3317">3317</a>
+<a href="#3318" id="3318">3318</a>
+<a href="#3319" id="3319">3319</a>
+<a href="#3320" id="3320">3320</a>
+<a href="#3321" id="3321">3321</a>
+<a href="#3322" id="3322">3322</a>
+<a href="#3323" id="3323">3323</a>
+<a href="#3324" id="3324">3324</a>
+<a href="#3325" id="3325">3325</a>
+<a href="#3326" id="3326">3326</a>
+<a href="#3327" id="3327">3327</a>
+<a href="#3328" id="3328">3328</a>
+<a href="#3329" id="3329">3329</a>
+<a href="#3330" id="3330">3330</a>
+<a href="#3331" id="3331">3331</a>
+<a href="#3332" id="3332">3332</a>
+<a href="#3333" id="3333">3333</a>
+<a href="#3334" id="3334">3334</a>
+<a href="#3335" id="3335">3335</a>
+<a href="#3336" id="3336">3336</a>
+<a href="#3337" id="3337">3337</a>
+<a href="#3338" id="3338">3338</a>
+<a href="#3339" id="3339">3339</a>
+<a href="#3340" id="3340">3340</a>
+<a href="#3341" id="3341">3341</a>
+<a href="#3342" id="3342">3342</a>
+<a href="#3343" id="3343">3343</a>
+<a href="#3344" id="3344">3344</a>
+<a href="#3345" id="3345">3345</a>
+<a href="#3346" id="3346">3346</a>
+<a href="#3347" id="3347">3347</a>
+<a href="#3348" id="3348">3348</a>
+<a href="#3349" id="3349">3349</a>
+<a href="#3350" id="3350">3350</a>
+<a href="#3351" id="3351">3351</a>
+<a href="#3352" id="3352">3352</a>
+<a href="#3353" id="3353">3353</a>
+<a href="#3354" id="3354">3354</a>
+<a href="#3355" id="3355">3355</a>
+<a href="#3356" id="3356">3356</a>
+<a href="#3357" id="3357">3357</a>
+<a href="#3358" id="3358">3358</a>
+<a href="#3359" id="3359">3359</a>
+<a href="#3360" id="3360">3360</a>
+<a href="#3361" id="3361">3361</a>
+<a href="#3362" id="3362">3362</a>
+<a href="#3363" id="3363">3363</a>
+<a href="#3364" id="3364">3364</a>
+<a href="#3365" id="3365">3365</a>
+<a href="#3366" id="3366">3366</a>
+<a href="#3367" id="3367">3367</a>
+<a href="#3368" id="3368">3368</a>
+<a href="#3369" id="3369">3369</a>
+<a href="#3370" id="3370">3370</a>
+<a href="#3371" id="3371">3371</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -3321,14 +3415,14 @@
 <span class="kw">pub use </span>filter::{ArrowPredicate, ArrowPredicateFn, RowFilter};
 <span class="kw">pub use </span>selection::{RowSelection, RowSelector};
 
-<span class="doccomment">/// A generic builder for constructing sync or async arrow parquet readers. This is not intended
-/// to be used directly, instead you should use the specialization for the type of reader
-/// you wish to use
+<span class="doccomment">/// Builder for constructing parquet readers into arrow.
 ///
-/// * For a synchronous API - [`ParquetRecordBatchReaderBuilder`]
-/// * For an asynchronous API - [`ParquetRecordBatchStreamBuilder`]
+/// Most users should use one of the following specializations:
 ///
-/// [`ParquetRecordBatchStreamBuilder`]: crate::arrow::async_reader::ParquetRecordBatchStreamBuilder
+/// * synchronous API: [`ParquetRecordBatchReaderBuilder::try_new`]
+/// * `async` API: [`ParquetRecordBatchStreamBuilder::new`]
+///
+/// [`ParquetRecordBatchStreamBuilder::new`]: crate::arrow::async_reader::ParquetRecordBatchStreamBuilder::new
 </span><span class="kw">pub struct </span>ArrowReaderBuilder&lt;T&gt; {
     <span class="kw">pub</span>(<span class="kw">crate</span>) input: T,
 
@@ -3394,6 +3488,8 @@
     }
 
     <span class="doccomment">/// Only read data from the provided row group indexes
+    ///
+    /// This is also called row group filtering
     </span><span class="kw">pub fn </span>with_row_groups(<span class="self">self</span>, row_groups: Vec&lt;usize&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             row_groups: <span class="prelude-val">Some</span>(row_groups),
@@ -3412,14 +3508,60 @@
     <span class="doccomment">/// Provide a [`RowSelection`] to filter out rows, and avoid fetching their
     /// data into memory.
     ///
-    /// Row group filtering is applied prior to this, and therefore rows from skipped
-    /// row groups should not be included in the [`RowSelection`]
+    /// This feature is used to restrict which rows are decoded within row
+    /// groups, skipping ranges of rows that are not needed. Such selections
+    /// could be determined by evaluating predicates against the parquet page
+    /// [`Index`] or some other external information available to a query
+    /// engine.
     ///
-    /// An example use case of this would be applying a selection determined by
-    /// evaluating predicates against the [`Index`]
+    /// # Notes
     ///
-    /// It is recommended to enable reading the page index if using this functionality, to allow
-    /// more efficient skipping over data pages. See [`ArrowReaderOptions::with_page_index`]
+    /// Row group filtering (see [`Self::with_row_groups`]) is applied prior to
+    /// applying the row selection, and therefore rows from skipped row groups
+    /// should not be included in the [`RowSelection`] (see example below)
+    ///
+    /// It is recommended to enable writing the page index if using this
+    /// functionality, to allow more efficient skipping over data pages. See
+    /// [`ArrowReaderOptions::with_page_index`].
+    ///
+    /// # Example
+    ///
+    /// Given a parquet file with 4 row groups, and a row group filter of `[0,
+    /// 2, 3]`, in order to scan rows 50-100 in row group 2 and rows 200-300 in
+    /// row group 3:
+    ///
+    /// ```text
+    ///   Row Group 0, 1000 rows (selected)
+    ///   Row Group 1, 1000 rows (skipped)
+    ///   Row Group 2, 1000 rows (selected, but want to only scan rows 50-100)
+    ///   Row Group 3, 1000 rows (selected, but want to only scan rows 200-300)
+    /// ```
+    ///
+    /// You could pass the following [`RowSelection`]:
+    ///
+    /// ```text
+    ///  Select 1000    (scan all rows in row group 0)
+    ///  Skip 50        (skip the first 50 rows in row group 2)
+    ///  Select 50      (scan rows 50-100 in row group 2)
+    ///  Skip 900       (skip the remaining rows in row group 2)
+    ///  Skip 200       (skip the first 200 rows in row group 3)
+    ///  Select 100     (scan rows 200-300 in row group 3)
+    ///  Skip 700       (skip the remaining rows in row group 3)
+    /// ```
+    /// Note there is no entry for the (entirely) skipped row group 1.
+    ///
+    /// Note you can represent the same selection with fewer entries. Instead of
+    ///
+    /// ```text
+    ///  Skip 900       (skip the remaining rows in row group 2)
+    ///  Skip 200       (skip the first 200 rows in row group 3)
+    /// ```
+    ///
+    /// you could use
+    ///
+    /// ```text
+    /// Skip 1100      (skip the remaining 900 rows in row group 2 and the first 200 rows in row group 3)
+    /// ```
     ///
     /// [`Index`]: crate::file::page_index::index::Index
     </span><span class="kw">pub fn </span>with_row_selection(<span class="self">self</span>, selection: RowSelection) -&gt; <span class="self">Self </span>{
@@ -3477,8 +3619,10 @@
 /// is then read from the file, including projection and filter pushdown
 </span><span class="attr">#[derive(Debug, Clone, Default)]
 </span><span class="kw">pub struct </span>ArrowReaderOptions {
-    skip_arrow_metadata: bool,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) page_index: bool,
+    <span class="doccomment">/// Should the reader strip any user defined metadata from the Arrow schema
+    </span>skip_arrow_metadata: bool,
+    <span class="doccomment">/// If true, attempt to read `OffsetIndex` and `ColumnIndex`
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) page_index: bool,
 }
 
 <span class="kw">impl </span>ArrowReaderOptions {
@@ -3487,12 +3631,12 @@
         <span class="self">Self</span>::default()
     }
 
-    <span class="doccomment">/// Parquet files generated by some writers may contain embedded arrow
-    /// schema and metadata. This may not be correct or compatible with your system.
+    <span class="doccomment">/// Skip decoding the embedded arrow metadata (defaults to `false`)
     ///
-    /// For example:[ARROW-16184](https://issues.apache.org/jira/browse/ARROW-16184)
-    ///
-    /// Set `skip_arrow_metadata` to true, to skip decoding this
+    /// Parquet files generated by some writers may contain embedded arrow
+    /// schema and metadata.
+    /// This may not be correct or compatible with your system,
+    /// for example: [ARROW-16184](https://issues.apache.org/jira/browse/ARROW-16184)
     </span><span class="kw">pub fn </span>with_skip_arrow_metadata(<span class="self">self</span>, skip_arrow_metadata: bool) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             skip_arrow_metadata,
@@ -3500,32 +3644,58 @@
         </span>}
     }
 
-    <span class="doccomment">/// Set this true to enable decoding of the [PageIndex] if present. This can be used
-    /// to push down predicates to the parquet scan, potentially eliminating unnecessary IO
+    <span class="doccomment">/// Enable reading [`PageIndex`], if present (defaults to `false`)
     ///
-    /// [PageIndex]: https://github.com/apache/parquet-format/blob/master/PageIndex.md
+    /// The `PageIndex` can be used to push down predicates to the parquet scan,
+    /// potentially eliminating unnecessary IO, by some query engines.
+    ///
+    /// If this is enabled, [`ParquetMetaData::column_index`] and
+    /// [`ParquetMetaData::offset_index`] will be populated if the corresponding
+    /// information is present in the file.
+    ///
+    /// [`PageIndex`]: https://github.com/apache/parquet-format/blob/master/PageIndex.md
+    /// [`ParquetMetaData::column_index`]: crate::file::metadata::ParquetMetaData::column_index
+    /// [`ParquetMetaData::offset_index`]: crate::file::metadata::ParquetMetaData::offset_index
     </span><span class="kw">pub fn </span>with_page_index(<span class="self">self</span>, page_index: bool) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ page_index, ..<span class="self">self </span>}
     }
 }
 
-<span class="doccomment">/// The cheaply clone-able metadata necessary to construct a [`ArrowReaderBuilder`]
+<span class="doccomment">/// The metadata necessary to construct a [`ArrowReaderBuilder`]
 ///
-/// This allows loading the metadata for a file once and then using this to construct
-/// multiple separate readers, for example, to distribute readers across multiple threads
+/// Note this structure is cheaply clone-able as it consists of several arcs.
+///
+/// This structure allows
+///
+/// 1. Loading metadata for a file once and then using that same metadata to
+/// construct multiple separate readers, for example, to distribute readers
+/// across multiple threads
+///
+/// 2. Using a cached copy of the [`ParquetMetadata`] rather than reading it
+/// from the file each time a reader is constructed.
+///
+/// [`ParquetMetadata`]: crate::file::metadata::ParquetMetaData
 </span><span class="attr">#[derive(Debug, Clone)]
 </span><span class="kw">pub struct </span>ArrowReaderMetadata {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) metadata: Arc&lt;ParquetMetaData&gt;,
-
-    <span class="kw">pub</span>(<span class="kw">crate</span>) schema: SchemaRef,
+    <span class="doccomment">/// The Parquet Metadata, if known aprior
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) metadata: Arc&lt;ParquetMetaData&gt;,
+    <span class="doccomment">/// The Arrow Schema
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) schema: SchemaRef,
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) fields: <span class="prelude-ty">Option</span>&lt;Arc&lt;ParquetField&gt;&gt;,
 }
 
 <span class="kw">impl </span>ArrowReaderMetadata {
-    <span class="doccomment">/// Loads [`ArrowReaderMetadata`] from the provided [`ChunkReader`]
+    <span class="doccomment">/// Loads [`ArrowReaderMetadata`] from the provided [`ChunkReader`], if necessary
     ///
-    /// See [`ParquetRecordBatchReaderBuilder::new_with_metadata`] for how this can be used
+    /// See [`ParquetRecordBatchReaderBuilder::new_with_metadata`] for an
+    /// example of how this can be used
+    ///
+    /// # Notes
+    ///
+    /// If `options` has [`ArrowReaderOptions::with_page_index`] true, but
+    /// `Self::metadata` is missing the page index, this function will attempt
+    /// to load the page index by making an object store request.
     </span><span class="kw">pub fn </span>load&lt;T: ChunkReader&gt;(reader: <span class="kw-2">&amp;</span>T, options: ArrowReaderOptions) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>metadata = footer::parse_metadata(reader)<span class="question-mark">?</span>;
         <span class="kw">if </span>options.page_index {
@@ -3547,7 +3717,13 @@
         <span class="self">Self</span>::try_new(Arc::new(metadata), options)
     }
 
-    <span class="kw">pub fn </span>try_new(metadata: Arc&lt;ParquetMetaData&gt;, options: ArrowReaderOptions) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+    <span class="doccomment">/// Create a new [`ArrowReaderMetadata`]
+    ///
+    /// # Notes
+    ///
+    /// This function does not attempt to load the PageIndex if not present in the metadata.
+    /// See [`Self::load`] for more details.
+    </span><span class="kw">pub fn </span>try_new(metadata: Arc&lt;ParquetMetaData&gt;, options: ArrowReaderOptions) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>kv_metadata = <span class="kw">match </span>options.skip_arrow_metadata {
             <span class="bool-val">true </span>=&gt; <span class="prelude-val">None</span>,
             <span class="bool-val">false </span>=&gt; metadata.file_metadata().key_value_metadata(),
@@ -3634,9 +3810,17 @@
 
     <span class="doccomment">/// Create a [`ParquetRecordBatchReaderBuilder`] from the provided [`ArrowReaderMetadata`]
     ///
-    /// This allows loading metadata once and using it to create multiple builders with
-    /// potentially different settings
+    /// This interface allows:
     ///
+    /// 1. Loading metadata once and using it to create multiple builders with
+    /// potentially different settings or run on different threads
+    ///
+    /// 2. Using a cached copy of the metadata rather than re-reading it from the
+    /// file each time a reader is constructed.
+    ///
+    /// See the docs on [`ArrowReaderMetadata`] for more details
+    ///
+    /// # Example
     /// ```
     /// # use std::fs::metadata;
     /// # use std::sync::Arc;
@@ -4027,7 +4211,7 @@
         Decimal128Type, Decimal256Type, DecimalType, Float16Type, Float32Type, Float64Type,
     };
     <span class="kw">use </span>arrow_array::<span class="kw-2">*</span>;
-    <span class="kw">use </span>arrow_buffer::{i256, ArrowNativeType, Buffer};
+    <span class="kw">use </span>arrow_buffer::{i256, ArrowNativeType, Buffer, IntervalDayTime};
     <span class="kw">use </span>arrow_data::ArrayDataBuilder;
     <span class="kw">use </span>arrow_schema::{ArrowError, DataType <span class="kw">as </span>ArrowDataType, Field, Fields, Schema};
     <span class="kw">use </span>arrow_select::concat::concat_batches;
@@ -4337,8 +4521,12 @@
                 Arc::new(
                     vals.iter()
                         .map(|x| {
-                            x.as_ref()
-                                .map(|b| i64::from_le_bytes(b.as_ref()[<span class="number">4</span>..<span class="number">12</span>].try_into().unwrap()))
+                            x.as_ref().map(|b| IntervalDayTime {
+                                days: i32::from_le_bytes(b.as_ref()[<span class="number">4</span>..<span class="number">8</span>].try_into().unwrap()),
+                                milliseconds: i32::from_le_bytes(
+                                    b.as_ref()[<span class="number">8</span>..<span class="number">12</span>].try_into().unwrap(),
+                                ),
+                            })
                         })
                         .collect::&lt;IntervalDayTimeArray&gt;(),
                 )

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-json/src/reader/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_json" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-json/src/reader/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_json" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2293,6 +2293,30 @@
 <a href="#2293" id="2293">2293</a>
 <a href="#2294" id="2294">2294</a>
 <a href="#2295" id="2295">2295</a>
+<a href="#2296" id="2296">2296</a>
+<a href="#2297" id="2297">2297</a>
+<a href="#2298" id="2298">2298</a>
+<a href="#2299" id="2299">2299</a>
+<a href="#2300" id="2300">2300</a>
+<a href="#2301" id="2301">2301</a>
+<a href="#2302" id="2302">2302</a>
+<a href="#2303" id="2303">2303</a>
+<a href="#2304" id="2304">2304</a>
+<a href="#2305" id="2305">2305</a>
+<a href="#2306" id="2306">2306</a>
+<a href="#2307" id="2307">2307</a>
+<a href="#2308" id="2308">2308</a>
+<a href="#2309" id="2309">2309</a>
+<a href="#2310" id="2310">2310</a>
+<a href="#2311" id="2311">2311</a>
+<a href="#2312" id="2312">2312</a>
+<a href="#2313" id="2313">2313</a>
+<a href="#2314" id="2314">2314</a>
+<a href="#2315" id="2315">2315</a>
+<a href="#2316" id="2316">2316</a>
+<a href="#2317" id="2317">2317</a>
+<a href="#2318" id="2318">2318</a>
+<a href="#2319" id="2319">2319</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -4508,6 +4532,30 @@
     }
 
     <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_serialize_decimal() {
+        <span class="kw">let </span>json = <span class="macro">vec!</span>[
+            <span class="macro">json!</span>({<span class="string">"decimal"</span>: <span class="number">1.234</span>}),
+            <span class="macro">json!</span>({<span class="string">"decimal"</span>: <span class="string">"1.234"</span>}),
+            <span class="macro">json!</span>({<span class="string">"decimal"</span>: <span class="number">1234</span>}),
+            <span class="macro">json!</span>({<span class="string">"decimal"</span>: <span class="string">"1234"</span>}),
+        ];
+        <span class="kw">let </span>schema = Schema::new(<span class="macro">vec!</span>[Field::new(
+            <span class="string">"decimal"</span>,
+            DataType::Decimal128(<span class="number">10</span>, <span class="number">3</span>),
+            <span class="bool-val">true</span>,
+        )]);
+        <span class="kw">let </span><span class="kw-2">mut </span>decoder = ReaderBuilder::new(Arc::new(schema))
+            .build_decoder()
+            .unwrap();
+        decoder.serialize(<span class="kw-2">&amp;</span>json).unwrap();
+        <span class="kw">let </span>batch = decoder.flush().unwrap().unwrap();
+        <span class="macro">assert_eq!</span>(batch.num_rows(), <span class="number">4</span>);
+        <span class="macro">assert_eq!</span>(batch.num_columns(), <span class="number">1</span>);
+        <span class="kw">let </span>values = batch.column(<span class="number">0</span>).as_primitive::&lt;Decimal128Type&gt;();
+        <span class="macro">assert_eq!</span>(values.values(), <span class="kw-2">&amp;</span>[<span class="number">1234</span>, <span class="number">1234</span>, <span class="number">1234000</span>, <span class="number">1234000</span>]);
+    }
+
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>test_serde_field() {
         <span class="kw">let </span>field = Field::new(<span class="string">"int"</span>, DataType::Int32, <span class="bool-val">true</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>decoder = ReaderBuilder::new_with_field(field)
@@ -4553,8 +4601,8 @@
     </span><span class="kw">fn </span>test_coercing_primitive_into_string_decoder() {
         <span class="kw">let </span>buf = <span class="kw-2">&amp;</span><span class="macro">format!</span>(
             <span class="string">r#"[{{"a": 1, "b": "A", "c": "T"}}, {{"a": 2, "b": "BB", "c": "F"}}, {{"a": {}, "b": 123, "c": false}}, {{"a": {}, "b": 789, "c": true}}]"#</span>,
-            (std::i32::MAX <span class="kw">as </span>i64 + <span class="number">10</span>),
-            std::i64::MAX - <span class="number">10
+            (i32::MAX <span class="kw">as </span>i64 + <span class="number">10</span>),
+            i64::MAX - <span class="number">10
         </span>);
         <span class="kw">let </span>schema = Schema::new(<span class="macro">vec!</span>[
             Field::new(<span class="string">"a"</span>, DataType::Float64, <span class="bool-val">true</span>),
@@ -4577,8 +4625,8 @@
                     Arc::new(Float64Array::from(<span class="macro">vec!</span>[
                         <span class="number">1.0</span>,
                         <span class="number">2.0</span>,
-                        (std::i32::MAX <span class="kw">as </span>i64 + <span class="number">10</span>) <span class="kw">as </span>f64,
-                        (std::i64::MAX - <span class="number">10</span>) <span class="kw">as </span>f64
+                        (i32::MAX <span class="kw">as </span>i64 + <span class="number">10</span>) <span class="kw">as </span>f64,
+                        (i64::MAX - <span class="number">10</span>) <span class="kw">as </span>f64
                     ])),
                     Arc::new(StringArray::from(<span class="macro">vec!</span>[<span class="string">"A"</span>, <span class="string">"BB"</span>, <span class="string">"123"</span>, <span class="string">"789"</span>])),
                     Arc::new(StringArray::from(<span class="macro">vec!</span>[<span class="string">"T"</span>, <span class="string">"F"</span>, <span class="string">"false"</span>, <span class="string">"true"</span>])),

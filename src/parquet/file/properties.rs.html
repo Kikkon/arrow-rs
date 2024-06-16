@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parquet/src/file/properties.rs`."><title>properties.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="parquet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `parquet/src/file/properties.rs`."><title>properties.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="parquet" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1258,6 +1258,83 @@
 <a href="#1258" id="1258">1258</a>
 <a href="#1259" id="1259">1259</a>
 <a href="#1260" id="1260">1260</a>
+<a href="#1261" id="1261">1261</a>
+<a href="#1262" id="1262">1262</a>
+<a href="#1263" id="1263">1263</a>
+<a href="#1264" id="1264">1264</a>
+<a href="#1265" id="1265">1265</a>
+<a href="#1266" id="1266">1266</a>
+<a href="#1267" id="1267">1267</a>
+<a href="#1268" id="1268">1268</a>
+<a href="#1269" id="1269">1269</a>
+<a href="#1270" id="1270">1270</a>
+<a href="#1271" id="1271">1271</a>
+<a href="#1272" id="1272">1272</a>
+<a href="#1273" id="1273">1273</a>
+<a href="#1274" id="1274">1274</a>
+<a href="#1275" id="1275">1275</a>
+<a href="#1276" id="1276">1276</a>
+<a href="#1277" id="1277">1277</a>
+<a href="#1278" id="1278">1278</a>
+<a href="#1279" id="1279">1279</a>
+<a href="#1280" id="1280">1280</a>
+<a href="#1281" id="1281">1281</a>
+<a href="#1282" id="1282">1282</a>
+<a href="#1283" id="1283">1283</a>
+<a href="#1284" id="1284">1284</a>
+<a href="#1285" id="1285">1285</a>
+<a href="#1286" id="1286">1286</a>
+<a href="#1287" id="1287">1287</a>
+<a href="#1288" id="1288">1288</a>
+<a href="#1289" id="1289">1289</a>
+<a href="#1290" id="1290">1290</a>
+<a href="#1291" id="1291">1291</a>
+<a href="#1292" id="1292">1292</a>
+<a href="#1293" id="1293">1293</a>
+<a href="#1294" id="1294">1294</a>
+<a href="#1295" id="1295">1295</a>
+<a href="#1296" id="1296">1296</a>
+<a href="#1297" id="1297">1297</a>
+<a href="#1298" id="1298">1298</a>
+<a href="#1299" id="1299">1299</a>
+<a href="#1300" id="1300">1300</a>
+<a href="#1301" id="1301">1301</a>
+<a href="#1302" id="1302">1302</a>
+<a href="#1303" id="1303">1303</a>
+<a href="#1304" id="1304">1304</a>
+<a href="#1305" id="1305">1305</a>
+<a href="#1306" id="1306">1306</a>
+<a href="#1307" id="1307">1307</a>
+<a href="#1308" id="1308">1308</a>
+<a href="#1309" id="1309">1309</a>
+<a href="#1310" id="1310">1310</a>
+<a href="#1311" id="1311">1311</a>
+<a href="#1312" id="1312">1312</a>
+<a href="#1313" id="1313">1313</a>
+<a href="#1314" id="1314">1314</a>
+<a href="#1315" id="1315">1315</a>
+<a href="#1316" id="1316">1316</a>
+<a href="#1317" id="1317">1317</a>
+<a href="#1318" id="1318">1318</a>
+<a href="#1319" id="1319">1319</a>
+<a href="#1320" id="1320">1320</a>
+<a href="#1321" id="1321">1321</a>
+<a href="#1322" id="1322">1322</a>
+<a href="#1323" id="1323">1323</a>
+<a href="#1324" id="1324">1324</a>
+<a href="#1325" id="1325">1325</a>
+<a href="#1326" id="1326">1326</a>
+<a href="#1327" id="1327">1327</a>
+<a href="#1328" id="1328">1328</a>
+<a href="#1329" id="1329">1329</a>
+<a href="#1330" id="1330">1330</a>
+<a href="#1331" id="1331">1331</a>
+<a href="#1332" id="1332">1332</a>
+<a href="#1333" id="1333">1333</a>
+<a href="#1334" id="1334">1334</a>
+<a href="#1335" id="1335">1335</a>
+<a href="#1336" id="1336">1336</a>
+<a href="#1337" id="1337">1337</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -1351,18 +1428,17 @@
 
 <span class="doccomment">/// Configuration settings for writing parquet files.
 ///
-/// All properties except the key-value metadata are immutable,
-/// use [`WriterPropertiesBuilder`] to assemble these properties.
+/// Use [`Self::builder`] to create a [`WriterPropertiesBuilder`] to change settings.
 ///
 /// # Example
 ///
 /// ```rust
-/// use parquet::{
-///     basic::{Compression, Encoding},
-///     file::properties::*,
-///     schema::types::ColumnPath,
-/// };
-///
+/// # use parquet::{
+/// #    basic::{Compression, Encoding},
+/// #    file::properties::*,
+/// #    schema::types::ColumnPath,
+/// # };
+/// #
 /// // Create properties with default configuration.
 /// let props = WriterProperties::default();
 ///
@@ -1415,7 +1491,8 @@
         <span class="self">Self</span>::default()
     }
 
-    <span class="doccomment">/// Returns builder for writer properties with default values.
+    <span class="doccomment">/// Returns a new default [`WriterPropertiesBuilder`] for creating writer
+    /// properties.
     </span><span class="kw">pub fn </span>builder() -&gt; WriterPropertiesBuilder {
         WriterPropertiesBuilder::with_defaults()
     }
@@ -1559,7 +1636,7 @@
             .unwrap_or(DEFAULT_DICTIONARY_ENABLED)
     }
 
-    <span class="doccomment">/// Returns `true` if statistics are enabled for a column.
+    <span class="doccomment">/// Returns which statistics are written for a column.
     </span><span class="kw">pub fn </span>statistics_enabled(<span class="kw-2">&amp;</span><span class="self">self</span>, col: <span class="kw-2">&amp;</span>ColumnPath) -&gt; EnabledStatistics {
         <span class="self">self</span>.column_properties
             .get(col)
@@ -1589,8 +1666,9 @@
     }
 }
 
-<span class="doccomment">/// Builder for parquet file writer configuration. See example on
-/// [`WriterProperties`]
+<span class="doccomment">/// Builder for  [`WriterProperties`] parquet writer configuration.
+///
+/// See example on [`WriterProperties`]
 </span><span class="kw">pub struct </span>WriterPropertiesBuilder {
     data_page_size_limit: usize,
     dictionary_page_size_limit: usize,
@@ -1649,7 +1727,11 @@
     <span class="comment">// ----------------------------------------------------------------------
     // Writer properties related to a file
 
-    </span><span class="doccomment">/// Sets writer version.
+    </span><span class="doccomment">/// Sets the `WriterVersion` written into the parquet metadata (defaults to [`PARQUET_1_0`])
+    ///
+    /// This value can determine what features some readers will support.
+    ///
+    /// [`PARQUET_1_0`]: [WriterVersion::PARQUET_1_0]
     </span><span class="kw">pub fn </span>set_writer_version(<span class="kw-2">mut </span><span class="self">self</span>, value: WriterVersion) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.writer_version = value;
         <span class="self">self
@@ -1665,7 +1747,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets best effort maximum size of a data page in bytes.
+    <span class="doccomment">/// Sets best effort maximum size of a data page in bytes (defaults to `1024 * 1024`).
     ///
     /// The parquet writer will attempt to limit the sizes of each
     /// `DataPage` to this many bytes. Reducing this value will result
@@ -1679,7 +1761,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets best effort maximum number of rows in a data page.
+    <span class="doccomment">/// Sets best effort maximum number of rows in a data page (defaults to `usize::MAX`).
     ///
     /// The parquet writer will attempt to limit the number of rows in
     /// each `DataPage` to this value. Reducing this value will result
@@ -1703,7 +1785,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets best effort maximum dictionary page size, in bytes.
+    <span class="doccomment">/// Sets best effort maximum dictionary page size, in bytes (defaults to `1024 * 1024`).
     ///
     /// The parquet writer will attempt to limit the size of each
     /// `DataPage` used to store dictionaries to this many
@@ -1718,7 +1800,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets write batch size.
+    <span class="doccomment">/// Sets write batch size (defaults to 1024).
     ///
     /// For performance reasons, data for each column is written in
     /// batches of this size.
@@ -1732,26 +1814,29 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets maximum number of rows in a row group.
+    <span class="doccomment">/// Sets maximum number of rows in a row group (defaults to `1024 * 1024`).
+    ///
+    /// # Panics
+    /// If the value is set to 0.
     </span><span class="kw">pub fn </span>set_max_row_group_size(<span class="kw-2">mut </span><span class="self">self</span>, value: usize) -&gt; <span class="self">Self </span>{
         <span class="macro">assert!</span>(value &gt; <span class="number">0</span>, <span class="string">"Cannot have a 0 max row group size"</span>);
         <span class="self">self</span>.max_row_group_size = value;
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets "created by" property.
+    <span class="doccomment">/// Sets "created by" property (defaults to `parquet-rs version &lt;VERSION&gt;`).
     </span><span class="kw">pub fn </span>set_created_by(<span class="kw-2">mut </span><span class="self">self</span>, value: String) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.created_by = value;
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets "key_value_metadata" property.
+    <span class="doccomment">/// Sets "key_value_metadata" property (defaults to `None`).
     </span><span class="kw">pub fn </span>set_key_value_metadata(<span class="kw-2">mut </span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;Vec&lt;KeyValue&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.key_value_metadata = value;
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets sorting order of rows in the row group if any
+    <span class="doccomment">/// Sets sorting order of rows in the row group if any (defaults to `None`).
     </span><span class="kw">pub fn </span>set_sorting_columns(<span class="kw-2">mut </span><span class="self">self</span>, value: <span class="prelude-ty">Option</span>&lt;Vec&lt;SortingColumn&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.sorting_columns = value;
         <span class="self">self
@@ -1760,26 +1845,30 @@
     <span class="comment">// ----------------------------------------------------------------------
     // Setters for any column (global)
 
-    </span><span class="doccomment">/// Sets encoding for any column.
+    </span><span class="doccomment">/// Sets default encoding for all columns.
     ///
     /// If dictionary is not enabled, this is treated as a primary encoding for all
     /// columns. In case when dictionary is enabled for any column, this value is
     /// considered to be a fallback encoding for that column.
     ///
-    /// Panics if user tries to set dictionary encoding here, regardless of dictionary
+    /// # Panics
+    ///
+    /// if dictionary encoding is specified, regardless of dictionary
     /// encoding flag being set.
     </span><span class="kw">pub fn </span>set_encoding(<span class="kw-2">mut </span><span class="self">self</span>, value: Encoding) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.default_column_properties.set_encoding(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets compression codec for any column.
+    <span class="doccomment">/// Sets default compression codec for all columns (default to [`UNCOMPRESSED`]).
+    ///
+    /// [`UNCOMPRESSED`]: Compression::UNCOMPRESSED
     </span><span class="kw">pub fn </span>set_compression(<span class="kw-2">mut </span><span class="self">self</span>, value: Compression) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.default_column_properties.set_compression(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets flag to enable/disable dictionary encoding for any column.
+    <span class="doccomment">/// Sets default flag to enable/disable dictionary encoding for all columns (defaults to `true`).
     ///
     /// Use this method to set dictionary encoding, instead of explicitly specifying
     /// encoding in `set_encoding` method.
@@ -1788,13 +1877,16 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets flag to enable/disable statistics for any column.
+    <span class="doccomment">/// Sets default statistics level for all columns (defaults to [`Page`]).
+    ///
+    /// [`Page`]: EnabledStatistics::Page
     </span><span class="kw">pub fn </span>set_statistics_enabled(<span class="kw-2">mut </span><span class="self">self</span>, value: EnabledStatistics) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.default_column_properties.set_statistics_enabled(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets max statistics size for any column.
+    <span class="doccomment">/// Sets default max statistics size for all columns (defaults to `4096`).
+    ///
     /// Applicable only if statistics are enabled.
     </span><span class="kw">pub fn </span>set_max_statistics_size(<span class="kw-2">mut </span><span class="self">self</span>, value: usize) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.default_column_properties
@@ -1802,25 +1894,43 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets whether bloom filter is enabled for any column.
-    /// If the bloom filter is enabled previously then it is a no-op.
-    /// If the bloom filter is not yet enabled, a default set of ndv and fpp value will be used.
-    /// You can use [`set_bloom_filter_ndv`](Self::set_bloom_filter_ndv) and [`set_bloom_filter_fpp`](Self::set_bloom_filter_fpp) to further adjust the ndv and fpp.
+    <span class="doccomment">/// Sets if bloom filter is enabled by default for all columns (defaults to `false`).
+    ///
+    /// # Notes
+    ///
+    /// * If the bloom filter is enabled previously then it is a no-op.
+    ///
+    /// * If the bloom filter is not enabled, default values for ndv and fpp
+    /// value are used used. See [`set_bloom_filter_ndv`] and
+    /// [`set_bloom_filter_fpp`] to further adjust the ndv and fpp.
+    ///
+    /// [`set_bloom_filter_ndv`]: Self::set_bloom_filter_ndv
+    /// [`set_bloom_filter_fpp`]: Self::set_bloom_filter_fpp
     </span><span class="kw">pub fn </span>set_bloom_filter_enabled(<span class="kw-2">mut </span><span class="self">self</span>, value: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.default_column_properties
             .set_bloom_filter_enabled(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets bloom filter false positive probability (fpp) for any column.
-    /// Implicitly [`set_bloom_filter_enabled`](Self::set_bloom_filter_enabled).
+    <span class="doccomment">/// Sets the default target bloom filter false positive probability (fpp)
+    /// for all columns (defaults to `0.05`).
+    ///
+    /// Implicitly enables bloom writing, as if [`set_bloom_filter_enabled`] had
+    /// been called.
+    ///
+    /// [`set_bloom_filter_enabled`]: Self::set_bloom_filter_enabled
     </span><span class="kw">pub fn </span>set_bloom_filter_fpp(<span class="kw-2">mut </span><span class="self">self</span>, value: f64) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.default_column_properties.set_bloom_filter_fpp(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets number of distinct values (ndv) for bloom filter for any column.
-    /// Implicitly [`set_bloom_filter_enabled`](Self::set_bloom_filter_enabled).
+    <span class="doccomment">/// Sets default number of distinct values (ndv) for bloom filter for all
+    /// columns (defaults to `1_000_000`).
+    ///
+    /// Implicitly enables bloom writing, as if [`set_bloom_filter_enabled`] had
+    /// been called.
+    ///
+    /// [`set_bloom_filter_enabled`]: Self::set_bloom_filter_enabled
     </span><span class="kw">pub fn </span>set_bloom_filter_ndv(<span class="kw-2">mut </span><span class="self">self</span>, value: u64) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.default_column_properties.set_bloom_filter_ndv(value);
         <span class="self">self
@@ -1835,37 +1945,42 @@
         <span class="self">self</span>.column_properties.entry(col).or_default()
     }
 
-    <span class="doccomment">/// Sets encoding for a column.
-    /// Takes precedence over globally defined settings.
+    <span class="doccomment">/// Sets encoding for a specific column.
+    ///
+    /// Takes precedence over [`Self::set_encoding`].
     ///
     /// If dictionary is not enabled, this is treated as a primary encoding for this
     /// column. In case when dictionary is enabled for this column, either through
     /// global defaults or explicitly, this value is considered to be a fallback
     /// encoding for this column.
     ///
-    /// Panics if user tries to set dictionary encoding here, regardless of dictionary
+    /// # Panics
+    /// If user tries to set dictionary encoding here, regardless of dictionary
     /// encoding flag being set.
     </span><span class="kw">pub fn </span>set_column_encoding(<span class="kw-2">mut </span><span class="self">self</span>, col: ColumnPath, value: Encoding) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.get_mut_props(col).set_encoding(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets compression codec for a column.
-    /// Takes precedence over globally defined settings.
+    <span class="doccomment">/// Sets compression codec for a specific column.
+    ///
+    /// Takes precedence over [`Self::set_compression`].
     </span><span class="kw">pub fn </span>set_column_compression(<span class="kw-2">mut </span><span class="self">self</span>, col: ColumnPath, value: Compression) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.get_mut_props(col).set_compression(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets flag to enable/disable dictionary encoding for a column.
-    /// Takes precedence over globally defined settings.
+    <span class="doccomment">/// Sets flag to enable/disable dictionary encoding for a specific column.
+    ///
+    /// Takes precedence over [`Self::set_dictionary_enabled`].
     </span><span class="kw">pub fn </span>set_column_dictionary_enabled(<span class="kw-2">mut </span><span class="self">self</span>, col: ColumnPath, value: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.get_mut_props(col).set_dictionary_enabled(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets flag to enable/disable statistics for a column.
-    /// Takes precedence over globally defined settings.
+    <span class="doccomment">/// Sets statistics level for a specific column.
+    ///
+    /// Takes precedence over [`Self::set_statistics_enabled`].
     </span><span class="kw">pub fn </span>set_column_statistics_enabled(
         <span class="kw-2">mut </span><span class="self">self</span>,
         col: ColumnPath,
@@ -1875,39 +1990,53 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets max size for statistics for a column.
-    /// Takes precedence over globally defined settings.
+    <span class="doccomment">/// Sets max size for statistics for a specific column.
+    ///
+    /// Takes precedence over [`Self::set_max_statistics_size`].
     </span><span class="kw">pub fn </span>set_column_max_statistics_size(<span class="kw-2">mut </span><span class="self">self</span>, col: ColumnPath, value: usize) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.get_mut_props(col).set_max_statistics_size(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets whether a bloom filter should be created for a specific column.
-    /// The behavior is similar to [`set_bloom_filter_enabled`](Self::set_bloom_filter_enabled).
-    /// Takes precedence over globally defined settings.
+    <span class="doccomment">/// Sets whether a bloom filter should be written for a specific column.
+    ///
+    /// Takes precedence over [`Self::set_bloom_filter_enabled`].
     </span><span class="kw">pub fn </span>set_column_bloom_filter_enabled(<span class="kw-2">mut </span><span class="self">self</span>, col: ColumnPath, value: bool) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.get_mut_props(col).set_bloom_filter_enabled(value);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Sets the false positive probability for bloom filter for a specific column.
-    /// The behavior is similar to [`set_bloom_filter_fpp`](Self::set_bloom_filter_fpp) but will
-    /// override the default.
+    ///
+    /// Takes precedence over [`Self::set_bloom_filter_fpp`].
     </span><span class="kw">pub fn </span>set_column_bloom_filter_fpp(<span class="kw-2">mut </span><span class="self">self</span>, col: ColumnPath, value: f64) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.get_mut_props(col).set_bloom_filter_fpp(value);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Sets the number of distinct values for bloom filter for a specific column.
-    /// The behavior is similar to [`set_bloom_filter_ndv`](Self::set_bloom_filter_ndv) but will
-    /// override the default.
+    ///
+    /// Takes precedence over [`Self::set_bloom_filter_ndv`].
     </span><span class="kw">pub fn </span>set_column_bloom_filter_ndv(<span class="kw-2">mut </span><span class="self">self</span>, col: ColumnPath, value: u64) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.get_mut_props(col).set_bloom_filter_ndv(value);
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets the max length of min/max value fields in the column index. Must be greater than 0.
-    /// If set to `None` - there's no effective limit.
+    <span class="doccomment">/// Sets the max length of min/max value fields when writing the column
+    /// [`Index`] (defaults to `None`).
+    ///
+    /// This can be used to prevent columns with very long values (hundreds of
+    /// bytes long) from causing the parquet metadata to become huge.
+    ///
+    /// # Notes
+    ///
+    /// The column [`Index`] is written when [`Self::set_statistics_enabled`] is
+    /// set to [`EnabledStatistics::Page`].
+    ///
+    /// * If `Some`, must be greater than 0, otherwise will panic
+    /// * If `None`, there's no effective limit.
+    ///
+    /// [`Index`]: crate::file::page_index::index::Index
     </span><span class="kw">pub fn </span>set_column_index_truncate_length(<span class="kw-2">mut </span><span class="self">self</span>, max_length: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = max_length {
             <span class="macro">assert!</span>(value &gt; <span class="number">0</span>, <span class="string">"Cannot have a 0 column index truncate length. If you wish to disable min/max value truncation, set it to `None`."</span>);
@@ -1917,8 +2046,17 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Sets the max length of min/max value fields in statistics. Must be greater than 0.
-    /// If set to `None` - there's no effective limit.
+    <span class="doccomment">/// Sets the max length of min/max value fields in row group level
+    /// [`Statistics`] (defaults to `None`).
+    ///
+    /// # Notes
+    /// Row group level [`Statistics`] are written when [`Self::set_statistics_enabled`] is
+    /// set to [`EnabledStatistics::Chunk`] or [`EnabledStatistics::Page`].
+    ///
+    /// * If `Some`, must be greater than 0, otherwise will panic
+    /// * If `None`, there's no effective limit.
+    ///
+    /// [`Statistics`]: crate::file::statistics::Statistics
     </span><span class="kw">pub fn </span>set_statistics_truncate_length(<span class="kw-2">mut </span><span class="self">self</span>, max_length: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = max_length {
             <span class="macro">assert!</span>(value &gt; <span class="number">0</span>, <span class="string">"Cannot have a 0 statistics truncate length. If you wish to disable min/max value truncation, set it to `None`."</span>);
@@ -1929,14 +2067,30 @@
     </span>}
 }
 
-<span class="doccomment">/// Controls the level of statistics to be computed by the writer
+<span class="doccomment">/// Controls the level of statistics to be computed by the writer and stored in
+/// the parquet file.
+///
+/// Enabling statistics makes the resulting Parquet file larger and requires
+/// more time to read the parquet footer.
+///
+/// Statistics can be used to improve query performance by pruning row groups
+/// and pages during query execution if the query engine supports evaluating the
+/// predicate using the statistics.
 </span><span class="attr">#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 </span><span class="kw">pub enum </span>EnabledStatistics {
-    <span class="doccomment">/// Compute no statistics
+    <span class="doccomment">/// Compute no statistics.
     </span><span class="prelude-val">None</span>,
-    <span class="doccomment">/// Compute chunk-level statistics but not page-level
+    <span class="doccomment">/// Compute column chunk-level statistics but not page-level.
+    ///
+    /// Setting this option will store one set of statistics for each relevant
+    /// column for each row group. The more row groups written, the more
+    /// statistics will be stored.
     </span>Chunk,
-    <span class="doccomment">/// Compute page-level and chunk-level statistics
+    <span class="doccomment">/// Compute page-level and column chunk-level statistics.
+    ///
+    /// Setting this option will store one set of statistics for each relevant
+    /// column for each page and row group. The more row groups and the more
+    /// pages written, the more statistics will be stored.
     </span>Page,
 }
 

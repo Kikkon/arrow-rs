@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-row/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="arrow_row" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (1a7397988 2024-05-17)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-row/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="arrow_row" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2272,6 +2272,53 @@
 <a href="#2272" id="2272">2272</a>
 <a href="#2273" id="2273">2273</a>
 <a href="#2274" id="2274">2274</a>
+<a href="#2275" id="2275">2275</a>
+<a href="#2276" id="2276">2276</a>
+<a href="#2277" id="2277">2277</a>
+<a href="#2278" id="2278">2278</a>
+<a href="#2279" id="2279">2279</a>
+<a href="#2280" id="2280">2280</a>
+<a href="#2281" id="2281">2281</a>
+<a href="#2282" id="2282">2282</a>
+<a href="#2283" id="2283">2283</a>
+<a href="#2284" id="2284">2284</a>
+<a href="#2285" id="2285">2285</a>
+<a href="#2286" id="2286">2286</a>
+<a href="#2287" id="2287">2287</a>
+<a href="#2288" id="2288">2288</a>
+<a href="#2289" id="2289">2289</a>
+<a href="#2290" id="2290">2290</a>
+<a href="#2291" id="2291">2291</a>
+<a href="#2292" id="2292">2292</a>
+<a href="#2293" id="2293">2293</a>
+<a href="#2294" id="2294">2294</a>
+<a href="#2295" id="2295">2295</a>
+<a href="#2296" id="2296">2296</a>
+<a href="#2297" id="2297">2297</a>
+<a href="#2298" id="2298">2298</a>
+<a href="#2299" id="2299">2299</a>
+<a href="#2300" id="2300">2300</a>
+<a href="#2301" id="2301">2301</a>
+<a href="#2302" id="2302">2302</a>
+<a href="#2303" id="2303">2303</a>
+<a href="#2304" id="2304">2304</a>
+<a href="#2305" id="2305">2305</a>
+<a href="#2306" id="2306">2306</a>
+<a href="#2307" id="2307">2307</a>
+<a href="#2308" id="2308">2308</a>
+<a href="#2309" id="2309">2309</a>
+<a href="#2310" id="2310">2310</a>
+<a href="#2311" id="2311">2311</a>
+<a href="#2312" id="2312">2312</a>
+<a href="#2313" id="2313">2313</a>
+<a href="#2314" id="2314">2314</a>
+<a href="#2315" id="2315">2315</a>
+<a href="#2316" id="2316">2316</a>
+<a href="#2317" id="2317">2317</a>
+<a href="#2318" id="2318">2318</a>
+<a href="#2319" id="2319">2319</a>
+<a href="#2320" id="2320">2320</a>
+<a href="#2321" id="2321">2321</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -2569,16 +2616,9 @@
 ///
 /// Lists are encoded by first encoding all child elements to the row format.
 ///
-/// A "canonical byte array" is then constructed by concatenating the row
-/// encodings of all their elements into a single binary array, followed
-/// by the lengths of each encoded row, and the number of elements, encoded
-/// as big endian `u32`.
-///
-/// This canonical byte array is then encoded using the variable length byte
-/// encoding described above.
-///
-/// _The lengths are not strictly necessary but greatly simplify decode, they
-/// may be removed in a future iteration_.
+/// A list value is then encoded as the concatenation of each of the child elements,
+/// separately encoded using the variable length encoding described above, followed
+/// by the variable length encoding of an empty byte array.
 ///
 /// For example given:
 ///
@@ -2597,23 +2637,22 @@
 ///     └──┴──┘     └──┴──┘     └──┴──┘     └──┴──┘        └──┴──┘
 ///```
 ///
-/// Which would be grouped into the following canonical byte arrays:
+/// Which would be encoded as
 ///
 /// ```text
-///                         ┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐
-///  [1_u8, 2_u8, 3_u8]     │01│01│01│02│01│03│00│00│00│02│00│00│00│02│00│00│00│02│00│00│00│03│
-///                         └──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘
-///                          └──── rows ────┘   └───────── row lengths ─────────┘  └─ count ─┘
+///                         ┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐
+///  [1_u8, 2_u8, 3_u8]     │02│01│01│00│00│02│02│01│02│00│00│02│02│01│03│00│00│02│01│
+///                         └──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘
+///                          └──── 1_u8 ────┘   └──── 2_u8 ────┘  └──── 3_u8 ────┘
 ///
-///                         ┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐
-///  [1_u8, null]           │01│01│00│00│00│00│00│02│00│00│00│02│00│00│00│02│
-///                         └──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘
+///                         ┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐
+///  [1_u8, null]           │02│01│01│00│00│02│02│00│00│00│00│02│01│
+///                         └──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘
+///                          └──── 1_u8 ────┘   └──── null ────┘
+///
 ///```
 ///
 /// With `[]` represented by an empty byte array, and `null` a null byte array.
-///
-/// These byte arrays will then be encoded using the variable length byte encoding
-/// described above.
 ///
 /// # Ordering
 ///
@@ -3584,9 +3623,9 @@
     <span class="kw">use </span>arrow_array::builder::<span class="kw-2">*</span>;
     <span class="kw">use </span>arrow_array::types::<span class="kw-2">*</span>;
     <span class="kw">use </span>arrow_array::<span class="kw-2">*</span>;
-    <span class="kw">use </span>arrow_buffer::i256;
-    <span class="kw">use </span>arrow_buffer::Buffer;
-    <span class="kw">use </span>arrow_cast::display::array_value_to_string;
+    <span class="kw">use </span>arrow_buffer::{i256, NullBuffer};
+    <span class="kw">use </span>arrow_buffer::{Buffer, OffsetBuffer};
+    <span class="kw">use </span>arrow_cast::display::{ArrayFormatter, FormatOptions};
     <span class="kw">use </span>arrow_ord::sort::{LexicographicalComparator, SortColumn};
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -4381,9 +4420,35 @@
         builder.finish()
     }
 
+    <span class="kw">fn </span>generate_struct(len: usize, valid_percent: f64) -&gt; StructArray {
+        <span class="kw">let </span><span class="kw-2">mut </span>rng = thread_rng();
+        <span class="kw">let </span>nulls = NullBuffer::from_iter((<span class="number">0</span>..len).map(|<span class="kw">_</span>| rng.gen_bool(valid_percent)));
+        <span class="kw">let </span>a = generate_primitive_array::&lt;Int32Type&gt;(len, valid_percent);
+        <span class="kw">let </span>b = generate_strings::&lt;i32&gt;(len, valid_percent);
+        <span class="kw">let </span>fields = Fields::from(<span class="macro">vec!</span>[
+            Field::new(<span class="string">"a"</span>, DataType::Int32, <span class="bool-val">true</span>),
+            Field::new(<span class="string">"b"</span>, DataType::Utf8, <span class="bool-val">true</span>),
+        ]);
+        <span class="kw">let </span>values = <span class="macro">vec!</span>[Arc::new(a) <span class="kw">as _</span>, Arc::new(b) <span class="kw">as _</span>];
+        StructArray::new(fields, values, <span class="prelude-val">Some</span>(nulls))
+    }
+
+    <span class="kw">fn </span>generate_list&lt;F&gt;(len: usize, valid_percent: f64, values: F) -&gt; ListArray
+    <span class="kw">where
+        </span>F: FnOnce(usize) -&gt; ArrayRef,
+    {
+        <span class="kw">let </span><span class="kw-2">mut </span>rng = thread_rng();
+        <span class="kw">let </span>offsets = OffsetBuffer::&lt;i32&gt;::from_lengths((<span class="number">0</span>..len).map(|<span class="kw">_</span>| rng.gen_range(<span class="number">0</span>..<span class="number">10</span>)));
+        <span class="kw">let </span>values_len = offsets.last().unwrap().to_usize().unwrap();
+        <span class="kw">let </span>values = values(values_len);
+        <span class="kw">let </span>nulls = NullBuffer::from_iter((<span class="number">0</span>..len).map(|<span class="kw">_</span>| rng.gen_bool(valid_percent)));
+        <span class="kw">let </span>field = Arc::new(Field::new(<span class="string">"item"</span>, values.data_type().clone(), <span class="bool-val">true</span>));
+        ListArray::new(field, offsets, values, <span class="prelude-val">Some</span>(nulls))
+    }
+
     <span class="kw">fn </span>generate_column(len: usize) -&gt; ArrayRef {
         <span class="kw">let </span><span class="kw-2">mut </span>rng = thread_rng();
-        <span class="kw">match </span>rng.gen_range(<span class="number">0</span>..<span class="number">10</span>) {
+        <span class="kw">match </span>rng.gen_range(<span class="number">0</span>..<span class="number">14</span>) {
             <span class="number">0 </span>=&gt; Arc::new(generate_primitive_array::&lt;Int32Type&gt;(len, <span class="number">0.8</span>)),
             <span class="number">1 </span>=&gt; Arc::new(generate_primitive_array::&lt;UInt32Type&gt;(len, <span class="number">0.8</span>)),
             <span class="number">2 </span>=&gt; Arc::new(generate_primitive_array::&lt;Int64Type&gt;(len, <span class="number">0.8</span>)),
@@ -4407,6 +4472,16 @@
                 <span class="number">0.8</span>,
             )),
             <span class="number">9 </span>=&gt; Arc::new(generate_fixed_size_binary(len, <span class="number">0.8</span>)),
+            <span class="number">10 </span>=&gt; Arc::new(generate_struct(len, <span class="number">0.8</span>)),
+            <span class="number">11 </span>=&gt; Arc::new(generate_list(len, <span class="number">0.8</span>, |values_len| {
+                Arc::new(generate_primitive_array::&lt;Int64Type&gt;(values_len, <span class="number">0.8</span>))
+            })),
+            <span class="number">12 </span>=&gt; Arc::new(generate_list(len, <span class="number">0.8</span>, |values_len| {
+                Arc::new(generate_strings::&lt;i32&gt;(values_len, <span class="number">0.8</span>))
+            })),
+            <span class="number">13 </span>=&gt; Arc::new(generate_list(len, <span class="number">0.8</span>, |values_len| {
+                Arc::new(generate_struct(values_len, <span class="number">0.8</span>))
+            })),
             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
         }
     }
@@ -4414,7 +4489,14 @@
     <span class="kw">fn </span>print_row(cols: <span class="kw-2">&amp;</span>[SortColumn], row: usize) -&gt; String {
         <span class="kw">let </span>t: Vec&lt;<span class="kw">_</span>&gt; = cols
             .iter()
-            .map(|x| array_value_to_string(<span class="kw-2">&amp;</span>x.values, row).unwrap())
+            .map(|x| <span class="kw">match </span>x.values.is_valid(row) {
+                <span class="bool-val">true </span>=&gt; {
+                    <span class="kw">let </span>opts = FormatOptions::default().with_null(<span class="string">"NULL"</span>);
+                    <span class="kw">let </span>formatter = ArrayFormatter::try_new(x.values.as_ref(), <span class="kw-2">&amp;</span>opts).unwrap();
+                    formatter.value(row).to_string()
+                }
+                <span class="bool-val">false </span>=&gt; <span class="string">"NULL"</span>.to_string(),
+            })
             .collect();
         t.join(<span class="string">","</span>)
     }
@@ -4544,6 +4626,18 @@
         <span class="kw">let </span>back = converter.convert_rows(<span class="kw-2">&amp;</span>rows).unwrap();
 
         dictionary_eq(<span class="kw-2">&amp;</span>back[<span class="number">0</span>], <span class="kw-2">&amp;</span>array);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_list_prefix() {
+        <span class="kw">let </span><span class="kw-2">mut </span>a = ListBuilder::new(Int8Builder::new());
+        a.append_value([<span class="prelude-val">None</span>]);
+        a.append_value([<span class="prelude-val">None</span>, <span class="prelude-val">None</span>]);
+        <span class="kw">let </span>a = a.finish();
+
+        <span class="kw">let </span>converter = RowConverter::new(<span class="macro">vec!</span>[SortField::new(a.data_type().clone())]).unwrap();
+        <span class="kw">let </span>rows = converter.convert_columns(<span class="kw-2">&amp;</span>[Arc::new(a) <span class="kw">as _</span>]).unwrap();
+        <span class="macro">assert_eq!</span>(rows.row(<span class="number">0</span>).cmp(<span class="kw-2">&amp;</span>rows.row(<span class="number">1</span>)), Ordering::Less);
     }
 }
 </code></pre></div></section></main></body></html>
