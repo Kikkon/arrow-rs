@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/ffi.rs`."><title>ffi.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/ffi.rs`."><title>ffi.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (c1b336cb6 2024-06-21)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1459,6 +1459,62 @@
 <a href="#1459" id="1459">1459</a>
 <a href="#1460" id="1460">1460</a>
 <a href="#1461" id="1461">1461</a>
+<a href="#1462" id="1462">1462</a>
+<a href="#1463" id="1463">1463</a>
+<a href="#1464" id="1464">1464</a>
+<a href="#1465" id="1465">1465</a>
+<a href="#1466" id="1466">1466</a>
+<a href="#1467" id="1467">1467</a>
+<a href="#1468" id="1468">1468</a>
+<a href="#1469" id="1469">1469</a>
+<a href="#1470" id="1470">1470</a>
+<a href="#1471" id="1471">1471</a>
+<a href="#1472" id="1472">1472</a>
+<a href="#1473" id="1473">1473</a>
+<a href="#1474" id="1474">1474</a>
+<a href="#1475" id="1475">1475</a>
+<a href="#1476" id="1476">1476</a>
+<a href="#1477" id="1477">1477</a>
+<a href="#1478" id="1478">1478</a>
+<a href="#1479" id="1479">1479</a>
+<a href="#1480" id="1480">1480</a>
+<a href="#1481" id="1481">1481</a>
+<a href="#1482" id="1482">1482</a>
+<a href="#1483" id="1483">1483</a>
+<a href="#1484" id="1484">1484</a>
+<a href="#1485" id="1485">1485</a>
+<a href="#1486" id="1486">1486</a>
+<a href="#1487" id="1487">1487</a>
+<a href="#1488" id="1488">1488</a>
+<a href="#1489" id="1489">1489</a>
+<a href="#1490" id="1490">1490</a>
+<a href="#1491" id="1491">1491</a>
+<a href="#1492" id="1492">1492</a>
+<a href="#1493" id="1493">1493</a>
+<a href="#1494" id="1494">1494</a>
+<a href="#1495" id="1495">1495</a>
+<a href="#1496" id="1496">1496</a>
+<a href="#1497" id="1497">1497</a>
+<a href="#1498" id="1498">1498</a>
+<a href="#1499" id="1499">1499</a>
+<a href="#1500" id="1500">1500</a>
+<a href="#1501" id="1501">1501</a>
+<a href="#1502" id="1502">1502</a>
+<a href="#1503" id="1503">1503</a>
+<a href="#1504" id="1504">1504</a>
+<a href="#1505" id="1505">1505</a>
+<a href="#1506" id="1506">1506</a>
+<a href="#1507" id="1507">1507</a>
+<a href="#1508" id="1508">1508</a>
+<a href="#1509" id="1509">1509</a>
+<a href="#1510" id="1510">1510</a>
+<a href="#1511" id="1511">1511</a>
+<a href="#1512" id="1512">1512</a>
+<a href="#1513" id="1513">1513</a>
+<a href="#1514" id="1514">1514</a>
+<a href="#1515" id="1515">1515</a>
+<a href="#1516" id="1516">1516</a>
+<a href="#1517" id="1517">1517</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -2686,6 +2742,7 @@ To export an array, create an `ArrowArray` using [ArrowArray::try_new].
     <span class="kw">use </span>std::sync::Arc;
 
     <span class="kw">use </span>arrow_buffer::{bit_util, buffer::Buffer, MutableBuffer, OffsetBuffer};
+    <span class="kw">use </span>arrow_data::transform::MutableArrayData;
     <span class="kw">use </span>arrow_data::ArrayData;
     <span class="kw">use </span>arrow_schema::{DataType, Field};
 
@@ -2695,6 +2752,7 @@ To export an array, create an `ArrowArray` using [ArrowArray::try_new].
             Int32Array, Int64Array, StringArray, StructArray, UInt32Array, UInt64Array,
         },
         ffi::{from_ffi, FFI_ArrowArray, FFI_ArrowSchema},
+        make_array, ArrayRef,
     };
 
     <span class="kw">use super</span>::{ImportedArrowArray, <span class="prelude-ty">Result</span>};
@@ -2918,6 +2976,60 @@ To export an array, create an `ArrowArray` using [ArrowArray::try_new].
         <span class="macro">assert_eq!</span>(data_buf_len, <span class="number">0</span>);
 
         test_round_trip(<span class="kw-2">&amp;</span>imported_array.consume()<span class="question-mark">?</span>)
+    }
+
+    <span class="kw">fn </span>roundtrip_string_array(array: StringArray) -&gt; StringArray {
+        <span class="kw">let </span>data = array.into_data();
+
+        <span class="kw">let </span>array = FFI_ArrowArray::new(<span class="kw-2">&amp;</span>data);
+        <span class="kw">let </span>schema = FFI_ArrowSchema::try_from(data.data_type()).unwrap();
+
+        <span class="kw">let </span>array = <span class="kw">unsafe </span>{ from_ffi(array, <span class="kw-2">&amp;</span>schema) }.unwrap();
+        StringArray::from(array)
+    }
+
+    <span class="kw">fn </span>extend_array(array: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Array) -&gt; ArrayRef {
+        <span class="kw">let </span>len = array.len();
+        <span class="kw">let </span>data = array.to_data();
+
+        <span class="kw">let </span><span class="kw-2">mut </span>mutable = MutableArrayData::new(<span class="macro">vec!</span>[<span class="kw-2">&amp;</span>data], <span class="bool-val">false</span>, len);
+        mutable.extend(<span class="number">0</span>, <span class="number">0</span>, len);
+        make_array(mutable.freeze())
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_extend_imported_string_slice() {
+        <span class="kw">let </span><span class="kw-2">mut </span>strings = <span class="macro">vec!</span>[];
+
+        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">1000 </span>{
+            strings.push(<span class="macro">format!</span>(<span class="string">"string: {}"</span>, i));
+        }
+
+        <span class="kw">let </span>string_array = StringArray::from(strings);
+
+        <span class="kw">let </span>imported = roundtrip_string_array(string_array.clone());
+        <span class="macro">assert_eq!</span>(imported.len(), <span class="number">1000</span>);
+        <span class="macro">assert_eq!</span>(imported.value(<span class="number">0</span>), <span class="string">"string: 0"</span>);
+        <span class="macro">assert_eq!</span>(imported.value(<span class="number">499</span>), <span class="string">"string: 499"</span>);
+
+        <span class="kw">let </span>copied = extend_array(<span class="kw-2">&amp;</span>imported);
+        <span class="macro">assert_eq!</span>(
+            copied.as_any().downcast_ref::&lt;StringArray&gt;().unwrap(),
+            <span class="kw-2">&amp;</span>imported
+        );
+
+        <span class="kw">let </span>slice = string_array.slice(<span class="number">500</span>, <span class="number">500</span>);
+
+        <span class="kw">let </span>imported = roundtrip_string_array(slice);
+        <span class="macro">assert_eq!</span>(imported.len(), <span class="number">500</span>);
+        <span class="macro">assert_eq!</span>(imported.value(<span class="number">0</span>), <span class="string">"string: 500"</span>);
+        <span class="macro">assert_eq!</span>(imported.value(<span class="number">499</span>), <span class="string">"string: 999"</span>);
+
+        <span class="kw">let </span>copied = extend_array(<span class="kw-2">&amp;</span>imported);
+        <span class="macro">assert_eq!</span>(
+            copied.as_any().downcast_ref::&lt;StringArray&gt;().unwrap(),
+            <span class="kw-2">&amp;</span>imported
+        );
     }
 }
 </code></pre></div></section></main></body></html>

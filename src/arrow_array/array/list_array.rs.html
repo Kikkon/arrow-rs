@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/array/list_array.rs`."><title>list_array.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cf924b93 2024-06-15)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `arrow-array/src/array/list_array.rs`."><title>list_array.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="arrow_array" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (c1b336cb6 2024-06-21)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1182,46 +1182,6 @@
 <a href="#1182" id="1182">1182</a>
 <a href="#1183" id="1183">1183</a>
 <a href="#1184" id="1184">1184</a>
-<a href="#1185" id="1185">1185</a>
-<a href="#1186" id="1186">1186</a>
-<a href="#1187" id="1187">1187</a>
-<a href="#1188" id="1188">1188</a>
-<a href="#1189" id="1189">1189</a>
-<a href="#1190" id="1190">1190</a>
-<a href="#1191" id="1191">1191</a>
-<a href="#1192" id="1192">1192</a>
-<a href="#1193" id="1193">1193</a>
-<a href="#1194" id="1194">1194</a>
-<a href="#1195" id="1195">1195</a>
-<a href="#1196" id="1196">1196</a>
-<a href="#1197" id="1197">1197</a>
-<a href="#1198" id="1198">1198</a>
-<a href="#1199" id="1199">1199</a>
-<a href="#1200" id="1200">1200</a>
-<a href="#1201" id="1201">1201</a>
-<a href="#1202" id="1202">1202</a>
-<a href="#1203" id="1203">1203</a>
-<a href="#1204" id="1204">1204</a>
-<a href="#1205" id="1205">1205</a>
-<a href="#1206" id="1206">1206</a>
-<a href="#1207" id="1207">1207</a>
-<a href="#1208" id="1208">1208</a>
-<a href="#1209" id="1209">1209</a>
-<a href="#1210" id="1210">1210</a>
-<a href="#1211" id="1211">1211</a>
-<a href="#1212" id="1212">1212</a>
-<a href="#1213" id="1213">1213</a>
-<a href="#1214" id="1214">1214</a>
-<a href="#1215" id="1215">1215</a>
-<a href="#1216" id="1216">1216</a>
-<a href="#1217" id="1217">1217</a>
-<a href="#1218" id="1218">1218</a>
-<a href="#1219" id="1219">1219</a>
-<a href="#1220" id="1220">1220</a>
-<a href="#1221" id="1221">1221</a>
-<a href="#1222" id="1222">1222</a>
-<a href="#1223" id="1223">1223</a>
-<a href="#1224" id="1224">1224</a>
 </pre></div><pre class="rust"><code><span class="comment">// Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -1856,21 +1816,11 @@
         <span class="macro">assert_eq!</span>(<span class="number">0</span>, list_array.null_count());
         <span class="macro">assert_eq!</span>(<span class="number">6</span>, list_array.value_offsets()[<span class="number">2</span>]);
         <span class="macro">assert_eq!</span>(<span class="number">2</span>, list_array.value_length(<span class="number">2</span>));
-        <span class="macro">assert_eq!</span>(
-            <span class="number">0</span>,
-            list_array
-                .value(<span class="number">0</span>)
-                .as_any()
-                .downcast_ref::&lt;Int32Array&gt;()
-                .unwrap()
-                .value(<span class="number">0</span>)
-        );
+        <span class="macro">assert_eq!</span>(<span class="number">0</span>, list_array.value(<span class="number">0</span>).as_primitive::&lt;Int32Type&gt;().value(<span class="number">0</span>));
         <span class="macro">assert_eq!</span>(
             <span class="number">0</span>,
             <span class="kw">unsafe </span>{ list_array.value_unchecked(<span class="number">0</span>) }
-                .as_any()
-                .downcast_ref::&lt;Int32Array&gt;()
-                .unwrap()
+                .as_primitive::&lt;Int32Type&gt;()
                 .value(<span class="number">0</span>)
         );
         <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">3 </span>{
@@ -1896,21 +1846,11 @@
         <span class="macro">assert_eq!</span>(<span class="number">0</span>, list_array.null_count());
         <span class="macro">assert_eq!</span>(<span class="number">6</span>, list_array.value_offsets()[<span class="number">1</span>]);
         <span class="macro">assert_eq!</span>(<span class="number">2</span>, list_array.value_length(<span class="number">1</span>));
-        <span class="macro">assert_eq!</span>(
-            <span class="number">3</span>,
-            list_array
-                .value(<span class="number">0</span>)
-                .as_any()
-                .downcast_ref::&lt;Int32Array&gt;()
-                .unwrap()
-                .value(<span class="number">0</span>)
-        );
+        <span class="macro">assert_eq!</span>(<span class="number">3</span>, list_array.value(<span class="number">0</span>).as_primitive::&lt;Int32Type&gt;().value(<span class="number">0</span>));
         <span class="macro">assert_eq!</span>(
             <span class="number">3</span>,
             <span class="kw">unsafe </span>{ list_array.value_unchecked(<span class="number">0</span>) }
-                .as_any()
-                .downcast_ref::&lt;Int32Array&gt;()
-                .unwrap()
+                .as_primitive::&lt;Int32Type&gt;()
                 .value(<span class="number">0</span>)
         );
     }
@@ -1945,21 +1885,11 @@
         <span class="macro">assert_eq!</span>(<span class="number">0</span>, list_array.null_count());
         <span class="macro">assert_eq!</span>(<span class="number">6</span>, list_array.value_offsets()[<span class="number">2</span>]);
         <span class="macro">assert_eq!</span>(<span class="number">2</span>, list_array.value_length(<span class="number">2</span>));
-        <span class="macro">assert_eq!</span>(
-            <span class="number">0</span>,
-            list_array
-                .value(<span class="number">0</span>)
-                .as_any()
-                .downcast_ref::&lt;Int32Array&gt;()
-                .unwrap()
-                .value(<span class="number">0</span>)
-        );
+        <span class="macro">assert_eq!</span>(<span class="number">0</span>, list_array.value(<span class="number">0</span>).as_primitive::&lt;Int32Type&gt;().value(<span class="number">0</span>));
         <span class="macro">assert_eq!</span>(
             <span class="number">0</span>,
             <span class="kw">unsafe </span>{ list_array.value_unchecked(<span class="number">0</span>) }
-                .as_any()
-                .downcast_ref::&lt;Int32Array&gt;()
-                .unwrap()
+                .as_primitive::&lt;Int32Type&gt;()
                 .value(<span class="number">0</span>)
         );
         <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">3 </span>{
@@ -1985,21 +1915,11 @@
         <span class="macro">assert_eq!</span>(<span class="number">0</span>, list_array.null_count());
         <span class="macro">assert_eq!</span>(<span class="number">6</span>, list_array.value_offsets()[<span class="number">1</span>]);
         <span class="macro">assert_eq!</span>(<span class="number">2</span>, list_array.value_length(<span class="number">1</span>));
-        <span class="macro">assert_eq!</span>(
-            <span class="number">3</span>,
-            list_array
-                .value(<span class="number">0</span>)
-                .as_any()
-                .downcast_ref::&lt;Int32Array&gt;()
-                .unwrap()
-                .value(<span class="number">0</span>)
-        );
+        <span class="macro">assert_eq!</span>(<span class="number">3</span>, list_array.value(<span class="number">0</span>).as_primitive::&lt;Int32Type&gt;().value(<span class="number">0</span>));
         <span class="macro">assert_eq!</span>(
             <span class="number">3</span>,
             <span class="kw">unsafe </span>{ list_array.value_unchecked(<span class="number">0</span>) }
-                .as_any()
-                .downcast_ref::&lt;Int32Array&gt;()
-                .unwrap()
+                .as_primitive::&lt;Int32Type&gt;()
                 .value(<span class="number">0</span>)
         );
     }
