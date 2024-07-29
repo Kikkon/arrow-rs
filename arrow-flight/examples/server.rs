@@ -25,6 +25,8 @@ use arrow_flight::{
     HandshakeResponse, PollInfo, PutResult, SchemaResult, Ticket,
 };
 
+use tower_http::cors::{CorsLayer, Any};
+
 #[derive(Clone)]
 pub struct FlightServiceImpl {}
 
@@ -111,12 +113,17 @@ impl FlightService for FlightServiceImpl {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "[::1]:50051".parse()?;
+    let addr = "127.0.0.1:50051".parse().unwrap();
     let service = FlightServiceImpl {};
+
+    let cors = CorsLayer::new()
+        .allow_methods(Any)
+        .allow_headers(Any)
+        .allow_origin(Any);
 
     let svc = FlightServiceServer::new(service);
 
-    Server::builder().add_service(svc).serve(addr).await?;
+    Server::builder().layer(cors).accept_http1(true).add_service(tonic_web::enable(svc)).serve(addr).await?;
 
     Ok(())
 }

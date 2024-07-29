@@ -1,0 +1,25 @@
+{
+  "name": "arrow-flight-wasm",
+  "type": "module",
+  "collaborators": [
+    "Apache Arrow <dev@arrow.apache.org>"
+  ],
+  "description": "Apache Arrow Flight",
+  "version": "52.2.0",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apache/arrow-rs"
+  },
+  "files": [
+    "arrow_flight_wasm_bg.wasm",
+    "arrow_flight_wasm.js",
+    "arrow_flight_wasm.d.ts"
+  ],
+  "main": "arrow_flight_wasm.js",
+  "homepage": "https://github.com/apache/arrow-rs",
+  "types": "arrow_flight_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

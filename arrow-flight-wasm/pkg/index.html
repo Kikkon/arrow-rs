@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasm Example</title>
+</head>
+<body>
+<h1>Wasm Example</h1>
+<button id="run-wasm">Run Wasm Function</button>
+<script type="module">
+    import init, { test } from './arrow_flight_wasm.js';
+
+    async function runWasm() {
+        await init();
+        test();
+    }
+
+    document.getElementById('run-wasm').addEventListener('click', runWasm);
+</script>
+</body>
+</html>
